@@ -39,4 +39,4 @@ else
   }
 }
 ```
-I have objects for the majority of QBXML calls but have only used and tested a few since that's all I need.  While it is not complete, I am continuing to make updates and changes.  Currently working on Unit Tests for the validation checking and error displays.  Will then move on to creating Unit Tests for making actual calls to the Quickbooks RP.
+I have objects for the majority of QBXML calls but have only used and tested a few since that's all I need.  While it is not complete, I am continuing to make updates and changes.  Currently working on Unit Tests for the validation checking and error displays.  Will then move on to creating Unit Tests for making actual calls to the Quickbooks RP to test and verify the objects are working correctly.
