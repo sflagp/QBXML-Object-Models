@@ -39,6 +39,6 @@ else
   }
 }
 ```
-I have objects for the majority of QBXML calls but have only used and tested a few since that's all I need.  While it is not complete, I am continuing to make updates and changes.  Have completed the majority of the Unit Tests for generating the QBXML as well as sending the QBXML to the request processor.  I have covered the majority of QBXML requests in my unit testing but there are still bugs to be found.  If you do use this, please report these bugs so that I can look into why it's not working.
+I have objects for the majority of QBXML calls but have only used and tested a few since that's all I need.  While it is not complete, I am continuing to make updates and changes.  Have completed the majority of the Unit Tests for generating the QBXML as well as sending the QBXML to the request processor.  I have covered the majority of QBXML requests in my unit testing but there are still bugs to be found.  If you do use this, please report these bugs so that I can look into why it's not working.  Look at the included unit test code I uploaded for testing the InvoiceQueryRq/InvoiceAddRq/InvoiceModRq QBXML calls to see how I use the dll to generate the QBXML and then convert the QBXML result string back into a C# object (in this case QbInvoicesView).
 
 Another note, I changed the target framework from netcoreapp3.1 to netstandard2.1. This should make it more compatible with any projects you incorporate this into.  Theoretically, this should make it compatible with other types of projects beyond Windows apps.
