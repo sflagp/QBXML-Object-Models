@@ -24,7 +24,20 @@ Produces the following output:
 </QBXML>
 ```
 
-I've also added a couple of validation extensions using DataAnnotations and custom ValidationAttributes to be able to call IsEntityValid() and/or GetErrorsList() on the object.
+I've also added a one line command to convert the response QBXML into a C# class object that can be accessed and manipulated with Linq or standard C# code.
+
+```
+AccountQueryRq accountsRq = new();
+string qbRs = QB.ExecuteQbRequest(accountsRq); // QB.ExecuteQbRequest is from my personal class library
+QbAccountsView accounts = QbFunctions.ToView<QbAccountsView>(qbRs);
+if(accounts.StatusCode == "0" && accounts.Accounts.Count > 0)
+{
+  AccountRetDto account = accounts.Accounts.FirstOrDefault(a => a.AccountType == "AccountsPayable");
+  AccountRetDto bank = accounts.Accounts.FirstOrDefault(a => a.AccountType == "Bank");
+}
+```
+
+I've also added a couple of validation extensions using DataAnnotations and custom ValidationAttributes to be able to call IsEntityValid() and/or GetErrorsList() on the object.  This will help to notify you if your data is not valid.  This is not 100% but will warn you of a lot of different potential errors in your requests.
 
 ``` 
 if(customerRq.IsEntityValid())
@@ -38,16 +51,6 @@ else
     ...Your code here
   }
 }
-```
-
-I've also added a one line command to convert the response QBXML into a C# class object that can be accessed and manipulated with Linq or standard C# code.
-
-```
-AccountQueryRq accountsRq = new();
-string qbRs = QB.ExecuteQbRequest(accountsRq); // QB.ExecuteQbRequest is from my personal class library
-QbAccountsView accounts = QbFunctions.ToView<QbAccountsView>(qbRs);
-AccountRetDto account = accounts.Accounts.FirstOrDefault(a => a.AccountType == "AccountsPayable");
-AccountRetDto bank = accounts.Accounts.FirstOrDefault(a => a.AccountType == "Bank");
 ```
 
 I have objects for the majority of QBXML calls but have only used and tested a few since that's all I need.  While it is not complete, I am continuing to make updates and changes.  Have completed the majority of the Unit Tests for generating the QBXML as well as sending the QBXML to the request processor.  I have covered the majority of QBXML requests in my unit testing but there are still bugs to be found.  If you do use this, please report these bugs so that I can look into why it's not working.  Look at the included unit test code I uploaded for testing the InvoiceQueryRq/InvoiceAddRq/InvoiceModRq QBXML calls to see how I use the dll to generate the QBXML and then convert the QBXML result string back into a C# object (in this case QbInvoicesView).
