@@ -24,7 +24,7 @@ Produces the following output:
 </QBXML>
 ```
 
-I've also added a one line command to convert the response QBXML into a C# class object that can be accessed and manipulated with Linq or standard C# code.
+I've also added a one line command to convert the response QBXML into a C# class object that can be accessed and manipulated with LINQ or standard C# code.
 
 ```
 AccountQueryRq accountsRq = new();
