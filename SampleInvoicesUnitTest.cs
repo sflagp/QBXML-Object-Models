@@ -19,7 +19,7 @@ namespace QbProcessor.TEST
                     throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
                 }
 
-                QbInvoicesView qryRs, addRs = new(), modRs;
+                QbInvoicesView qryRs, addRs = new(""), modRs;
                 InvoiceAddRq addRq = new();
                 InvoiceModRq modRq = new();
                 string addRqName = $"QbProcessor";
@@ -34,7 +34,7 @@ namespace QbProcessor.TEST
                 Assert.IsTrue(qryRq.IsEntityValid());
 
                 result = QB.ExecuteQbRequest(qryRq);
-                qryRs = QB.ToView<QbInvoicesView>(result);
+                qryRs = new(result);
                 Assert.IsTrue(qryRs.StatusSeverity == "Info");
                 #endregion
 
@@ -45,18 +45,18 @@ namespace QbProcessor.TEST
 
                     AccountQueryRq accountsRq = new();
                     accountsRq.AccountType = "AccountsReceivable";
-                    QbAccountsView accounts = QB.ToView<QbAccountsView>(QB.ExecuteQbRequest(accountsRq));
+                    QbAccountsView accounts = new(QB.ExecuteQbRequest(accountsRq));
                     AccountRetDto account = accounts.Accounts[rdm.Next(0, accounts.Accounts.Count)];
 
                     CustomerQueryRq customerRq = new();
-                    QbCustomersView customers = QB.ToView<QbCustomersView>(QB.ExecuteQbRequest(customerRq));
+                    QbCustomersView customers = new(QB.ExecuteQbRequest(customerRq));
                     CustomerRetDto customer = customers.Customers[rdm.Next(0, customers.Customers.Count)];
 
                     ItemNonInventoryQueryRq itemsRq = new();
-                    QbItemNonInventoryView items = QB.ToView<QbItemNonInventoryView>(QB.ExecuteQbRequest(itemsRq));
+                    QbItemNonInventoryView items = new(QB.ExecuteQbRequest(itemsRq));
 
                     ItemOtherChargeQueryRq chargeRq = new();
-                    QbItemOtherChargesView charges = QB.ToView<QbItemOtherChargesView>(QB.ExecuteQbRequest(chargeRq));
+                    QbItemOtherChargesView charges = new(QB.ExecuteQbRequest(chargeRq));
 
                     addRq.Customer = new() { ListID = customer.ListID };
                     addRq.ARAccount = new() { ListID = account.ListID };
@@ -94,7 +94,7 @@ namespace QbProcessor.TEST
                     Assert.IsTrue(addRq.IsEntityValid());
 
                     result = QB.ExecuteQbRequest(addRq);
-                    addRs = QB.ToView<QbInvoicesView>(result);
+                    addRs = new(result);
                     Assert.IsTrue(addRs.StatusCode == "0");
                 }
                 #endregion
@@ -110,7 +110,7 @@ namespace QbProcessor.TEST
 
                 modRq.TxnDate = default;
                 result = QB.ExecuteQbRequest(modRq);
-                modRs = QB.ToView<QbInvoicesView>(result);
+                modRs = new(result);
                 Assert.IsTrue(modRs.StatusCode == "0");
                 #endregion
             }
