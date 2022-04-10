@@ -1,5 +1,8 @@
+4/9/2022
+Updated the XML documentation for all the Rq objects.  It's a minor change.  Assembly file version 1.1.11.
+
 4/8/2022
-Updated XML documentation for all properties and classes.  Have not tested accuracy because there are probably over 1,000 properties and classes to check.  But I spot checked my existing code base and the intellisense came through.  As of today, have not updated NuGet yet.
+Updated XML documentation for all properties and classes.  Have not tested accuracy because there are probably over 1,000 properties and classes to check.  But I spot checked my existing code base and the intellisense came through.  As of today, have not updated NuGet yet.  Assembly file version 1.1.10.
 
 4/7/2022
 Still going down the rabbit hole.  I have updated all the Rq classes and Qb_View classes.  The only thing remaining are the returned Dtos.  
