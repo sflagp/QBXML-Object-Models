@@ -1,11 +1,9 @@
 <i>4/11/2022</i><br />
 Added ListDel/ListDeleted/ListDisplayAdd/ListDisplayMod requests.
 In the process of adding ListDel request, found bugs with the following:
-  - AccountAddRq
-	- TxnDelRq
+<ul><li>AccountAddRq</li><li>TxnDelRq</li></ul>
 Added the following views that were missing:
-  - QbVehiclesView
-	- QbVehicleMileageView
+<ul><li>QbVehiclesView</li><li>QbVehicleMileageView</li></ul>
 
 Uploaded my Unit Tests project as well as the class library project I created to implement the QBXMLRP2Lib class.  The QbProcessor class library is used to send and receive QBXML requests and responses from the Quickbooks RP.
 
