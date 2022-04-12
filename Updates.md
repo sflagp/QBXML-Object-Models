@@ -1,3 +1,14 @@
+4/11/2022
+Added ListDel/ListDeleted/ListDisplayAdd/ListDisplayMod requests.
+In the process of adding ListDel request, found bugs with the following:
+  - AccountAddRq
+	- TxnDelRq
+Added the following views that were missing:
+  - QbVehiclesView
+	- QbVehicleMileageView
+
+Uploaded my Unit Tests project as well as the class library project I created to implement the QBXMLRP2Lib class.  The QbProcessor class library is used to send and receive QBXML requests and responses from the Quickbooks RP.
+
 4/9/2022
 Updated the XML documentation for all the Rq objects.  It's a minor change.  Assembly file version 1.1.11.
 
