@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>QbProcessor</name>
+    </assembly>
+    <members>
+        <member name="T:QBProcessor.RequestEventReplySender">
+            <summary>RequestEventReplySender Class</summary>
+        </member>
+        <member name="P:QBProcessor.RequestEventReplySender.RequesterId">
+            <summary>Gets or sets the requester identifier.</summary>
+            <value>The requester identifier.</value>
+        </member>
+        <member name="P:QBProcessor.RequestEventReplySender.RequestType">
+            <summary>Gets or sets the type of the request.</summary>
+            <value>The type of the request.</value>
+        </member>
+        <member name="P:QBProcessor.RequestEventReplySender.QbRequest">
+            <summary>Gets or sets the qbxml request.</summary>
+            <value>The qbxml request.</value>
+        </member>
+        <member name="P:QBProcessor.RequestEventReplySender.QbResponse">
+            <summary>Gets or sets the qbxml response.</summary>
+            <value>The qbxml response.</value>
+        </member>
+        <member name="P:QBProcessor.RequestEventReplySender.Sender">
+            <summary>Gets or sets the sender.</summary>
+            <value>The sender.</value>
+        </member>
+        <member name="M:QBProcessor.RequestEventReplySender.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QBProcessor.RequestEventReplySender" /> class.</summary>
+        </member>
+        <member name="M:QBProcessor.RequestEventReplySender.#ctor(System.Object)">
+            <summary>Initializes a new instance of the <see cref="T:QBProcessor.RequestEventReplySender" /> class.</summary>
+            <param name="sender">The sender.</param>
+        </member>
+        <member name="M:QBProcessor.RequestEventReplySender.#ctor(System.Object,System.Guid,System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QBProcessor.RequestEventReplySender" /> class.</summary>
+            <param name="sender">The sender.</param>
+            <param name="guid">The unique identifier.</param>
+            <param name="requestType">Type of the request.</param>
+            <param name="response">The response.</param>
+        </member>
+        <member name="M:QBProcessor.RequestEventReplySender.#ctor(System.Object,System.Guid,System.String,System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QBProcessor.RequestEventReplySender" /> class.</summary>
+            <param name="sender">The sender.</param>
+            <param name="guid">The unique identifier.</param>
+            <param name="requestType">Type of the request.</param>
+            <param name="qbRequest">The qb request.</param>
+            <param name="response">The response.</param>
+        </member>
+        <member name="T:QBProcessor.QbProcessor">
+            <summary>QbProcessor Class</summary>
+        </member>
+        <member name="M:QBProcessor.QbProcessor.ExecuteQbRequest``1(``0)">
+            <summary>Executes the qb request and returns XML string from Quickbooks processor.</summary>
+            <typeparam name="T">Source request object to read from</typeparam>
+            <param name="request">The request.</param>
+            <returns>Fully formed XML response from Quickbooks processor</returns>
+        </member>
+        <member name="M:QBProcessor.QbProcessor.ExecuteQbRequest``2(``0)">
+            <summary>Executes the qb request and returns XML string from Quickbooks processor.</summary>
+            <typeparam name="T">Source request object to read from</typeparam>
+            <typeparam name="T2">Destination QBXML model object to insert object of T</typeparam>
+            <param name="request">The request.</param>
+            <returns>Fully formed XML response from Quickbooks processor</returns>
+        </member>
+        <member name="M:QBProcessor.QbProcessor.QbObjectProcessor``1(``0,System.Guid)">
+            <summary>Build and run a request to add a Quickbooks object</summary>
+            <typeparam name="T">Dto object of type T with the source data to add to Quickbooks.</typeparam>
+            <param name="qbRequest">Model object of type T with the source data to add to Quickbooks.</param>
+            <param name="requesterId">User provided GUID by requester to track sender requests.</param>
+            <returns>String result from Quickbooks processor</returns>
+        </member>
+        <member name="M:QBProcessor.QbProcessor.QbObjectProcessor``2(``0,System.Guid)">
+            <summary>Build and run a request to add a Quickbooks object</summary>
+            <typeparam name="T">Dto object of type T with the source data to add to Quickbooks.</typeparam>
+            <typeparam name="T2">Class object of type T to convert source data to for XML processing.</typeparam>
+            <param name="qbDto">Dto object of type T with the source data to add to Quickbooks.</param>
+            <param name="requesterId">User provided GUID by requester to track sender requests.</param>
+            <returns>String result from Quickbooks processor</returns>
+        </member>
+        <member name="M:QBProcessor.QbProcessor.QbObjectProcessor``3(``0,System.Guid)">
+            <summary>Build and run a request to add a Quickbooks object</summary>
+            <typeparam name="T">Dto object of type T with the source data to add to Quickbooks.</typeparam>
+            <typeparam name="T2">Class object of type T to convert source data to for XML processing.</typeparam>
+            <typeparam name="T3">Model object of type T to convert source data to for XML processing.</typeparam>
+            <param name="qbDto">Dto object of type T with the source data to add to Quickbooks.</param>
+            <param name="requesterId">User provided GUID by requester to track sender requests.</param>
+            <returns>String result from Quickbooks processor</returns>
+        </member>
+        <member name="E:QBProcessor.QbProcessor.OnRequestEvent">
+            <summary>Occurs when [on request event].</summary>
+        </member>
+        <member name="P:QBProcessor.QbProcessor.LicenseExpires">
+            <summary>Gets the date the license expires.</summary>
+            <value>The license expiration date.</value>
+        </member>
+        <member name="P:QBProcessor.QbProcessor.LicenseValid">
+            <summary>Gets a value indicating whether [license valid].</summary>
+            <value>
+              <c>true</c> if [license valid]; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:QBProcessor.QbProcessor.CompanyName">
+            <summary>Gets the name of the Quickbooks company.</summary>
+            <value>The name of the Quickbooks company.</value>
+        </member>
+        <member name="M:QBProcessor.QbProcessor.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QBProcessor.QbProcessor" /> class.</summary>
+            <exception cref="T:System.Exception">Quickbooks not compatible with Invoicing Made Simple
+            or</exception>
+        </member>
+        <member name="M:QBProcessor.QbProcessor.Finalize">
+            <summary>Finalizes an instance of the <see cref="T:QBProcessor.QBRequester" /> class.</summary>
+        </member>
+        <member name="M:QBProcessor.QbProcessor.CallQB(System.String)">
+            <summary>Execute QB request and return result</summary>
+            <param name="xmlRequest"></param>
+            <returns>XML string</returns>
+        </member>
+        <member name="M:QBProcessor.QbProcessor.CallQBAsync(System.String)">
+            <summary>Execute QB request and return result asyncronously</summary>
+            <param name="xmlRequest"></param>
+            <returns>XML string</returns>
+        </member>
+        <member name="M:QBProcessor.QbProcessor.InvokeRequestEvent(System.Object,System.Guid,System.String,System.String,System.String)">
+            <summary>Invokes the OnRequestEvent to fire event for consuming application.</summary>
+            <param name="sender">The sender object.</param>
+            <param name="requesterId">The requester identifier.  If a requester identifier is passed in, it will include it on the response.</param>
+            <param name="requestType">Quickbooks processing type of the request.</param>
+            <param name="eventResponse">The data to send to the consuming application.</param>
+            <param name="qbRequest">The XML string sent to the Quickbooks processing system.</param>
+        </member>
+        <member name="T:QBProcessor.QBRequester">
+            <summary>QBRequester Class</summary>
+        </member>
+        <member name="F:QBProcessor.QBRequester.AppID">
+            <summary>The application identifier</summary>
+        </member>
+        <member name="P:QBProcessor.QBRequester.ApiVersion">
+            <summary>Gets the API version that is currently being used for the QBXML request.</summary>
+            <value>The API version.</value>
+        </member>
+        <member name="P:QBProcessor.QBRequester.QbSessionTicket">
+            <summary>Gets the qb session ticket.</summary>
+            <value>The qb session ticket.</value>
+        </member>
+        <member name="M:QBProcessor.QBRequester.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QBProcessor.QBRequester" /> class.</summary>
+        </member>
+        <member name="M:QBProcessor.QBRequester.NextVer">
+            <summary>Increment the list position of the SdkVers to use as the QBXML version.</summary>
+        </member>
+        <member name="M:QBProcessor.QBRequester.DisconnectQB">
+            <summary>Disconnects the request processor from Quickbooks.</summary>
+        </member>
+        <member name="M:QBProcessor.QBRequester.Dispose(System.Boolean)">
+            <summary>Releases unmanaged and - optionally - managed resources.</summary>
+            <param name="disposing">
+              <c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:QBProcessor.QBRequester.Finalize">
+            <summary>Finalizes an instance of the <see cref="T:QBProcessor.QBRequester" /> class.</summary>
+        </member>
+        <member name="M:QBProcessor.QBRequester.Dispose">
+            <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        </member>
+    </members>
+</doc>
