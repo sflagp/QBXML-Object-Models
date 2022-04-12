@@ -1570,7 +1570,7 @@
         <member name="P:QbModels.SalesTaxPaymentCheckLineAddDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -2040,7 +2040,7 @@
         <member name="P:QbModels.AppliedToTxnAddDto.PaymentAmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -2070,7 +2070,7 @@
         <member name="P:QbModels.AppliedToTxnAddDto.DiscountAmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -2274,7 +2274,7 @@
         <member name="P:QbModels.AppliedToTxnModDto.PaymentAmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -2304,7 +2304,7 @@
         <member name="P:QbModels.AppliedToTxnModDto.DiscountAmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -2366,7 +2366,7 @@
         <member name="P:QbModels.ApplyCheckToTxnAddDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -2406,7 +2406,7 @@
         <member name="P:QbModels.ApplyCheckToTxnModDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -2505,7 +2505,7 @@
         <member name="P:QbModels.CashBackInfoAddDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -2544,7 +2544,7 @@
         <member name="P:QbModels.CashBackInfoModDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -3202,7 +3202,7 @@
         <member name="P:QbModels.ErrorRecoveryDto.TxnNumberOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -3286,7 +3286,7 @@
         <member name="P:QbModels.ExpenseLineAddDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -3405,7 +3405,7 @@
         <member name="P:QbModels.ExpenseLineModDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -3578,7 +3578,7 @@
         <member name="P:QbModels.FixedAssetSalesInfoDto.SalesDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -3593,7 +3593,7 @@
         <member name="P:QbModels.FixedAssetSalesInfoDto.SalesPriceOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -3608,7 +3608,7 @@
         <member name="P:QbModels.FixedAssetSalesInfoDto.SalesExpenseOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -4197,7 +4197,7 @@
         <member name="P:QbModels.ItemLineModDto.CostOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -4212,7 +4212,7 @@
         <member name="P:QbModels.ItemLineModDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -4512,7 +4512,7 @@
         <member name="P:QbModels.LinkedTxnDto.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -4621,7 +4621,7 @@
         <member name="P:QbModels.RateEntryDto.EffectiveDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -4667,7 +4667,7 @@
         <member name="P:QbModels.RefundAppliedToTxnAddDto.RefundAmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -4857,7 +4857,7 @@
         <member name="P:QbModels.SetCreditDto.AppliedAmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -6148,7 +6148,7 @@
         <member name="P:QbModels.CreditMemoLineAddDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -6207,7 +6207,7 @@
         <member name="P:QbModels.CreditMemoLineAddDto.ServiceDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -6510,7 +6510,7 @@
         <member name="P:QbModels.CreditMemoLineModDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -6569,7 +6569,7 @@
         <member name="P:QbModels.CreditMemoLineModDto.ServiceDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -8033,7 +8033,7 @@
         <member name="P:QbModels.DepositLineAddDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -8168,7 +8168,7 @@
         <member name="P:QbModels.DepositLineModDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -9216,7 +9216,7 @@
         <member name="P:QbModels.VacationSickHoursDto.AccrualStartDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -9301,7 +9301,7 @@
         <member name="P:QbModels.EstimateLineAddDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -9761,7 +9761,7 @@
         <member name="P:QbModels.EstimateLineModDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -10354,7 +10354,7 @@
         <member name="P:QbModels.DeletedDateRangeFilterDto.FromDeletedDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -10367,7 +10367,7 @@
         <member name="P:QbModels.DeletedDateRangeFilterDto.ToDeletedDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -10652,7 +10652,7 @@
         <member name="P:QbModels.TotalBalanceFilterDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -11014,7 +11014,7 @@
         <member name="P:QbModels.InventoryAdjustmentLineModDto.ValueDifferenceOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -12200,7 +12200,7 @@
         <member name="P:QbModels.InvoiceLineAddDto.RateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -12247,7 +12247,7 @@
         <member name="P:QbModels.InvoiceLineAddDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -12328,7 +12328,7 @@
         <member name="P:QbModels.InvoiceLineAddDto.ServiceDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -12475,7 +12475,7 @@
         <member name="P:QbModels.InvoiceLineModDto.RateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -12514,7 +12514,7 @@
         <member name="P:QbModels.InvoiceLineModDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -12595,7 +12595,7 @@
         <member name="P:QbModels.InvoiceLineModDto.ServiceDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -12613,7 +12613,7 @@
         <member name="P:QbModels.InvoiceLineModDto.OverrideItemAccountRef">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -13836,7 +13836,12 @@
             <!-- No matching elements were found for the following include tag --><include file="Documentation/IntDoc.xml" path="QbModelIntDoc/Int[@name=&quot;Sublevel&quot;]" />
         </member>
         <member name="P:QbModels.ItemInventoryRetDto.ManufacturerPartNumber">
-            <!-- No matching elements were found for the following include tag --><include file="Documentation/StringDoc.xml" path="QbModelStringDoc/String[@name=&quot;ManufacturerPartNumber&quot;]" />
+            <String name="ManufacturerPartNumber">
+		<summary>
+			Gets or sets the ManufacturerPartNumber property.
+		</summary>
+		<value>string</value>
+	</String>
         </member>
         <member name="P:QbModels.ItemInventoryRetDto.UnitOfMeasure">
             <DefaultRefDto name="UnitOfMeasureSetRef">
@@ -14081,7 +14086,12 @@
             <!-- No matching elements were found for the following include tag --><include file="Documentation/IntDoc.xml" path="QbModelIntDoc/Int[@name=&quot;Sublevel&quot;]" />
         </member>
         <member name="P:QbModels.ItemNonInventoryRetDto.ManufacturerPartNumber">
-            <!-- No matching elements were found for the following include tag --><include file="Documentation/StringDoc.xml" path="QbModelStringDoc/String[@name=&quot;ManufacturerPartNumber&quot;]" />
+            <String name="ManufacturerPartNumber">
+		<summary>
+			Gets or sets the ManufacturerPartNumber property.
+		</summary>
+		<value>string</value>
+	</String>
         </member>
         <member name="P:QbModels.ItemNonInventoryRetDto.UnitOfMeasureSet">
             <DefaultRefDto name="UnitOfMeasureSetRef">
@@ -15200,7 +15210,7 @@
         <member name="P:QbModels.JournalCreditLineDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -15282,7 +15292,7 @@
         <member name="P:QbModels.JournalDebitLineDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -15521,7 +15531,7 @@
         <member name="P:QbModels.JournalLineModDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -15721,7 +15731,7 @@
         <member name="P:QbModels.LeadContactsModDto.IsPrimaryContactSpecified">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -15969,6 +15979,170 @@
 		</summary>
 		<value>string</value>
 	</String>
+        </member>
+        <member name="T:QbModels.ListDeletedRetDto">
+            <summary>ListDeletedRetDto Class</summary>
+        </member>
+        <member name="P:QbModels.ListDeletedRetDto.ListDelType">
+            <RegEx name="ListDelType">
+		<summary>
+			<para>
+				Gets or sets the list delete type.
+				Must be one of:
+			</para>
+			<code>
+				Account
+				BillingRate
+				Class
+				Currency
+				Customer
+				CustomerMsg
+				CustomerType
+				DateDrivenTerms
+				Employee
+				InventorySite
+				ItemDiscount
+				ItemFixedAsset
+				ItemGroup
+				ItemInventory
+				ItemInventoryAssembly
+				ItemNonInventory
+				ItemOtherCharge
+				ItemPayment
+				ItemSalesTax
+				ItemSalesTaxGroup
+				ItemService
+				ItemSubtotal
+				JobType
+				OtherName
+				PaymentMethod
+				PayrollItemNonWage
+				PayrollItemWage
+				PriceLevel
+				SalesRep
+				SalesTaxCode
+				ShipMethod
+				StandardTerms
+				ToDo
+				UnitOfMeasureSet
+				Vehicle
+				Vendor
+				VendorType
+				WorkersCompCode
+			</code>
+		</summary>
+		<value>The list delete type.</value>
+	</RegEx>
+        </member>
+        <member name="P:QbModels.ListDeletedRetDto.ListID">
+            <ListID name="ListID">
+		<summary>
+			<para>ListID to query for.</para>
+			<example>
+				<c>qbRq.ListID = "Quickbooks.ListID";</c>
+			</example>
+		</summary>
+		<value>
+			string of ListID
+		</value>
+	</ListID>
+        </member>
+        <member name="P:QbModels.ListDeletedRetDto.TimeCreated">
+            <Date name="TimeCreated">
+		<summary>
+			Gets or sets the TimeCreated property.
+		</summary>
+		<value>DateTime</value>
+	</Date>
+        </member>
+        <member name="P:QbModels.ListDeletedRetDto.TimeDeleted">
+            <Date name="TimeDeleted">
+		<summary>
+			Gets or sets the TimeDeleted property.
+		</summary>
+		<value>DateTime</value>
+	</Date>
+        </member>
+        <member name="P:QbModels.ListDeletedRetDto.FullName">
+            <!-- No matching elements were found for the following include tag --><include file="Documentation/StringDoc.xml" path="QbModelStringDoc/FullName" />
+        </member>
+        <member name="T:QbModels.ListDelRsDto">
+            <summary>ListDelRsDto Class</summary>
+        </member>
+        <member name="P:QbModels.ListDelRsDto.ListDelType">
+            <RegEx name="ListDelType">
+		<summary>
+			<para>
+				Gets or sets the list delete type.
+				Must be one of:
+			</para>
+			<code>
+				Account
+				BillingRate
+				Class
+				Currency
+				Customer
+				CustomerMsg
+				CustomerType
+				DateDrivenTerms
+				Employee
+				InventorySite
+				ItemDiscount
+				ItemFixedAsset
+				ItemGroup
+				ItemInventory
+				ItemInventoryAssembly
+				ItemNonInventory
+				ItemOtherCharge
+				ItemPayment
+				ItemSalesTax
+				ItemSalesTaxGroup
+				ItemService
+				ItemSubtotal
+				JobType
+				OtherName
+				PaymentMethod
+				PayrollItemNonWage
+				PayrollItemWage
+				PriceLevel
+				SalesRep
+				SalesTaxCode
+				ShipMethod
+				StandardTerms
+				ToDo
+				UnitOfMeasureSet
+				Vehicle
+				Vendor
+				VendorType
+				WorkersCompCode
+			</code>
+		</summary>
+		<value>The list delete type.</value>
+	</RegEx>
+        </member>
+        <member name="P:QbModels.ListDelRsDto.ListID">
+            <ListID name="ListID">
+		<summary>
+			<para>ListID to query for.</para>
+			<example>
+				<c>qbRq.ListID = "Quickbooks.ListID";</c>
+			</example>
+		</summary>
+		<value>
+			string of ListID
+		</value>
+	</ListID>
+        </member>
+        <member name="P:QbModels.ListDelRsDto.TimeDeleted">
+            <Date name="TimeDeleted">
+		<summary>
+			Gets or sets the TimeDeleted property.
+		</summary>
+		<value>DateTime</value>
+	</Date>
+        </member>
+        <member name="P:QbModels.ListDelRsDto.FullName">
+            <!-- No matching elements were found for the following include tag --><include file="Documentation/StringDoc.xml" path="QbModelStringDoc/FullName" />
         </member>
         <member name="T:QbModels.OtherNameRetDto">
             <summary>Return object for OtherName requests</summary>
@@ -16621,7 +16795,12 @@
 	</DefaultRefDto>
         </member>
         <member name="P:QbModels.PurchaseOrderLineAddDto.ManufacturerPartNumber">
-            <!-- No matching elements were found for the following include tag --><include file="Documentation/StringDoc.xml" path="QbModelStringDoc/String[@name=&quot;ManufacturerPartNumber&quot;]" />
+            <String name="ManufacturerPartNumber">
+		<summary>
+			Gets or sets the ManufacturerPartNumber property.
+		</summary>
+		<value>string</value>
+	</String>
         </member>
         <member name="P:QbModels.PurchaseOrderLineAddDto.Desc">
             <String name="Desc">
@@ -16677,7 +16856,7 @@
         <member name="P:QbModels.PurchaseOrderLineAddDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -16714,7 +16893,7 @@
         <member name="P:QbModels.PurchaseOrderLineAddDto.ServiceDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -17038,7 +17217,12 @@
 	</DefaultRefDto>
         </member>
         <member name="P:QbModels.PurchaseOrderLineModDto.ManufacturerPartNumber">
-            <!-- No matching elements were found for the following include tag --><include file="Documentation/StringDoc.xml" path="QbModelStringDoc/String[@name=&quot;ManufacturerPartNumber&quot;]" />
+            <String name="ManufacturerPartNumber">
+		<summary>
+			Gets or sets the ManufacturerPartNumber property.
+		</summary>
+		<value>string</value>
+	</String>
         </member>
         <member name="P:QbModels.PurchaseOrderLineModDto.Desc">
             <String name="Desc">
@@ -17086,7 +17270,7 @@
         <member name="P:QbModels.PurchaseOrderLineModDto.RateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -17112,7 +17296,7 @@
         <member name="P:QbModels.PurchaseOrderLineModDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -17149,7 +17333,7 @@
         <member name="P:QbModels.PurchaseOrderLineModDto.ServiceDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -17227,7 +17411,12 @@
 	</DefaultRefDto>
         </member>
         <member name="P:QbModels.PurchaseOrderLineRetDto.ManufacturerPartNumber">
-            <!-- No matching elements were found for the following include tag --><include file="Documentation/StringDoc.xml" path="QbModelStringDoc/String[@name=&quot;ManufacturerPartNumber&quot;]" />
+            <String name="ManufacturerPartNumber">
+		<summary>
+			Gets or sets the ManufacturerPartNumber property.
+		</summary>
+		<value>string</value>
+	</String>
         </member>
         <member name="P:QbModels.PurchaseOrderLineRetDto.Desc">
             <String name="Desc">
@@ -17748,7 +17937,7 @@
         <member name="P:QbModels.SalesAndPurchaseDto.SalesPriceOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -17782,7 +17971,7 @@
         <member name="P:QbModels.SalesAndPurchaseDto.PurchaseCostOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -17841,7 +18030,7 @@
         <member name="P:QbModels.SalesAndPurchaseModDto.SalesPriceOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -17890,7 +18079,7 @@
         <member name="P:QbModels.SalesAndPurchaseModDto.PurchaseCostOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -18032,7 +18221,7 @@
         <member name="P:QbModels.SalesOrderLineAddDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -18511,7 +18700,7 @@
         <member name="P:QbModels.SalesOrderLineModDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -19186,7 +19375,7 @@
         <member name="P:QbModels.SalesOrPurchaseDto.PriceOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -19226,7 +19415,7 @@
         <member name="P:QbModels.SalesOrPurchaseModDto.PriceOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -19353,7 +19542,7 @@
         <member name="P:QbModels.SalesReceiptLineAddDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -19427,7 +19616,7 @@
         <member name="P:QbModels.SalesReceiptLineAddDto.ServiceDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -19861,7 +20050,7 @@
         <member name="P:QbModels.SalesReceiptLineModDto.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -19935,7 +20124,7 @@
         <member name="P:QbModels.SalesReceiptLineModDto.ServiceDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -20262,7 +20451,7 @@
         <member name="P:QbModels.SalesReceiptRetDto.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -20340,7 +20529,7 @@
         <member name="P:QbModels.SalesReceiptRetDto.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -20366,7 +20555,7 @@
         <member name="P:QbModels.SalesReceiptRetDto.ShipDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -22336,7 +22525,7 @@
         <member name="P:QbModels.RateHistoryDto.EffectiveDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -22555,7 +22744,7 @@
         <member name="P:QbModels.AccountAddRq.OpenBalanceOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -22570,7 +22759,7 @@
         <member name="P:QbModels.AccountAddRq.OpenBalanceDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -22732,7 +22921,7 @@
         <member name="P:QbModels.AccountModRq.OpenBalanceOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -22742,7 +22931,7 @@
         <member name="P:QbModels.AccountModRq.OpenBalanceDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -22951,7 +23140,7 @@
         <member name="P:QbModels.BaseListQueryRq.FromModifiedDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -22966,7 +23155,7 @@
         <member name="P:QbModels.BaseListQueryRq.ToModifiedDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -23152,7 +23341,7 @@
         <member name="P:QbModels.BaseTxnModRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -23414,7 +23603,7 @@
         <member name="P:QbModels.BillAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -23429,7 +23618,7 @@
         <member name="P:QbModels.BillAddRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -23614,7 +23803,7 @@
         <member name="P:QbModels.BillModRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -23805,7 +23994,7 @@
         <member name="P:QbModels.BillToPayQueryRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -23875,7 +24064,7 @@
         <member name="P:QbModels.ChargeAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -23965,7 +24154,7 @@
         <member name="P:QbModels.ChargeAddRq.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -24010,7 +24199,7 @@
         <member name="P:QbModels.ChargeAddRq.BilledDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -24025,7 +24214,7 @@
         <member name="P:QbModels.ChargeAddRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -24161,7 +24350,7 @@
         <member name="P:QbModels.ChargeModRq.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -24206,7 +24395,7 @@
         <member name="P:QbModels.ChargeModRq.BilledDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -24221,7 +24410,7 @@
         <member name="P:QbModels.ChargeModRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -24332,7 +24521,7 @@
         <member name="P:QbModels.BillPaymentCheckAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -24455,7 +24644,7 @@
         <member name="P:QbModels.BillPaymentCheckModRq.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -24603,7 +24792,7 @@
         <member name="P:QbModels.CheckAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -24955,7 +25144,7 @@
         <member name="P:QbModels.SalesTaxPaymentCheckAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -25407,7 +25596,7 @@
         <member name="P:QbModels.ARRefundCreditCardAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -25589,7 +25778,7 @@
         <member name="P:QbModels.BillPaymentCreditCardAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -25738,7 +25927,7 @@
         <member name="P:QbModels.CreditCardChargeAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -26018,7 +26207,7 @@
         <member name="P:QbModels.CreditCardCreditAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -26328,7 +26517,7 @@
         <member name="P:QbModels.CreditMemoAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -26407,7 +26596,7 @@
         <member name="P:QbModels.CreditMemoAddRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -26441,7 +26630,7 @@
         <member name="P:QbModels.CreditMemoAddRq.ShipDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -26693,7 +26882,7 @@
         <member name="P:QbModels.CreditMemoModRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -26727,7 +26916,7 @@
         <member name="P:QbModels.CreditMemoModRq.ShipDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -27352,7 +27541,7 @@
         <member name="P:QbModels.CustomerAddRq.OpenBalanceOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -27367,7 +27556,7 @@
         <member name="P:QbModels.CustomerAddRq.OpenBalanceDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -27420,7 +27609,7 @@
         <member name="P:QbModels.CustomerAddRq.CreditLimitOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -27482,7 +27671,7 @@
         <member name="P:QbModels.CustomerAddRq.JobStartDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -27497,7 +27686,7 @@
         <member name="P:QbModels.CustomerAddRq.JobProjectedEndDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -27512,7 +27701,7 @@
         <member name="P:QbModels.CustomerAddRq.JobEndDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -27921,7 +28110,7 @@
         <member name="P:QbModels.CustomerModRq.CreditLimitOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -27983,7 +28172,7 @@
         <member name="P:QbModels.CustomerModRq.JobStartDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -27998,7 +28187,7 @@
         <member name="P:QbModels.CustomerModRq.JobProjectedEndDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -28013,7 +28202,7 @@
         <member name="P:QbModels.CustomerModRq.JobEndDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -28342,7 +28531,7 @@
         <member name="P:QbModels.DepositAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -28659,7 +28848,7 @@
         <member name="P:QbModels.EmployeeAddRq.TargetBonusOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -28846,7 +29035,7 @@
         <member name="P:QbModels.EmployeeAddRq.HiredDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -28861,7 +29050,7 @@
         <member name="P:QbModels.EmployeeAddRq.OriginalHireDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -28876,7 +29065,7 @@
         <member name="P:QbModels.EmployeeAddRq.AdjustedServiceDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -28891,7 +29080,7 @@
         <member name="P:QbModels.EmployeeAddRq.ReleasedDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -28906,7 +29095,7 @@
         <member name="P:QbModels.EmployeeAddRq.BirthDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -28994,7 +29183,7 @@
         <member name="P:QbModels.EmployeeAddRq.WorkAuthExpireDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -29225,7 +29414,7 @@
         <member name="P:QbModels.EmployeeModRq.TargetBonusOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -29382,7 +29571,7 @@
         <member name="P:QbModels.EmployeeModRq.HiredDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -29397,7 +29586,7 @@
         <member name="P:QbModels.EmployeeModRq.OriginalHireDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -29412,7 +29601,7 @@
         <member name="P:QbModels.EmployeeModRq.AdjustedServiceDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -29427,7 +29616,7 @@
         <member name="P:QbModels.EmployeeModRq.ReleasedDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -29442,7 +29631,7 @@
         <member name="P:QbModels.EmployeeModRq.BirthDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -29530,7 +29719,7 @@
         <member name="P:QbModels.EmployeeModRq.WorkAuthExpireDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -29717,7 +29906,7 @@
         <member name="P:QbModels.EstimateAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -29796,7 +29985,7 @@
         <member name="P:QbModels.EstimateAddRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -30062,7 +30251,7 @@
         <member name="P:QbModels.EstimateModRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -30269,7 +30458,7 @@
         <member name="P:QbModels.InventoryAdjustmentAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -30413,7 +30602,7 @@
         <member name="P:QbModels.InventoryAdjustmentModRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -30780,7 +30969,7 @@
         <member name="P:QbModels.TransferInventoryAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -31022,7 +31211,7 @@
         <member name="P:QbModels.InvoiceAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -31116,7 +31305,7 @@
         <member name="P:QbModels.InvoiceAddRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -31150,7 +31339,7 @@
         <member name="P:QbModels.InvoiceAddRq.ShipDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -31437,7 +31626,7 @@
         <member name="P:QbModels.InvoiceModRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -31471,7 +31660,7 @@
         <member name="P:QbModels.InvoiceModRq.ShipDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -31771,7 +31960,7 @@
         <member name="P:QbModels.ItemDiscountAddRq.DiscountRateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -31922,7 +32111,7 @@
         <member name="P:QbModels.ItemDiscountModRq.DiscountRateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -32078,7 +32267,7 @@
         <member name="P:QbModels.ItemFixedAssetAddRq.PurchaseDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -32093,7 +32282,7 @@
         <member name="P:QbModels.ItemFixedAssetAddRq.PurchaseCostOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -32165,7 +32354,7 @@
         <member name="P:QbModels.ItemFixedAssetAddRq.WarrantyExpDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -32196,7 +32385,7 @@
         <member name="P:QbModels.ItemFixedAssetAddRq.CostBasisOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -32211,7 +32400,7 @@
         <member name="P:QbModels.ItemFixedAssetAddRq.YearEndAccumulatedDepreciationOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -32226,7 +32415,7 @@
         <member name="P:QbModels.ItemFixedAssetAddRq.YearEndBookValueOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -32350,7 +32539,7 @@
         <member name="P:QbModels.ItemFixedAssetModRq.PurchaseDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -32365,7 +32554,7 @@
         <member name="P:QbModels.ItemFixedAssetModRq.PurchaseCostOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -32437,7 +32626,7 @@
         <member name="P:QbModels.ItemFixedAssetModRq.WarrantyExpDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -32468,7 +32657,7 @@
         <member name="P:QbModels.ItemFixedAssetModRq.CostBasisOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -32483,7 +32672,7 @@
         <member name="P:QbModels.ItemFixedAssetModRq.YearEndAccumulatedDepreciationOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -32498,7 +32687,7 @@
         <member name="P:QbModels.ItemFixedAssetModRq.YearEndBookValueOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -32891,7 +33080,12 @@
 	</DefaultRefDto>
         </member>
         <member name="P:QbModels.ItemInventoryAddRq.ManufacturerPartNumber">
-            <!-- No matching elements were found for the following include tag --><include file="Documentation/StringDoc.xml" path="QbModelStringDoc/String[@name=&quot;ManufacturerPartNumber&quot;]" />
+            <String name="ManufacturerPartNumber">
+		<summary>
+			Gets or sets the ManufacturerPartNumber property.
+		</summary>
+		<value>string</value>
+	</String>
         </member>
         <member name="P:QbModels.ItemInventoryAddRq.UnitOfMeasure">
             <DefaultRefDto name="UnitOfMeasureSetRef">
@@ -32934,7 +33128,7 @@
         <member name="P:QbModels.ItemInventoryAddRq.SalesPriceOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -32968,7 +33162,7 @@
         <member name="P:QbModels.ItemInventoryAddRq.PurchaseCostOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -33040,7 +33234,7 @@
         <member name="P:QbModels.ItemInventoryAddRq.TotalValueOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -33055,7 +33249,7 @@
         <member name="P:QbModels.ItemInventoryAddRq.InventoryDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -33164,7 +33358,12 @@
 	</DefaultRefDto>
         </member>
         <member name="P:QbModels.ItemInventoryModRq.ManufacturerPartNumber">
-            <!-- No matching elements were found for the following include tag --><include file="Documentation/StringDoc.xml" path="QbModelStringDoc/String[@name=&quot;ManufacturerPartNumber&quot;]" />
+            <String name="ManufacturerPartNumber">
+		<summary>
+			Gets or sets the ManufacturerPartNumber property.
+		</summary>
+		<value>string</value>
+	</String>
         </member>
         <member name="P:QbModels.ItemInventoryModRq.UnitOfMeasure">
             <DefaultRefDto name="UnitOfMeasureSetRef">
@@ -33222,7 +33421,7 @@
         <member name="P:QbModels.ItemInventoryModRq.SalesPriceOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -33264,7 +33463,7 @@
         <member name="P:QbModels.ItemInventoryModRq.PurchaseCostOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -33434,7 +33633,12 @@
 	</DefaultRefDto>
         </member>
         <member name="P:QbModels.ItemNonInventoryAddRq.ManufacturerPartNumber">
-            <!-- No matching elements were found for the following include tag --><include file="Documentation/StringDoc.xml" path="QbModelStringDoc/String[@name=&quot;ManufacturerPartNumber&quot;]" />
+            <String name="ManufacturerPartNumber">
+		<summary>
+			Gets or sets the ManufacturerPartNumber property.
+		</summary>
+		<value>string</value>
+	</String>
         </member>
         <member name="P:QbModels.ItemNonInventoryAddRq.UnitOfMeasureSet">
             <DefaultRefDto name="UnitOfMeasureSetRef">
@@ -33592,7 +33796,12 @@
 	</DefaultRefDto>
         </member>
         <member name="P:QbModels.ItemNonInventoryModRq.ManufacturerPartNumber">
-            <!-- No matching elements were found for the following include tag --><include file="Documentation/StringDoc.xml" path="QbModelStringDoc/String[@name=&quot;ManufacturerPartNumber&quot;]" />
+            <String name="ManufacturerPartNumber">
+		<summary>
+			Gets or sets the ManufacturerPartNumber property.
+		</summary>
+		<value>string</value>
+	</String>
         </member>
         <member name="P:QbModels.ItemNonInventoryModRq.UnitOfMeasureSet">
             <DefaultRefDto name="UnitOfMeasureSetRef">
@@ -34316,7 +34525,7 @@
         <member name="P:QbModels.ItemReceiptAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -34468,7 +34677,7 @@
         <member name="P:QbModels.ItemReceiptModRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -35671,7 +35880,7 @@
         <member name="P:QbModels.JournalEntryAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -36163,6 +36372,297 @@
 	</Name>
         </member>
         <member name="M:QbModels.LeadQueryRq.ToString">
+            <ToString>
+		<summary>Overriding ToString() to output the request QBXML.</summary>
+		<remarks>
+			<b>Note: </b>The ToString() will output the QBXML regardless if the entity is in a valid state or not
+		</remarks>
+	</ToString>
+        </member>
+        <member name="T:QbModels.ListDeletedQueryRq">
+             <ListDeletedQueryRq>
+		<summary>
+			<para>Request object for ListDeletedQueryRq</para>
+			<example>
+				<para>Sample code to instantiate new ListDeletedQueryRq request</para>
+				<code>
+					ListDeletedQueryRq qbRq = new();
+				</code>
+			</example>
+		</summary>
+	</ListDeletedQueryRq>
+        </member>
+        <member name="M:QbModels.ListDeletedQueryRq.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.ListDeletedQueryRq" /> class.</summary>
+        </member>
+        <member name="P:QbModels.ListDeletedQueryRq.ListDelType">
+            <RegEx name="ListDelType">
+		<summary>
+			<para>
+				Gets or sets the list delete type.
+				Must be one of:
+			</para>
+			<code>
+				Account
+				BillingRate
+				Class
+				Currency
+				Customer
+				CustomerMsg
+				CustomerType
+				DateDrivenTerms
+				Employee
+				InventorySite
+				ItemDiscount
+				ItemFixedAsset
+				ItemGroup
+				ItemInventory
+				ItemInventoryAssembly
+				ItemNonInventory
+				ItemOtherCharge
+				ItemPayment
+				ItemSalesTax
+				ItemSalesTaxGroup
+				ItemService
+				ItemSubtotal
+				JobType
+				OtherName
+				PaymentMethod
+				PayrollItemNonWage
+				PayrollItemWage
+				PriceLevel
+				SalesRep
+				SalesTaxCode
+				ShipMethod
+				StandardTerms
+				ToDo
+				UnitOfMeasureSet
+				Vehicle
+				Vendor
+				VendorType
+				WorkersCompCode
+			</code>
+		</summary>
+		<value>The list delete type.</value>
+	</RegEx>
+            <remarks><b>Note: </b>ListDelType is required</remarks>
+        </member>
+        <member name="P:QbModels.ListDeletedQueryRq.DeletedDateRangeFilter">
+            <DeletedDateRangeFilter name="DeletedDateRangeFilterDto">
+		<summary>
+			<para>Deleted date range filter for transactions.</para>
+			<example>
+				<para>Sample code to specify a transaction date range for 1 week.</para>
+				<c>qbRq.TxnDateRangeFilter = new() { FromDeletedDate = DateTime.Today.AddDays(-7), ToDeletedDate = DateTime.Now };</c>
+			</example>
+		</summary>
+	</DeletedDateRangeFilter>
+        </member>
+        <member name="M:QbModels.ListDeletedQueryRq.ToString">
+            <ToString>
+		<summary>Overriding ToString() to output the request QBXML.</summary>
+		<remarks>
+			<b>Note: </b>The ToString() will output the QBXML regardless if the entity is in a valid state or not
+		</remarks>
+	</ToString>
+        </member>
+        <member name="T:QbModels.ListDelRq">
+             <ListDelRq>
+		<summary>
+			<para>Request object for ListDelRq</para>
+			<example>
+				<para>Sample code to instantiate new ListDelRq request</para>
+				<code>
+					ListDelRq qbRq = new();
+				</code>
+			</example>
+		</summary>
+	</ListDelRq>
+        </member>
+        <member name="M:QbModels.ListDelRq.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.ListDelRq" /> class.</summary>
+        </member>
+        <member name="P:QbModels.ListDelRq.ListDelType">
+            <RegEx name="ListDelType">
+		<summary>
+			<para>
+				Gets or sets the list delete type.
+				Must be one of:
+			</para>
+			<code>
+				Account
+				BillingRate
+				Class
+				Currency
+				Customer
+				CustomerMsg
+				CustomerType
+				DateDrivenTerms
+				Employee
+				InventorySite
+				ItemDiscount
+				ItemFixedAsset
+				ItemGroup
+				ItemInventory
+				ItemInventoryAssembly
+				ItemNonInventory
+				ItemOtherCharge
+				ItemPayment
+				ItemSalesTax
+				ItemSalesTaxGroup
+				ItemService
+				ItemSubtotal
+				JobType
+				OtherName
+				PaymentMethod
+				PayrollItemNonWage
+				PayrollItemWage
+				PriceLevel
+				SalesRep
+				SalesTaxCode
+				ShipMethod
+				StandardTerms
+				ToDo
+				UnitOfMeasureSet
+				Vehicle
+				Vendor
+				VendorType
+				WorkersCompCode
+			</code>
+		</summary>
+		<value>The list delete type.</value>
+	</RegEx>
+            <remarks><b>Note: </b>ListDelType is required</remarks>
+        </member>
+        <member name="P:QbModels.ListDelRq.ListID">
+            <ListID name="ListID">
+		<summary>
+			<para>ListID to query for.</para>
+			<example>
+				<c>qbRq.ListID = "Quickbooks.ListID";</c>
+			</example>
+		</summary>
+		<value>
+			string of ListID
+		</value>
+	</ListID>
+        </member>
+        <member name="M:QbModels.ListDelRq.ToString">
+            <ToString>
+		<summary>Overriding ToString() to output the request QBXML.</summary>
+		<remarks>
+			<b>Note: </b>The ToString() will output the QBXML regardless if the entity is in a valid state or not
+		</remarks>
+	</ToString>
+        </member>
+        <member name="T:QbModels.ListDisplayAddRq">
+             <ListDisplayAddRq>
+		<summary>
+			<para>Request object for ListDisplayAddRq</para>
+			<example>
+				<para>Sample code to instantiate new ListDisplayAddRq request</para>
+				<code>
+					ListDisplayAddRq qbRq = new();
+				</code>
+			</example>
+		</summary>
+	</ListDisplayAddRq>
+        </member>
+        <member name="M:QbModels.ListDisplayAddRq.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.ListDisplayAddRq" /> class.</summary>
+        </member>
+        <member name="P:QbModels.ListDisplayAddRq.ListDisplayAddType">
+            <RegEx name="ListDisplayType">
+		<summary>
+			<para>
+				Gets or sets the list display type.
+				Must be one of:
+			</para>
+			<code>
+				Account
+				Customer
+				Employee
+				Item
+				OtherName
+				Vendor
+			</code>
+		</summary>
+		<value>The list delete type.</value>
+	</RegEx>
+        </member>
+        <member name="M:QbModels.ListDisplayAddRq.ToString">
+            <ToString>
+		<summary>Overriding ToString() to output the request QBXML.</summary>
+		<remarks>
+			<b>Note: </b>The ToString() will output the QBXML regardless if the entity is in a valid state or not
+		</remarks>
+	</ToString>
+        </member>
+        <member name="T:QbModels.ListDisplayModRq">
+             <ListDisplayModRq>
+		<summary>
+			<para>Request object for ListDisplayModRq</para>
+			<example>
+				<para>Sample code to instantiate new ListDisplayModRq request</para>
+				<code>
+					ListDisplayModRq qbRq = new();
+				</code>
+			</example>
+		</summary>
+	</ListDisplayModRq>
+        </member>
+        <member name="M:QbModels.ListDisplayModRq.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.ListDisplayModRq" /> class.</summary>
+        </member>
+        <member name="P:QbModels.ListDisplayModRq.ListDisplayAddType">
+            <RegEx name="ListDisplayType">
+		<summary>
+			<para>
+				Gets or sets the list display type.
+				Must be one of:
+			</para>
+			<code>
+				Account
+				Customer
+				Employee
+				Item
+				OtherName
+				Vendor
+			</code>
+		</summary>
+		<value>The list delete type.</value>
+	</RegEx>
+        </member>
+        <member name="P:QbModels.ListDisplayModRq.ListID">
+            <ListID name="ListID">
+		<summary>
+			<para>ListID to query for.</para>
+			<example>
+				<c>qbRq.ListID = "Quickbooks.ListID";</c>
+			</example>
+		</summary>
+		<value>
+			string of ListID
+		</value>
+	</ListID><ListID name="ListIDList">
+		<summary>
+			<para>ListID to query for.</para>
+			<example>
+				Example initialization of List for ListID:
+				<c>qbRq.ListID = new() { "Quickbooks.ListID" };</c>
+			</example>
+		</summary>
+		<value>
+			List of ListID
+		</value>
+	</ListID><ListID name="ListType">
+		<summary>
+			Gets or sets ListType property.
+		</summary>
+		<value>string</value>
+	</ListID>
+        </member>
+        <member name="M:QbModels.ListDisplayModRq.ToString">
             <ToString>
 		<summary>Overriding ToString() to output the request QBXML.</summary>
 		<remarks>
@@ -36739,7 +37239,7 @@
         <member name="P:QbModels.ReceivePaymentAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -36762,7 +37262,7 @@
         <member name="P:QbModels.ReceivePaymentAddRq.TotalAmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -36908,7 +37408,7 @@
         <member name="P:QbModels.ReceivePaymentModRq.TotalAmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -37321,7 +37821,7 @@
         <member name="P:QbModels.PurchaseOrderAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -37377,7 +37877,7 @@
         <member name="P:QbModels.PurchaseOrderAddRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -37392,7 +37892,7 @@
         <member name="P:QbModels.PurchaseOrderAddRq.ExpectedDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -37648,7 +38148,7 @@
         <member name="P:QbModels.PurchaseOrderModRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -37663,7 +38163,7 @@
         <member name="P:QbModels.PurchaseOrderModRq.ExpectedDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -37944,7 +38444,7 @@
         <member name="P:QbModels.SalesOrderAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -38008,7 +38508,7 @@
         <member name="P:QbModels.SalesOrderAddRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -38042,7 +38542,7 @@
         <member name="P:QbModels.SalesOrderAddRq.ShipDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -38305,7 +38805,7 @@
         <member name="P:QbModels.SalesOrderModRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -38334,7 +38834,7 @@
         <member name="P:QbModels.SalesOrderModRq.ShipDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -38597,7 +39097,7 @@
         <member name="P:QbModels.SalesReceiptAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -38668,7 +39168,7 @@
         <member name="P:QbModels.SalesReceiptAddRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -38686,7 +39186,7 @@
         <member name="P:QbModels.SalesReceiptAddRq.ShipDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -38930,7 +39430,7 @@
         <member name="P:QbModels.SalesReceiptModRq.DueDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -38956,7 +39456,7 @@
         <member name="P:QbModels.SalesReceiptModRq.ShipDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -39584,7 +40084,7 @@
         <member name="P:QbModels.TimeTrackingAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -39625,7 +40125,7 @@
         <member name="P:QbModels.TimeTrackingAddRq.DurationOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -39760,7 +40260,7 @@
         <member name="P:QbModels.TimeTrackingModRq.DurationOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -40050,7 +40550,7 @@
         <member name="P:QbModels.ToDoAddRq.ReminderDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -40241,7 +40741,7 @@
         <member name="P:QbModels.ToDoModRq.ReminderDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -40756,7 +41256,7 @@
         <member name="P:QbModels.TransferAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -40804,7 +41304,7 @@
         <member name="P:QbModels.TransferAddRq.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -40884,7 +41384,7 @@
         <member name="P:QbModels.TransferModRq.AmountOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -41127,7 +41627,7 @@
         <member name="P:QbModels.VehicleMileageAddRq.TripStartOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -41142,7 +41642,7 @@
         <member name="P:QbModels.VehicleMileageAddRq.TripEndDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -41647,7 +42147,7 @@
         <member name="P:QbModels.VendorAddRq.CreditLimitOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -41680,7 +42180,7 @@
         <member name="P:QbModels.VendorAddRq.OpenBalanceOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -41695,7 +42195,7 @@
         <member name="P:QbModels.VendorAddRq.OpenBalanceDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -41796,7 +42296,7 @@
         <member name="P:QbModels.VendorCreditAddRq.TxnDateOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -42344,7 +42844,7 @@
         <member name="P:QbModels.VendorModRq.CreditLimitOverload">
             <XmlSerializer name="Overload">
 		<summary>
-			Overloaded property used for XmlSerialization.  Use FromTxnDate property to update.
+			Overloaded property used for XmlSerialization.  Use property without Overload in the name to update.
 		</summary>
 	</XmlSerializer>
         </member>
@@ -43671,6 +44171,58 @@
                 The total number of Lead items.
             </value>
         </member>
+        <member name="T:QbModels.QbListDeletedView">
+            <summary>Results view for ListDeletedRq call</summary>
+        </member>
+        <member name="M:QbModels.QbListDeletedView.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.QbListDeletedView" /> class.</summary>
+            <param name="rsXml">QBXML string result</param>
+        </member>
+        <member name="P:QbModels.QbListDeletedView.ListsDeleted">
+            <summary>
+                List of ListDeleted from QBXML request result.
+            </summary>
+            <value>
+                List of ListDeletedRetDto.
+            </value>
+        </member>
+        <member name="P:QbModels.QbListDeletedView.TotalListsDeleted">
+            <summary>
+                Total number of ListDeleted items in the request result.
+            </summary>
+            <value>
+                The total number of ListDeleted items.
+            </value>
+        </member>
+        <member name="T:QbModels.QbListDelView">
+            <summary>Results view for ListDelRq call</summary>
+        </member>
+        <member name="M:QbModels.QbListDelView.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.QbListDelView" /> class.</summary>
+            <param name="rsXml">The rs XML.</param>
+        </member>
+        <member name="P:QbModels.QbListDelView.ListDel">
+            <summary>ListDel from result</summary>
+            <value>ListDelRsDto</value>
+        </member>
+        <member name="M:QbModels.QbListDelView.ReadXml(System.String)">
+            <summary>
+            Reads the XML into the class.
+            </summary>
+            <param name="qbRs">The source XML to import.</param>
+            <returns></returns>
+        </member>
+        <member name="T:QbModels.QbListDisplayView">
+            <summary>Results view for ListDisplayAddRq/ListDisplayModRq calls</summary>
+        </member>
+        <member name="M:QbModels.QbListDisplayView.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.QbListDisplayView" /> class.</summary>
+            <param name="rsXml">QBXML string result</param>
+        </member>
+        <member name="M:QbModels.QbListDisplayView.ReadXml(System.String)">
+            <summary>Reads the XML into the class.</summary>
+            <param name="qbRs">The source XML to import.</param>
+        </member>
         <member name="T:QbModels.QbOtherNamesView">
             <summary>Results view for OtherNameQueryRq/OtherNameAddRq/OtherNameModRq calls</summary>
         </member>
@@ -44045,6 +44597,52 @@
         <member name="M:QbModels.QbTxnVoidView.ReadXml(System.String)">
             <summary>Reads the XML into the class.</summary>
             <param name="qbRs">The source XML to import.</param>
+        </member>
+        <member name="T:QbModels.QbVehicleMileagesView">
+            <summary>Results view for VehicleMileageQueryRq/VehicleMileageAddRq calls</summary>
+        </member>
+        <member name="M:QbModels.QbVehicleMileagesView.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.QbVehicleMileagesView" /> class.</summary>
+            <param name="rsXml">QBXML string result</param>
+        </member>
+        <member name="P:QbModels.QbVehicleMileagesView.VehicleMileages">
+            <summary>
+                List of VehicleMileage from QBXML request result.
+            </summary>
+            <value>
+                List of VehicleMileageRetDto.
+            </value>
+        </member>
+        <member name="P:QbModels.QbVehicleMileagesView.TotalVehicleMileages">
+            <summary>
+                Total number of VehicleMileage items in the request result.
+            </summary>
+            <value>
+                The total number of VehicleMileage items.
+            </value>
+        </member>
+        <member name="T:QbModels.QbVehiclesView">
+            <summary>Results view for VehicleQueryRq/VehicleAddRq/VehicleModRq calls</summary>
+        </member>
+        <member name="M:QbModels.QbVehiclesView.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.QbVehiclesView" /> class.</summary>
+            <param name="rsXml">QBXML string result</param>
+        </member>
+        <member name="P:QbModels.QbVehiclesView.Vehicles">
+            <summary>
+                List of Vehicle from QBXML request result.
+            </summary>
+            <value>
+                List of VehicleRetDto.
+            </value>
+        </member>
+        <member name="P:QbModels.QbVehiclesView.TotalVehicles">
+            <summary>
+                Total number of Vehicle items in the request result.
+            </summary>
+            <value>
+                The total number of Vehicle items.
+            </value>
         </member>
         <member name="T:QbModels.QbVendorCreditsView">
             <summary>Results view for VendorCreditQueryRq/VendorCreditAddRq/VendorCreditModRq calls</summary>
