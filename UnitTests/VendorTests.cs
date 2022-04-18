@@ -1,289 +1,205 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels;
 using QbModels.ENUM;
 using System;
+using System.Threading;
 
-namespace QbModels.Tests
+namespace QbProcessor.TEST
 {
     [TestClass]
     public class VendorTests
     {
         [TestMethod]
-        public void TestVendorQueryRq()
+        public void TestVendorModels()
         {
-            VendorQueryRq vendorRq = new();
-            Assert.IsTrue(vendorRq.IsEntityValid());
-            
-            vendorRq.ListID = new() { "VendorQueryRq.ListID" };
-            vendorRq.MaxReturned = -1;
-            Assert.IsTrue(vendorRq.IsEntityValid());
+            using (QBProcessor.QbProcessor QB = new())
+            {
+                #region Properties
+                if (QB == null)
+                {
+                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
+                }
 
-            vendorRq.FullName = new() { "VendorQueryRq.FullName" };
-            Assert.IsFalse(vendorRq.IsEntityValid());
+                VendorRs qryRs, addRs = new(""), modRs;
+                VendorAddRq addRq = new();
+                VendorModRq modRq = new();
+                string addRqName = $"QbProcessor.Vendor";
+                #endregion
 
-            vendorRq.ListID = null;
-            Assert.IsTrue(vendorRq.IsEntityValid());
+                #region Query Test
+                VendorQueryRq qryRq = new();
+                qryRq.NameFilter = new() { Name = addRqName, MatchCriterion = MatchCriterion.StartsWith };
+                qryRq.ActiveStatus = "All";
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            vendorRq.FullName = null;
-            vendorRq.NameFilter = new();
-            vendorRq.MaxReturned = 99999;
-            Assert.IsFalse(vendorRq.IsEntityValid());
+                qryRs = new(QB.ExecuteQbRequest(qryRq));
+                Assert.IsTrue(qryRs.StatusSeverity == "Info");
+                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+                #endregion
 
-            vendorRq.NameFilter.MatchCriterion = MatchCriterion.None;
-            vendorRq.NameFilter.Name = "A";
-            Assert.IsFalse(vendorRq.IsEntityValid());
+                #region Add Test
+                if (qryRs.TotalVendors == 0)
+                {
+                    addRq.Name = addRqName;
+                    addRq.IsActive = true;
+                    addRq.VendorAddress = new()
+                    {
+                        Addr1 = "3648 Kapalua Way",
+                        City = "Raleigh",
+                        State = "NC",
+                        PostalCode = "27610"
+                    };
+                    addRq.Phone = "305-775-4754";
+                    addRq.Notes = addRq.GetType().Name;
+                    addRq.OpenBalance = 123.45M;
+                    Assert.IsTrue(addRq.IsEntityValid());
 
-            vendorRq.NameFilter.MatchCriterion = MatchCriterion.Contains;
-            Assert.IsTrue(vendorRq.IsEntityValid());
+                    addRs = new(QB.ExecuteQbRequest(addRq));
+                    Assert.IsTrue(addRs.StatusCode == "0");
+                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
 
-            vendorRq.NameRangeFilter = new();
-            vendorRq.NameRangeFilter.FromName = "A";
-            vendorRq.NameRangeFilter.ToName = "ZZ";
-            Assert.IsFalse(vendorRq.IsEntityValid());
+                }
+                #endregion
 
-            vendorRq.NameFilter = null;
-            Assert.IsTrue(vendorRq.IsEntityValid());
+                #region Mod Test
+                VendorRetDto acct = qryRs.TotalVendors == 0 ? addRs.Vendors[0] : qryRs.Vendors[0];
+                modRq.ListID = acct.ListID;
+                modRq.EditSequence = acct.EditSequence;
+                modRq.FirstName = "Greg";
+                modRq.LastName = "Prieto";
+                modRq.Notes = $"{modRq.GetType().Name} on {DateTime.Now}";
+                modRq.IsActive = true;
+                Assert.IsTrue(modRq.IsEntityValid());
 
-            vendorRq.TotalBalanceFilter = new() { Operator = "Operator", Amount = 1000 };
-            Assert.IsFalse(vendorRq.IsEntityValid());
-
-            vendorRq.TotalBalanceFilter.Operator = "GreaterThanEqual";
-            Assert.IsTrue(vendorRq.IsEntityValid());
-
-            var model = new QryRqModel<VendorQueryRq>();
-            model.SetRequest(vendorRq, "QryRq");
-            Assert.IsTrue(model.ToString().Contains("<VendorQueryRq>"));
-            Assert.IsTrue(vendorRq.ToString().Contains("<VendorQueryRq>"));
+                modRs = new(QB.ExecuteQbRequest(modRq));
+                Assert.IsTrue(modRs.StatusCode == "0");
+                Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
+                #endregion
+            }
+            Thread.Sleep(2000);
         }
 
         [TestMethod]
-        public void TestVendorAddRq()
+        public void TestVendorCreditModels()
         {
-            VendorAddRq custRq = new();
-            Assert.IsFalse(custRq.IsEntityValid());
+            using (QBProcessor.QbProcessor QB = new())
+            {
+                #region Properties
+                if (QB == null)
+                {
+                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
+                }
 
-            custRq.Name = "VendorAddRq";
-            Assert.IsTrue(custRq.IsEntityValid());
+                VendorCreditRs qryRs, addRs = new(""), modRs;
+                VendorCreditAddRq addRq = new();
+                VendorCreditModRq modRq = new();
+                string addRqName = $"QbProcessor";
+                #endregion
 
-            custRq.AdditionalContact = new();
-            Assert.IsTrue(custRq.IsEntityValid());
+                #region Query Test
+                VendorCreditQueryRq qryRq = new();
+                qryRq.RefNumberFilter = new() { RefNumber = addRqName, MatchCriterion = MatchCriterion.StartsWith };
+                qryRq.IncludeLineItems = true;
+                qryRq.IncludeLinkedTxns = true;
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            custRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            custRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            custRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            custRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            custRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            custRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            custRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            custRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            Assert.IsTrue(custRq.IsEntityValid());
+                qryRs = new(QB.ExecuteQbRequest(qryRq));
+                Assert.IsTrue(qryRs.StatusSeverity == "Info");
+                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+                #endregion
 
-            custRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            Assert.IsFalse(custRq.IsEntityValid());
+                #region Add Test
+                if (qryRs.TotalVendorCredits == 0)
+                {
+                    Random rdm = new();
 
-            custRq.AdditionalContact = null;
-            Assert.IsTrue(custRq.IsEntityValid());
+                    VendorQueryRq vendorRq = new();
+                    VendorRs vendors = new(QB.ExecuteQbRequest(vendorRq));
+                    VendorRetDto vendor = vendors.Vendors[rdm.Next(0, vendors.Vendors.Count)];
 
-            var model = new AddRqModel<VendorAddRq>("VendorAdd");
-            model.SetRequest(custRq, "AddRq");
-            Assert.IsTrue(custRq.ToString().Contains("<VendorAddRq>"));
-            Assert.IsTrue(model.ToString().Contains("<VendorAddRq>"));
+                    ItemInventoryQueryRq itemsRq = new() { NameFilter = new() { Name = "QbProcessor", MatchCriterion = MatchCriterion.StartsWith } };
+                    ItemInventoryRs items = new(QB.ExecuteQbRequest(itemsRq));
+                    ItemInventoryRetDto item = items.ItemInventory[rdm.Next(0, items.ItemInventory.Count)];
+
+                    addRq.RefNumber = addRqName;
+                    addRq.Vendor = new() { ListID = vendor.ListID };
+                    addRq.TxnDate = DateTime.Now;
+                    addRq.Memo = $"{addRqName}.{addRq.GetType().Name}";
+                    addRq.ItemLine = new();
+                    addRq.ItemLine.Add(new()
+                    {
+                        Item = new() { ListID = item.ListID },
+                        Desc = item.PurchaseDesc,
+                        Quantity = 5,
+                        Cost = item.PurchaseCost,
+                        Amount = 5 * item.PurchaseCost
+                    });
+                    Assert.IsTrue(addRq.IsEntityValid());
+
+                    addRs = new(QB.ExecuteQbRequest(addRq));
+                    Assert.IsTrue(addRs.StatusCode == "0");
+                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
+
+                }
+                #endregion
+
+                #region Mod Test
+                VendorCreditRetDto acct = qryRs.TotalVendorCredits == 0 ? addRs.VendorCredits[0] : qryRs.VendorCredits[0];
+                modRq.TxnID = acct.TxnID;
+                modRq.EditSequence = acct.EditSequence;
+                modRq.Memo = $"{modRq.GetType().Name} on {DateTime.Now}";
+                Assert.IsTrue(modRq.IsEntityValid());
+
+                modRs = new(QB.ExecuteQbRequest(modRq));
+                Assert.IsTrue(modRs.StatusCode == "0");
+                Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
+                #endregion
+            }
+            Thread.Sleep(2000);
         }
 
         [TestMethod]
-        public void TestVendorModRq()
+        public void TestVendorTypeModels()
         {
-            VendorModRq vendorRq = new();
-            Assert.IsFalse(vendorRq.IsEntityValid());
+            using (QBProcessor.QbProcessor QB = new())
+            {
+                #region Properties
+                if (QB == null)
+                {
+                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
+                }
 
-            vendorRq.ListID = "VendorModRq.ListID";
-            vendorRq.EditSequence = "VendorModRq.EditSequence";
-            Assert.IsTrue(vendorRq.IsEntityValid());
+                VendorTypeRs qryRs, addRs;
+                VendorTypeAddRq addRq = new();
+                string addRqName = $"QbProcessor";
+                #endregion
 
-            vendorRq.Name = "VendorAddRq";
-            Assert.IsTrue(vendorRq.IsEntityValid());
+                #region Query Test
+                VendorTypeQueryRq qryRq = new();
+                qryRq.NameFilter = new() { Name = addRqName, MatchCriterion = MatchCriterion.StartsWith };
+                qryRq.ActiveStatus = "All";
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            vendorRq.AdditionalContact = new();
-            Assert.IsTrue(vendorRq.IsEntityValid());
+                qryRs = new(QB.ExecuteQbRequest(qryRq));
+                Assert.IsTrue(qryRs.StatusSeverity == "Info");
+                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+                #endregion
 
-            vendorRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            vendorRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            vendorRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            vendorRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            vendorRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            vendorRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            vendorRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            vendorRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            Assert.IsTrue(vendorRq.IsEntityValid());
+                #region Add Test
+                if (qryRs.TotalVendorTypes == 0)
+                {
+                    addRq.Name = addRqName;
+                    addRq.IsActive = true;
+                    Assert.IsTrue(addRq.IsEntityValid());
 
-            vendorRq.AdditionalContact.Add(new() { ContactName = "VendorAddRq.ContactName", ContactValue = "VendorAddRq.ContactValue" });
-            Assert.IsFalse(vendorRq.IsEntityValid());
-
-            vendorRq.AdditionalContact = null;
-            Assert.IsTrue(vendorRq.IsEntityValid());
-
-            var model = new ModRqModel<VendorModRq>("VendorMod");
-            model.SetRequest(vendorRq, "ModRq");
-            Assert.IsTrue(vendorRq.ToString().Contains("<VendorModRq>"));
-            Assert.IsTrue(model.ToString().Contains("<VendorModRq>"));
-        }
-    }
-
-    [TestClass]
-    public class VendorCreditTests
-    {
-        [TestMethod]
-        public void TestVendorCreditQueryRq()
-        {
-            VendorCreditQueryRq vendorCreditRq = new();
-            Assert.IsTrue(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.TxnID = new() { "VendorCreditQueryRq.TxnID" };
-            Assert.IsTrue(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.TxnID = null;
-            vendorCreditRq.RefNumber = new() { "VendorCreditQueryRq.FullName" };
-            Assert.IsTrue(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.TxnDateRangeFilter = new();
-            vendorCreditRq.TxnDateRangeFilter.FromTxnDate = DateTime.Now.AddDays(-365);
-            vendorCreditRq.TxnDateRangeFilter.ToTxnDate = DateTime.Now;
-            Assert.IsTrue(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.ModifiedDateRangeFilter = new();
-            vendorCreditRq.ModifiedDateRangeFilter.FromModifiedDate = DateTime.Now.AddDays(-365);
-            vendorCreditRq.ModifiedDateRangeFilter.ToModifiedDate = DateTime.Now;
-            Assert.IsFalse(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.TxnDateRangeFilter = null;
-            Assert.IsTrue(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.AccountFilter = new(){ FullName = new() { "VendorCreditQueryRq.AccountFilter.FullName" } };
-            Assert.IsTrue(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.AccountFilter.ListID = new() { "VendorCreditQueryRq.AccountFilter.ListID" };
-            Assert.IsFalse(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.AccountFilter = null;
-            Assert.IsTrue(vendorCreditRq.IsEntityValid());
-
-            var model = new QryRqModel<VendorCreditQueryRq>();
-            model.SetRequest(vendorCreditRq, "QryRq");
-            Assert.IsTrue(vendorCreditRq.ToString().Contains("<VendorCreditQueryRq>"));
-            Assert.IsTrue(model.ToString().Contains("<VendorCreditQueryRq>"));
+                    addRs = new(QB.ExecuteQbRequest(addRq));
+                    Assert.IsTrue(addRs.StatusCode == "0");
+                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
+                }
+                #endregion
+            }
+            Thread.Sleep(2000);
         }
 
-        [TestMethod]
-        public void TestVendorCreditAddRq()
-        {
-            VendorCreditAddRq vendorCreditRq = new();
-            Assert.IsFalse(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.Vendor = new() { FullName = "VendorCreditAddRq.Vendor.FullName" };
-            Assert.IsTrue(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.ItemLine = new();
-            vendorCreditRq.ItemGroupLine = new();
-            Assert.IsFalse(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.ItemGroupLine = null;
-            Assert.IsTrue(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.ExpenseLine = new();
-            Assert.IsTrue(vendorCreditRq.IsEntityValid());
-
-            var model = new AddRqModel<VendorCreditAddRq>("VendorCreditAdd");
-            model.SetRequest(vendorCreditRq, "AddRq");
-            Assert.IsTrue(vendorCreditRq.ToString().Contains("<VendorCreditAddRq>"));
-            Assert.IsTrue(model.ToString().Contains("<VendorCreditAddRq>"));
-        }
-
-        [TestMethod]
-        public void TestVendorCreditModRq()
-        {
-            VendorCreditModRq vendorCreditRq = new();
-            Assert.IsFalse(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.TxnID = "VendorCreditModRq.TxnID";
-            vendorCreditRq.EditSequence = "VendorCreditModRq.EditSequence";
-            vendorCreditRq.TxnDate = DateTime.Now;
-            Assert.IsTrue(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.Vendor = new() { FullName = "VendorCreditAddRq.Vendor.FullName" };
-            Assert.IsTrue(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.ItemLine = new();
-            vendorCreditRq.ItemLine.Add(new() { TxnLineID = "ItemLine.TxnLineID" });
-            vendorCreditRq.ItemGroupLine = new() { TxnLineID = "ItemGroupLine.TxnLineID" };
-            Assert.IsFalse(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.ItemGroupLine = null;
-            Assert.IsTrue(vendorCreditRq.IsEntityValid());
-
-            vendorCreditRq.ExpenseLine = new();
-            Assert.IsTrue(vendorCreditRq.IsEntityValid());
-
-            var model = new ModRqModel<VendorCreditModRq>("VendorCreditMod");
-            model.SetRequest(vendorCreditRq, "ModRq");
-            Assert.IsTrue(vendorCreditRq.ToString().Contains("<VendorCreditModRq>"));
-            Assert.IsTrue(model.ToString().Contains("<VendorCreditModRq>"));
-        }
-    }
-    [TestClass]
-    public class VendorTypeTests
-    {
-        [TestMethod]
-        public void TestVendorTypeQueryRq()
-        {
-            VendorTypeQueryRq custTypeRq = new();
-            Assert.IsTrue(custTypeRq.IsEntityValid());
-
-            custTypeRq.ListID = new() { "VendorTypeQueryRq.ListID" };
-            custTypeRq.MaxReturned = -1;
-            Assert.IsTrue(custTypeRq.IsEntityValid());
-
-            custTypeRq.ListID = null;
-            custTypeRq.FullName = new() { "VendorTypeQueryRq.FullName" };
-            Assert.IsTrue(custTypeRq.IsEntityValid());
-
-            custTypeRq.FullName = null;
-            custTypeRq.NameFilter = new();
-            custTypeRq.MaxReturned = 99999;
-            Assert.IsFalse(custTypeRq.IsEntityValid());
-
-            custTypeRq.NameFilter.MatchCriterion = MatchCriterion.None;
-            custTypeRq.NameFilter.Name = "A";
-            Assert.IsFalse(custTypeRq.IsEntityValid());
-
-            custTypeRq.NameFilter.MatchCriterion = MatchCriterion.Contains;
-            Assert.IsTrue(custTypeRq.IsEntityValid());
-
-            custTypeRq.NameRangeFilter = new();
-            custTypeRq.NameRangeFilter.FromName = "A";
-            custTypeRq.NameRangeFilter.ToName = "ZZ";
-            Assert.IsFalse(custTypeRq.IsEntityValid());
-
-            custTypeRq.NameFilter = null;
-            Assert.IsTrue(custTypeRq.IsEntityValid());
-
-            var model = new QryRqModel<VendorTypeQueryRq>();
-            model.SetRequest(custTypeRq, "QryRq");
-            Assert.IsTrue(model.ToString().Contains("<VendorTypeQueryRq>"));
-            Assert.IsTrue(custTypeRq.ToString().Contains("<VendorTypeQueryRq>"));
-        }
-
-        [TestMethod]
-        public void TestVendorTypeAddRq()
-        {
-            VendorTypeAddRq custTypeRq = new();
-            Assert.IsFalse(custTypeRq.IsEntityValid());
-
-            custTypeRq.Name = "VendorTypeAddRq.VendorType.Name";
-            Assert.IsTrue(custTypeRq.IsEntityValid());
-
-            var model = new AddRqModel<VendorTypeAddRq>("VendorTypeAdd");
-            model.SetRequest(custTypeRq, "AddRq");
-            Assert.IsTrue(custTypeRq.ToString().Contains("<VendorTypeAddRq>"));
-            Assert.IsTrue(model.ToString().Contains("<VendorTypeAddRq>"));
-        }
     }
 }

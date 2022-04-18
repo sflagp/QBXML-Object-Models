@@ -1,131 +1,90 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels;
 using QbModels.ENUM;
 using System;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
 
-namespace QbModels.Tests
+namespace QbProcessor.TEST
 {
     [TestClass]
     public class CheckTests
     {
         [TestMethod]
-        public void TestCheckQueryRq()
+        public void TestCheckModels()
         {
-            CheckQueryRq checkRq = new();
-            Assert.IsTrue(checkRq.IsEntityValid());
-
-            checkRq.TxnID = new() { "CheckQueryRq.TxnID" };
-            checkRq.RefNumber = new() { "CheckQueryRq.RefNumber" };
-            Assert.IsFalse(checkRq.IsEntityValid());
-
-            checkRq.RefNumber = null;
-            Assert.IsTrue(checkRq.IsEntityValid());
-
-            checkRq.PaidStatus = PaidStatus.All;
-            Assert.IsTrue(checkRq.IsEntityValid());
-
-            checkRq.RefNumberFilter = new();
-            Assert.IsFalse(checkRq.IsEntityValid());
-
-            checkRq.RefNumberFilter.RefNumber = "CheckQueryRq.RefNumberFilter.RefNumber";
-            Assert.IsFalse(checkRq.IsEntityValid());
-
-            checkRq.RefNumberFilter.MatchCriterion = MatchCriterion.None;
-            Assert.IsFalse(checkRq.IsEntityValid());
-
-            checkRq.RefNumberFilter.MatchCriterion = MatchCriterion.StartsWith;
-            Assert.IsTrue(checkRq.IsEntityValid());
-
-            var model = new QryRqModel<CheckQueryRq>();
-            model.SetRequest(checkRq, "QryRq");
-            Assert.IsTrue(checkRq.ToString().Contains("<CheckQueryRq>"));
-            Assert.IsTrue(model.ToString().Contains("<CheckQueryRq>"));
-        }
-
-        [TestMethod]
-        public void TestCheckAddRq()
-        {
-            CheckAddRq checkRq = new();
-            Assert.IsFalse(checkRq.IsEntityValid());
-
-            checkRq.Account = new();
-            Assert.IsTrue(checkRq.IsEntityValid());
-
-            checkRq.PayeeEntity = new();
-            Assert.IsTrue(checkRq.IsEntityValid());
-
-            checkRq.ApplyCheckToTxn = new();
-            checkRq.ApplyCheckToTxn.Add(new());
-            Assert.IsFalse(checkRq.IsEntityValid());
-
-            checkRq.ApplyCheckToTxn[0].TxnID = "ApplyCheckToTxn.TxnID";
-            Assert.IsTrue(checkRq.IsEntityValid());
-
-            var model = new AddRqModel<CheckAddRq>("CheckAdd");
-            model.SetRequest(checkRq, "AddRq");
-            Assert.IsTrue(checkRq.ToString().Contains("<CheckAddRq>"));
-            Assert.IsTrue(model.ToString().Contains("<CheckAddRq>"));
-        }
-
-        [TestMethod]
-        public void TestCheckModRq()
-        {
-            CheckModRq checkRq = new();
-            Assert.IsFalse(checkRq.IsEntityValid());
-
-            checkRq.TxnID = "CheckModRq.TxnID";
-            checkRq.EditSequence = null;
-            checkRq.TxnDate = DateTime.Now;
-            Assert.IsFalse(checkRq.IsEntityValid());
-
-            checkRq.TxnID = null;
-            checkRq.EditSequence = "CheckModRq.EditSequence";
-            Assert.IsFalse(checkRq.IsEntityValid());
-
-            checkRq.TxnID = "CheckModRq.TxnID";
-            checkRq.EditSequence = "CheckModRq.EditSequence";
-            Assert.IsTrue(checkRq.IsEntityValid());
-
-            checkRq.ItemGroupLine = new() { ItemLine = new() };
-            checkRq.ItemGroupLine.ItemLine.Add(new()
+            using (QBProcessor.QbProcessor QB = new())
             {
-                TxnLineID = "TxnLineID #1",
-                Amount = 1.11M,
-                Item = new() { FullName = "Item Line 1"},
-                BillableStatus = BillStatus.HasBeenBilled,
-                Desc = "Mod line item description 1",
-                SalesRep = new() { FullName = "Sales Rep 1" }
-            });
-            checkRq.ItemGroupLine.ItemLine.Add(new()
-            {
-                TxnLineID = "TxnLineID #2",
-                Amount = 2.22M,
-                Item = new() { FullName = "Item Line 2" },
-                BillableStatus = BillStatus.Billable,
-                Desc = "Line item MOD description 2",
-                ClassRef = new() { FullName = "Class reference 1" }
-            });
-            checkRq.ItemGroupLine.ItemLine.Add(new()
-            {
-                TxnLineID = "TxnLineID #3",
-                Amount = 3.33M,
-                Item = new() { FullName = "Item Line 3" },
-                BillableStatus = BillStatus.NotBillable,
-                Desc = "Line item mod description 3",
-                Customer = new() { FullName = "Customer 1" }
-            });
-            Assert.IsFalse(checkRq.IsEntityValid());
+                #region Properties
+                if (QB == null)
+                {
+                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
+                }
 
-            checkRq.ItemGroupLine.TxnLineID = "ItemGroupLine.TxnLineID";
-            Assert.IsTrue(checkRq.IsEntityValid());
+                CheckRs qryRs, addRs = new(""), modRs;
+                CheckAddRq addRq = new();
+                CheckModRq modRq = new();
+                string addRqName = $"QbProcessor";
+                string result;
+                #endregion
 
-            checkRq.ItemGroupLine.ItemGroup = new() { ListID = "ItemGroupLine.ItemGroup" };
-            checkRq.ItemGroupLine.Quantity = 123M;
-            Assert.IsTrue(checkRq.IsEntityValid());
+                #region Query Test
+                CheckQueryRq qryRq = new();
+                qryRq.RefNumberFilter = new() { RefNumber = addRqName, MatchCriterion = MatchCriterion.StartsWith };
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            var model = new ModRqModel<CheckModRq>("CheckMod");
-            model.SetRequest(checkRq, "ModRq");
-            Assert.IsTrue(checkRq.ToString().Contains("<CheckModRq>"));
-            Assert.IsTrue(model.ToString().Contains("<CheckModRq>"));
+                qryRs = new(QB.ExecuteQbRequest(qryRq));
+                Assert.IsTrue(qryRs.StatusSeverity == "Info");
+                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+                #endregion
+
+                #region Add Test
+                if (qryRs.TotalChecks == 0)
+                {
+                    Random rdm = new();
+
+                    AccountQueryRq accountsRq = new();
+                    AccountRs accounts = new(QB.ExecuteQbRequest(accountsRq));
+                    AccountRetDto account = accounts.Accounts.FirstOrDefault(a => a.AccountType == AccountType.Bank);
+
+                    ItemQueryRq itemsRq = new();
+                    result = QB.ExecuteQbRequest(itemsRq);
+                    ItemRs items = new(result);
+                    ItemOtherChargeRetDto item = items.OtherChargeItems[rdm.Next(0, items.PaymentItems.Count)];
+
+                    VendorQueryRq vendorRq = new();
+                    VendorRs vendors = new(QB.ExecuteQbRequest(vendorRq));
+                    VendorRetDto vendor = vendors.Vendors[rdm.Next(0, vendors.Vendors.Count)];
+
+                    addRq.Account = new() { ListID = account.ListID };
+                    addRq.PayeeEntity = new() { ListID = vendor.ListID };
+                    addRq.TxnDate = DateTime.Now;
+                    addRq.RefNumber = addRqName;
+                    addRq.ItemLine = new();
+                    addRq.ItemLine.Add( new() { Item = new() { ListID = item.ListID }, Amount = 12.34M });
+                    Assert.IsTrue(addRq.IsEntityValid());
+
+                    addRs = new(QB.ExecuteQbRequest(addRq));
+                    Assert.IsTrue(addRs.StatusCode == "0");
+                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
+                }
+                #endregion
+
+                #region Mod Test
+                CheckRetDto Check = qryRs.TotalChecks == 0 ? addRs.Checks[0] : qryRs.Checks[0];
+                modRq.TxnID = Check.TxnID;
+                modRq.EditSequence = Check.EditSequence;
+                modRq.TxnDate = DateTime.Now;
+                modRq.Memo = $"QbProcessor.{modRq.GetType().Name} on {DateTime.Now}";
+                Assert.IsTrue(modRq.IsEntityValid());
+
+                modRs = new(QB.ExecuteQbRequest(modRq));
+                Assert.IsTrue(modRs.StatusCode == "0");
+                Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
+                #endregion
+            }
+            Thread.Sleep(2000);
         }
     }
 
@@ -133,169 +92,162 @@ namespace QbModels.Tests
     public class BillPaymentCheckTests
     {
         [TestMethod]
-        public void TestBillPaymentCheckQueryRq()
+        public void TestBillPaymentCheckModels()
         {
-            BillPaymentCheckQueryRq billPaymentCheckRq = new();
-            Assert.IsTrue(billPaymentCheckRq.IsEntityValid());
+            using (QBProcessor.QbProcessor QB = new())
+            {
+                #region Properties
+                if (QB == null)
+                {
+                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
+                }
 
-            billPaymentCheckRq.PaidStatus = PaidStatus.All;
-            Assert.IsTrue(billPaymentCheckRq.IsEntityValid());
+                BillPaymentCheckRs qryRs, addRs = new(""), modRs;
+                BillPaymentCheckAddRq addRq = new();
+                BillPaymentCheckModRq modRq = new();
+                string addRqName = $"QbProcessor";
+                #endregion
 
-            billPaymentCheckRq.RefNumberFilter = new();
-            Assert.IsFalse(billPaymentCheckRq.IsEntityValid());
+                #region Query Test
+                BillPaymentCheckQueryRq qryRq = new();
+                qryRq.RefNumberFilter = new() { RefNumber = addRqName, MatchCriterion = MatchCriterion.StartsWith };
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            billPaymentCheckRq.RefNumberFilter.RefNumber = "BillPaymentCheckAddRq.RefNumberFilter.RefNumber";
-            Assert.IsFalse(billPaymentCheckRq.IsEntityValid());
+                qryRs = new(QB.ExecuteQbRequest(qryRq));
+                Assert.IsTrue(qryRs.StatusSeverity == "Info");
+                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+                #endregion
 
-            billPaymentCheckRq.RefNumberFilter.MatchCriterion = MatchCriterion.None;
-            Assert.IsFalse(billPaymentCheckRq.IsEntityValid());
+                #region Add Test
+                if (qryRs.TotalChecks == 0)
+                {
+                    Random rdm = new();
 
-            billPaymentCheckRq.RefNumberFilter.MatchCriterion = MatchCriterion.StartsWith;
-            Assert.IsTrue(billPaymentCheckRq.IsEntityValid());
+                    AccountQueryRq accountsRq = new();
+                    AccountRs accounts = new(QB.ExecuteQbRequest(accountsRq));
+                    AccountRetDto account = accounts.Accounts.FirstOrDefault(a => a.AccountType == AccountType.AccountsPayable);
+                    AccountRetDto bank = accounts.Accounts.FirstOrDefault(a => a.AccountType == AccountType.Bank);
 
-            var model = new QryRqModel<BillPaymentCheckQueryRq>();
-            model.SetRequest(billPaymentCheckRq, "QryRq");
-            Assert.IsTrue(billPaymentCheckRq.ToString().Contains("<BillPaymentCheckQueryRq>"));
-            Assert.IsTrue(model.ToString().Contains("<BillPaymentCheckQueryRq>"));
-        }
+                    BillQueryRq billsRq = new() { PaidStatus = PaidStatus.NotPaidOnly };
+                    BillRs bills = new(QB.ExecuteQbRequest(billsRq));
+                    BillRetDto bill = bills.Bills[rdm.Next(0, bills.Bills.Count)];
 
-        [TestMethod]
-        public void TestBillPaymentCheckAddRq()
-        {
-            BillPaymentCheckAddRq billPaymentCheckRq = new();
-            Assert.IsFalse(billPaymentCheckRq.IsEntityValid());
+                    VendorQueryRq vendorRq = new();
+                    VendorRs vendors = new(QB.ExecuteQbRequest(vendorRq));
+                    VendorRetDto vendor = vendors.Vendors[rdm.Next(0, vendors.Vendors.Count)];
 
-            billPaymentCheckRq.PayeeEntity = new();
-            Assert.IsFalse(billPaymentCheckRq.IsEntityValid());
+                    addRq.PayeeEntity = new() { ListID = vendor.ListID };
+                    addRq.APAccount = new() { ListID = account.ListID };
+                    addRq.BankAccount = new() { ListID = bank.ListID };
+                    addRq.TxnDate = DateTime.Now;
+                    addRq.RefNumber = addRqName;
+                    addRq.AppliedToTxn = new();
+                    addRq.AppliedToTxn.Add(new AppliedToTxnAddDto(){ TxnID = bill.TxnID, PaymentAmount = bill.AmountDue, DiscountAmount = 10.00M });
+                    Assert.IsTrue(addRq.IsEntityValid());
 
-            billPaymentCheckRq.BankAccount = new();
-            billPaymentCheckRq.AppliedToTxn = new();
-            billPaymentCheckRq.AppliedToTxn.Add(new AppliedToTxnAddDto());
-            Assert.IsFalse(billPaymentCheckRq.IsEntityValid());
+                    addRs = new(QB.ExecuteQbRequest(addRq));
+                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
+                    if (addRs.StatusCode == "3250") Assert.Inconclusive(addRs.StatusMessage);
+                    Regex responses = new(@"^0$|^3120$|^3250$");
+                    Assert.IsTrue(responses.IsMatch(addRs.StatusCode));
+                }
+                #endregion
 
-            billPaymentCheckRq.AppliedToTxn[0].TxnID = "BillPaymentCheckAddRq.TxnID";
-            billPaymentCheckRq.AppliedToTxn[0].PaymentAmount = 123.45M;
-            Assert.IsTrue(billPaymentCheckRq.IsEntityValid());
+                #region Mod Test
+                if(qryRs.TotalChecks > 0 || addRs?.StatusCode == "0")
+                {
+                    BillPaymentCheckRetDto Check = qryRs.TotalChecks == 0 ? addRs.Checks[0] : qryRs.Checks[0];
+                    modRq.TxnID = Check.TxnID;
+                    modRq.EditSequence = Check.EditSequence;
+                    modRq.TxnDate = DateTime.Now;
+                    modRq.Memo = $"QbProcessor.{modRq.GetType().Name} on {DateTime.Now}";
+                    Assert.IsTrue(modRq.IsEntityValid());
 
-            var model = new AddRqModel<BillPaymentCheckAddRq>("BillPaymentCheckAdd");
-            model.SetRequest(billPaymentCheckRq, "AddRq");
-            Assert.IsTrue(billPaymentCheckRq.ToString().Contains("<BillPaymentCheckAddRq>"));
-            Assert.IsTrue(model.ToString().Contains("<BillPaymentCheckAddRq>"));
-        }
-
-        [TestMethod]
-        public void TestBillPaymentCheckModRq()
-        {
-            BillPaymentCheckModRq billPaymentCheckRq = new();
-            Assert.IsFalse(billPaymentCheckRq.IsEntityValid());
-
-            billPaymentCheckRq.TxnID = "BillPaymentCheckModRq.TxnID";
-            billPaymentCheckRq.EditSequence = null;
-            billPaymentCheckRq.TxnDate = DateTime.Now;
-            Assert.IsFalse(billPaymentCheckRq.IsEntityValid());
-
-            billPaymentCheckRq.TxnID = null;
-            billPaymentCheckRq.EditSequence = "BillPaymentCheckModRq.EditSequence";
-            Assert.IsFalse(billPaymentCheckRq.IsEntityValid());
-
-            billPaymentCheckRq.TxnID = "BillPaymentCheckModRq.TxnID";
-            billPaymentCheckRq.EditSequence = "Test EditSequence";
-            Assert.IsTrue(billPaymentCheckRq.IsEntityValid());
-
-            var model = new ModRqModel<BillPaymentCheckModRq>("BillPaymentCheckMod");
-            model.SetRequest(billPaymentCheckRq, "ModRq");
-            Assert.IsTrue(billPaymentCheckRq.ToString().Contains("<BillPaymentCheckModRq>"));
-            Assert.IsTrue(model.ToString().Contains("<BillPaymentCheckModRq>"));
+                    modRs = new(QB.ExecuteQbRequest(modRq));
+                    Assert.IsTrue(modRs.StatusCode == "0");
+                    Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
+                }
+                #endregion
+            }
+            Thread.Sleep(2000);
         }
     }
+
 
     [TestClass]
     public class SalesTaxPaymentCheckTests
     {
         [TestMethod]
-        public void TestSalesTaxPaymentCheckQueryRq()
+        public void TestSalesTaxPaymentCheckModels()
         {
-            SalesTaxPaymentCheckQueryRq salesTaxPaymentCheckRq = new();
-            Assert.IsTrue(salesTaxPaymentCheckRq.IsEntityValid());
+            using (QBProcessor.QbProcessor QB = new())
+            {
+                #region Properties
+                if (QB == null)
+                {
+                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
+                }
 
-            salesTaxPaymentCheckRq.PaidStatus = PaidStatus.All;
-            Assert.IsTrue(salesTaxPaymentCheckRq.IsEntityValid());
+                SalesTaxPaymentCheckRs qryRs, addRs = new(""), modRs;
+                SalesTaxPaymentCheckAddRq addRq = new();
+                SalesTaxPaymentCheckModRq modRq = new();
+                Regex responses = new(@"^0$|^3250$");
+                string addRqName = $"QbProcessor";
+                #endregion
 
-            salesTaxPaymentCheckRq.RefNumberFilter = new();
-            Assert.IsFalse(salesTaxPaymentCheckRq.IsEntityValid());
+                #region Query Test
+                SalesTaxPaymentCheckQueryRq qryRq = new();
+                qryRq.RefNumberFilter = new() { RefNumber = addRqName, MatchCriterion = MatchCriterion.StartsWith };
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            salesTaxPaymentCheckRq.RefNumberFilter.RefNumber = "SalesTaxPaymentCheckQueryRq.RefNumberFilter.RefNumber";
-            Assert.IsFalse(salesTaxPaymentCheckRq.IsEntityValid());
+                qryRs = new(QB.ExecuteQbRequest(qryRq));
+                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+                if (addRs.StatusCode == "3250") Assert.Inconclusive(addRs.StatusMessage);
+                Assert.IsTrue(responses.IsMatch(qryRs.StatusCode));
+                #endregion
 
-            salesTaxPaymentCheckRq.RefNumberFilter.MatchCriterion = MatchCriterion.None;
-            Assert.IsFalse(salesTaxPaymentCheckRq.IsEntityValid());
+                #region Add Test
+                if (qryRs.StatusCode == "0" && qryRs.TotalSalesTaxPaymentChecks == 0)
+                {
+                    Random rdm = new();
 
-            salesTaxPaymentCheckRq.RefNumberFilter.MatchCriterion = MatchCriterion.StartsWith;
-            Assert.IsTrue(salesTaxPaymentCheckRq.IsEntityValid());
+                    AccountQueryRq accountsRq = new();
+                    AccountRs accounts = new(QB.ExecuteQbRequest(accountsRq));
+                    AccountRetDto bank = accounts.Accounts.FirstOrDefault(a => a.AccountType == AccountType.Bank);
 
-            var model = new QryRqModel<SalesTaxPaymentCheckQueryRq>();
-            model.SetRequest(salesTaxPaymentCheckRq, "QryRq");
-            Assert.IsTrue(salesTaxPaymentCheckRq.ToString().Contains("<SalesTaxPaymentCheckQueryRq>"));
-            Assert.IsTrue(model.ToString().Contains("<SalesTaxPaymentCheckQueryRq>"));
-        }
+                    VendorQueryRq vendorRq = new();
+                    VendorRs vendors = new(QB.ExecuteQbRequest(vendorRq));
+                    VendorRetDto vendor = vendors.Vendors[rdm.Next(0, vendors.Vendors.Count)];
 
-        [TestMethod]
-        public void TestSalesTaxPaymentCheckAddRq()
-        {
-            SalesTaxPaymentCheckAddRq salesTaxPaymentCheckRq = new();
-            Assert.IsFalse(salesTaxPaymentCheckRq.IsEntityValid());
+                    addRq.PayeeEntity = new() { ListID = vendor.ListID };
+                    addRq.BankAccount = new() { ListID = bank.ListID };
+                    addRq.TxnDate = DateTime.Now;
+                    addRq.RefNumber = addRqName;
+                    Assert.IsTrue(addRq.IsEntityValid());
 
-            salesTaxPaymentCheckRq.TxnDate = DateTime.Now;
-            salesTaxPaymentCheckRq.PayeeEntity = new();
-            salesTaxPaymentCheckRq.BankAccount = new();
-            Assert.IsTrue(salesTaxPaymentCheckRq.IsEntityValid());
+                    addRs = new(QB.ExecuteQbRequest(addRq));
+                    Assert.IsTrue(responses.IsMatch(addRs.StatusCode));
+                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
+                }
+                #endregion
 
-            salesTaxPaymentCheckRq.BankAccount = null;
-            Assert.IsFalse(salesTaxPaymentCheckRq.IsEntityValid());
+                #region Mod Test
+                if (qryRs.StatusCode == "0" && (qryRs.TotalSalesTaxPaymentChecks > 0 || addRs?.StatusCode == "0"))
+                {
+                    SalesTaxPaymentCheckRetDto check = qryRs.TotalSalesTaxPaymentChecks == 0 ? addRs.SalesTaxPaymentChecks[0] : qryRs.SalesTaxPaymentChecks[0];
+                    modRq.TxnID = check.TxnID;
+                    modRq.EditSequence = check.EditSequence;
+                    modRq.TxnDate = DateTime.Now;
+                    modRq.Memo = $"QbProcessor.{modRq.GetType().Name} on {DateTime.Now}";
+                    Assert.IsTrue(modRq.IsEntityValid());
 
-            salesTaxPaymentCheckRq.PayeeEntity = null;
-            salesTaxPaymentCheckRq.BankAccount = new();
-            Assert.IsFalse(salesTaxPaymentCheckRq.IsEntityValid());
-
-            salesTaxPaymentCheckRq.PayeeEntity = new();
-            salesTaxPaymentCheckRq.SalesTaxPaymentCheckLine = new();
-            Assert.IsFalse(salesTaxPaymentCheckRq.IsEntityValid());
-
-            salesTaxPaymentCheckRq.SalesTaxPaymentCheckLine.Add(new SalesTaxPaymentCheckLineAddDto());
-            Assert.IsFalse(salesTaxPaymentCheckRq.IsEntityValid());
-
-            salesTaxPaymentCheckRq.SalesTaxPaymentCheckLine[0].Amount = 123.45M;
-            Assert.IsTrue(salesTaxPaymentCheckRq.IsEntityValid());
-
-            var model = new AddRqModel<SalesTaxPaymentCheckAddRq>("SalesTaxPaymentCheckAdd");
-            model.SetRequest(salesTaxPaymentCheckRq, "AddRq");
-            Assert.IsTrue(salesTaxPaymentCheckRq.ToString().Contains("<SalesTaxPaymentCheckAddRq>"));
-            Assert.IsTrue(model.ToString().Contains("<SalesTaxPaymentCheckAddRq>"));
-        }
-
-        [TestMethod]
-        public void TestSalesTaxPaymentCheckModRq()
-        {
-            SalesTaxPaymentCheckModRq salesTaxPaymentCheckRq = new();
-            Assert.IsFalse(salesTaxPaymentCheckRq.IsEntityValid());
-
-            salesTaxPaymentCheckRq.TxnID = "SalesTaxPaymentCheckQueryRq.TxnID";
-            salesTaxPaymentCheckRq.EditSequence = null;
-            salesTaxPaymentCheckRq.TxnDate = DateTime.Now;
-            Assert.IsFalse(salesTaxPaymentCheckRq.IsEntityValid());
-
-            salesTaxPaymentCheckRq.TxnID = null;
-            salesTaxPaymentCheckRq.EditSequence = "SalesTaxPaymentCheckQueryRq.EditSequence";
-            Assert.IsFalse(salesTaxPaymentCheckRq.IsEntityValid());
-
-            salesTaxPaymentCheckRq.TxnID = "SalesTaxPaymentCheckQueryRq.TxnID";
-            salesTaxPaymentCheckRq.EditSequence = "SalesTaxPaymentCheckQueryRq.EditSequence";
-            Assert.IsTrue(salesTaxPaymentCheckRq.IsEntityValid());
-
-            var model = new ModRqModel<SalesTaxPaymentCheckModRq>("SalesTaxPaymentCheckMod");
-            model.SetRequest(salesTaxPaymentCheckRq, "ModRq");
-            Assert.IsTrue(salesTaxPaymentCheckRq.ToString().Contains("<SalesTaxPaymentCheckModRq>"));
-            Assert.IsTrue(model.ToString().Contains("<SalesTaxPaymentCheckModRq>"));
+                    modRs = new(QB.ExecuteQbRequest(modRq));
+                    Assert.IsTrue(modRs.StatusCode == "0");
+                    Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
+                }
+                #endregion
+            }
+            Thread.Sleep(2000);
         }
     }
 }

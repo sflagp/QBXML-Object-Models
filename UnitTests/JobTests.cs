@@ -1,64 +1,60 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels;
 using QbModels.ENUM;
+using System;
+using System.Threading;
 
-namespace QbModels.Tests
+namespace QbProcessor.TEST
 {
     [TestClass]
     public class JobTypeTests
     {
         [TestMethod]
-        public void TestJobTypeQueryRq()
+        public void TestJobTypeModels()
         {
-            JobTypeQueryRq custTypeRq = new();
-            Assert.IsTrue(custTypeRq.IsEntityValid());
+            using (QBProcessor.QbProcessor QB = new())
+            {
+                #region Properties
+                if (QB == null)
+                {
+                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
+                }
 
-            custTypeRq.ListID = new() { "JobTypeQueryRq.ListID" };
-            custTypeRq.MaxReturned = -1;
-            Assert.IsTrue(custTypeRq.IsEntityValid());
+                JobTypeRs qryRs, addRs;
+                JobTypeAddRq addRq = new();
+                string addRqName = $"QbProcessor";
+                string result;
+                #endregion
 
-            custTypeRq.ListID = null;
-            custTypeRq.FullName = new() { "JobTypeQueryRq.FullName" };
-            Assert.IsTrue(custTypeRq.IsEntityValid());
+                #region Query Test
+                JobTypeQueryRq qryRq = new();
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            custTypeRq.FullName = null;
-            custTypeRq.NameFilter = new();
-            custTypeRq.MaxReturned = 99999;
-            Assert.IsFalse(custTypeRq.IsEntityValid());
+                qryRq.NameFilter = new() { Name = addRqName, MatchCriterion = MatchCriterion.StartsWith };
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            custTypeRq.NameFilter.MatchCriterion = MatchCriterion.None;
-            custTypeRq.NameFilter.Name = "A";
-            Assert.IsFalse(custTypeRq.IsEntityValid());
+                result = QB.ExecuteQbRequest(qryRq);
+                qryRs = new(result);
+                Assert.IsTrue(qryRs.StatusSeverity == "Info");
+                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+                #endregion
 
-            custTypeRq.NameFilter.MatchCriterion = MatchCriterion.Contains;
-            Assert.IsTrue(custTypeRq.IsEntityValid());
+                #region Add Test
+                if (qryRs.TotalJobTypes == 0)
+                {
+                    addRq.Name = addRqName;
+                    addRq.IsActive = true;
+                    Assert.IsTrue(addRq.IsEntityValid());
 
-            custTypeRq.NameRangeFilter = new();
-            custTypeRq.NameRangeFilter.FromName = "A";
-            custTypeRq.NameRangeFilter.ToName = "ZZ";
-            Assert.IsFalse(custTypeRq.IsEntityValid());
-
-            custTypeRq.NameFilter = null;
-            Assert.IsTrue(custTypeRq.IsEntityValid());
-
-            var model = new QryRqModel<JobTypeQueryRq>();
-            model.SetRequest(custTypeRq, "QryRq");
-            Assert.IsTrue(model.ToString().Contains("<JobTypeQueryRq>"));
-            Assert.IsTrue(custTypeRq.ToString().Contains("<JobTypeQueryRq>"));
-        }
-
-        [TestMethod]
-        public void TestJobTypeAddRq()
-        {
-            JobTypeAddRq custTypeRq = new();
-            Assert.IsFalse(custTypeRq.IsEntityValid());
-
-            custTypeRq.Name = "JobTypeAddRq.JobType.Name";
-            Assert.IsTrue(custTypeRq.IsEntityValid());
-
-            var model = new AddRqModel<JobTypeAddRq>("JobTypeAdd");
-            model.SetRequest(custTypeRq, "AddRq");
-            Assert.IsTrue(custTypeRq.ToString().Contains("<JobTypeAddRq>"));
-            Assert.IsTrue(model.ToString().Contains("<JobTypeAddRq>"));
+                    result = QB.ExecuteQbRequest(addRq);
+                    addRs = new(result);
+                    if (addRs.StatusCode == "3250") Assert.Inconclusive(addRs.StatusMessage);
+                    Assert.IsTrue(addRs.StatusCode == "0");
+                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
+                }
+                #endregion
+            }
+            Thread.Sleep(2000);
         }
     }
 }

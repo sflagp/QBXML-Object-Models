@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QbModels;
+using QbModels.ENUM;
 using System;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -20,11 +21,9 @@ namespace QbProcessor.TEST
                     throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
                 }
 
-                QbListDeletedView qryRs;
+                ListDeletedRs qryRs;
 
                 Regex acceptableCodes = new(@"^0$|^1$");
-                string delTypes = @"^Account$|^BillingRate$|^Class$|^Currency$|^Customer$|^CustomerMsg$|^CustomerType$|^DateDrivenTerms$|^Employee$|^InventorySite$|^ItemDiscount$|^ItemFixedAsset$|^ItemGroup$|^ItemInventory$|^ItemInventoryAssembly$|^ItemNonInventory$|^ItemOtherCharge$|^ItemPayment$|^ItemSalesTax$|^ItemSalesTaxGroup$|^ItemService$|^ItemSubtotal$|^JobType$|^OtherName$|^PaymentMethod$|^PayrollItemNonWage$|^PayrollItemWage$|^PriceLevel$|^SalesRep$|^SalesTaxCode$|^ShipMethod$|^StandardTerms$|^ToDo$|^UnitOfMeasureSet$|^Vehicle$|^Vendor$|^VendorType$|^WorkersCompCode$";
-                string[] ListDelTypes = delTypes.Replace(@"$", "").Replace("^", "").Split("|");
                 string result;
                 #endregion
 
@@ -33,8 +32,9 @@ namespace QbProcessor.TEST
                 qryRq.DeletedDateRangeFilter = new() { FromDeletedDate = DateTime.Today.AddDays(-7), ToDeletedDate = DateTime.Today };
                 Assert.IsFalse(qryRq.IsEntityValid());
 
-                foreach(string delType in ListDelTypes)
+                foreach(ListDelType delType in Enum.GetValues(typeof(ListDelType)))
                 {
+                    if (delType == ListDelType.None) continue;
                     qryRq.ListDelType = delType;
                     Assert.IsTrue(qryRq.IsEntityValid());
 

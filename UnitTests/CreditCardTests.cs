@@ -1,99 +1,106 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels;
 using QbModels.ENUM;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
 
-namespace QbModels.Tests
+namespace QbProcessor.TEST
 {
     [TestClass]
     public class CreditCardChargeTests
     {
         [TestMethod]
-        public void TestCreditCardChargeQueryRq()
+        public void TestCreditCardChargeModels()
         {
-            CreditCardChargeQueryRq ccChargeRq = new();
-            Assert.IsTrue(ccChargeRq.IsEntityValid());
+            using (QBProcessor.QbProcessor QB = new())
+            {
+                #region Properties
+                if (QB == null)
+                {
+                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
+                }
 
-            ccChargeRq.TxnID = new() { "CreditCardChargeQueryRq.TxnID" };
-            ccChargeRq.RefNumber = new() { "CreditCardChargeQueryRq.RefNumber" };
-            Assert.IsFalse(ccChargeRq.IsEntityValid());
+                CreditCardChargeRs qryRs, addRs = new(""), modRs;
+                CreditCardChargeAddRq addRq = new();
+                CreditCardChargeModRq modRq = new();
+                string addRqName = $"QbProcessor";
+                string result;
+                #endregion
 
-            ccChargeRq.RefNumber = null;
-            Assert.IsTrue(ccChargeRq.IsEntityValid());
+                #region Query Test
+                CreditCardChargeQueryRq qryRq = new();
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            ccChargeRq.PaidStatus = PaidStatus.All;
-            Assert.IsTrue(ccChargeRq.IsEntityValid());
+                qryRq.RefNumberFilter = new() { RefNumber = addRqName, MatchCriterion = MatchCriterion.StartsWith };
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            ccChargeRq.RefNumberFilter = new();
-            Assert.IsFalse(ccChargeRq.IsEntityValid());
+                result = QB.ExecuteQbRequest(qryRq);
+                qryRs = new(result);
+                Assert.IsTrue(qryRs.StatusSeverity == "Info");
+                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+                #endregion
 
-            ccChargeRq.RefNumberFilter.RefNumber = "RefNumberFilter.RefNumber";
-            Assert.IsFalse(ccChargeRq.IsEntityValid());
+                #region Add Test
+                if (qryRs.TotalCreditCardCharges == 0)
+                {
+                    Random rdm = new();
 
-            ccChargeRq.RefNumberFilter.MatchCriterion = MatchCriterion.None;
-            Assert.IsFalse(ccChargeRq.IsEntityValid());
+                    AccountQueryRq accountsRq = new();
+                    accountsRq.AccountType = AccountType.CreditCard;
+                    AccountRs accounts = new(QB.ExecuteQbRequest(accountsRq));
+                    AccountRetDto account = accounts.Accounts[rdm.Next(0, accounts.Accounts.Count)];
 
-            ccChargeRq.RefNumberFilter.MatchCriterion = MatchCriterion.StartsWith;
-            Assert.IsTrue(ccChargeRq.IsEntityValid());
+                    ItemQueryRq itemsRq = new();
+                    ItemRs items = new(QB.ExecuteQbRequest(itemsRq));
+                    ItemOtherChargeRetDto item = items.OtherChargeItems[rdm.Next(0, items.PaymentItems.Count)];
 
-            var model = new QryRqModel<CreditCardChargeQueryRq>();
-            model.SetRequest(ccChargeRq, "QryRq");
-            Assert.IsTrue(ccChargeRq.ToString().Contains("<CreditCardChargeQueryRq>"));
-            Assert.IsTrue(model.ToString().Contains("<CreditCardChargeQueryRq>"));
-        }
+                    VendorQueryRq vendorRq = new();
+                    VendorRs vendors = new(QB.ExecuteQbRequest(vendorRq));
+                    VendorRetDto vendor = vendors.Vendors[rdm.Next(0, vendors.Vendors.Count)];
 
-        [TestMethod]
-        public void TestCreditCardChargeAddRq()
-        {
-            CreditCardChargeAddRq ccChargeRq = new();
-            Assert.IsFalse(ccChargeRq.IsEntityValid());
+                    CustomerQueryRq customerRq = new();
+                    CustomerRs customers = new(QB.ExecuteQbRequest(customerRq));
+                    CustomerRetDto customer = customers.Customers[rdm.Next(0, customers.Customers.Count)];
 
-            ccChargeRq.Account = new();
-            Assert.IsTrue(ccChargeRq.IsEntityValid());
+                    addRq.Account = new() { ListID = account.ListID };
+                    addRq.PayeeEntity = new() { ListID = vendor.ListID };
+                    addRq.TxnDate = DateTime.Now;
+                    addRq.RefNumber = addRqName;
+                    addRq.ItemLine = new();
+                    addRq.ItemLine.Add(new()
+                    {
+                        Item = new() { ListID = item.ListID },
+                        Amount = 123.45M
+                    });
+                    Assert.IsTrue(addRq.IsEntityValid());
 
-            ccChargeRq.PayeeEntity = new();
-            Assert.IsTrue(ccChargeRq.IsEntityValid());
+                    result = QB.ExecuteQbRequest(addRq);
+                    addRs = new(result);
+                    Assert.IsTrue(addRs.StatusCode == "0");
+                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
+                }
+                #endregion
 
-            ccChargeRq.ItemLine = new();
-            ccChargeRq.ItemGroupLine = new();
-            Assert.IsFalse(ccChargeRq.IsEntityValid());
+                #region Mod Test
+                CreditCardChargeRetDto creditCardCharge = qryRs.TotalCreditCardCharges == 0 ? addRs.CreditCardCharges[0] : qryRs.CreditCardCharges[0];
+                modRq.TxnID = creditCardCharge.TxnID;
+                modRq.EditSequence = creditCardCharge.EditSequence;
+                modRq.Account = creditCardCharge.Account;
+                modRq.TxnDate = creditCardCharge.TxnDate;
+                modRq.Memo = $"QbProcessor.{addRq.GetType().Name} on {DateTime.Now}";
+                Assert.IsTrue(modRq.IsEntityValid());
 
-            ccChargeRq.ItemGroupLine = null;
-            Assert.IsTrue(ccChargeRq.IsEntityValid());
-
-            ccChargeRq.ItemLine = null;
-            ccChargeRq.ItemGroupLine = new() { ItemGroup = new() };
-            Assert.IsTrue(ccChargeRq.IsEntityValid());
-
-            var model = new AddRqModel<CreditCardChargeAddRq>("CreditCardChargeAdd");
-            model.SetRequest(ccChargeRq, "AddRq");
-            Assert.IsTrue(ccChargeRq.ToString().Contains("<CreditCardChargeAddRq>"));
-            Assert.IsTrue(model.ToString().Contains("<CreditCardChargeAddRq>"));
-        }
-
-        [TestMethod]
-        public void TestCreditCardChargeModRq()
-        {
-            CreditCardChargeModRq ccChargeRq = new();
-            Assert.IsFalse(ccChargeRq.IsEntityValid());
-
-            ccChargeRq.TxnID = "CreditCardChargeModRq.TxnID";
-            ccChargeRq.EditSequence = null;
-            ccChargeRq.TxnDate = DateTime.Now;
-            Assert.IsFalse(ccChargeRq.IsEntityValid());
-
-            ccChargeRq.TxnID = null;
-            ccChargeRq.EditSequence = "CreditCardChargeModRq.EditSequence";
-            Assert.IsFalse(ccChargeRq.IsEntityValid());
-
-            ccChargeRq.TxnID = "CreditCardChargeModRq.TxnID";
-            ccChargeRq.EditSequence = "CreditCardChargeModRq.EditSequence";
-            ccChargeRq.Account = new();
-            Assert.IsTrue(ccChargeRq.IsEntityValid());
-
-            var model = new ModRqModel<CreditCardChargeModRq>("CreditCardChargeMod");
-            model.SetRequest(ccChargeRq, "ModRq");
-            Assert.IsTrue(ccChargeRq.ToString().Contains("<CreditCardChargeModRq>"));
-            Assert.IsTrue(model.ToString().Contains("<CreditCardChargeModRq>"));
+                modRq.TxnDate = default;
+                result = QB.ExecuteQbRequest(modRq);
+                modRs = new(result);
+                Assert.IsTrue(modRs.StatusCode == "0");
+                Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
+                #endregion
+            }
+            Thread.Sleep(2000);
         }
     }
 
@@ -101,80 +108,95 @@ namespace QbModels.Tests
     public class CreditCardCreditTests
     {
         [TestMethod]
-        public void TestCreditCardCreditQueryRq()
+        public void TestCreditCardCreditModels()
         {
-            CreditCardCreditQueryRq ccCreditRq = new();
-            Assert.IsTrue(ccCreditRq.IsEntityValid());
+            using (QBProcessor.QbProcessor QB = new())
+            {
+                #region Properties
+                if (QB == null)
+                {
+                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
+                }
 
-            ccCreditRq.PaidStatus = PaidStatus.All;
-            Assert.IsTrue(ccCreditRq.IsEntityValid());
+                CreditCardCreditRs qryRs, addRs = new(""), modRs;
+                CreditCardCreditAddRq addRq = new();
+                CreditCardCreditModRq modRq = new();
+                string addRqName = $"QbProcessor";
+                string result;
+                #endregion
 
-            ccCreditRq.RefNumberFilter = new();
-            Assert.IsFalse(ccCreditRq.IsEntityValid());
+                #region Query Test
+                CreditCardCreditQueryRq qryRq = new();
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            ccCreditRq.RefNumberFilter.RefNumber = "RefNumberFilter.RefNumber";
-            Assert.IsFalse(ccCreditRq.IsEntityValid());
+                qryRq.RefNumberFilter = new() { RefNumber = addRqName, MatchCriterion = MatchCriterion.StartsWith };
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            ccCreditRq.RefNumberFilter.MatchCriterion = MatchCriterion.None;
-            Assert.IsFalse(ccCreditRq.IsEntityValid());
+                result = QB.ExecuteQbRequest(qryRq);
+                qryRs = new(result);
+                Assert.IsTrue(qryRs.StatusSeverity == "Info");
+                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+                #endregion
 
-            ccCreditRq.RefNumberFilter.MatchCriterion = MatchCriterion.StartsWith;
-            Assert.IsTrue(ccCreditRq.IsEntityValid());
+                #region Add Test
+                if (qryRs.TotalCreditCardCredits == 0)
+                {
+                    Random rdm = new();
 
-            var model = new QryRqModel<CreditCardCreditQueryRq>();
-            model.SetRequest(ccCreditRq, "QryRq");
-            Assert.IsTrue(ccCreditRq.ToString().Contains("<CreditCardCreditQueryRq>"));
-            Assert.IsTrue(model.ToString().Contains("<CreditCardCreditQueryRq>"));
-        }
+                    AccountQueryRq accountsRq = new();
+                    accountsRq.AccountType = AccountType.CreditCard;
+                    AccountRs accounts = new(QB.ExecuteQbRequest(accountsRq));
+                    AccountRetDto account = accounts.Accounts[rdm.Next(0, accounts.Accounts.Count)];
 
-        [TestMethod]
-        public void TestCreditCardCreditAddRq()
-        {
-            CreditCardCreditAddRq ccCreditRq = new();
-            Assert.IsFalse(ccCreditRq.IsEntityValid());
+                    ItemQueryRq itemsRq = new();
+                    ItemRs items = new(QB.ExecuteQbRequest(itemsRq));
+                    ItemOtherChargeRetDto item = items.OtherChargeItems[rdm.Next(0, items.PaymentItems.Count)];
 
-            ccCreditRq.ItemLine = new();
-            ccCreditRq.ItemGroupLine = new();
-            Assert.IsFalse(ccCreditRq.IsEntityValid());
+                    VendorQueryRq vendorRq = new();
+                    VendorRs vendors = new(QB.ExecuteQbRequest(vendorRq));
+                    VendorRetDto vendor = vendors.Vendors[rdm.Next(0, vendors.Vendors.Count)];
 
-            ccCreditRq.Account = new();
-            ccCreditRq.ItemGroupLine = null;
-            Assert.IsTrue(ccCreditRq.IsEntityValid());
+                    CustomerQueryRq customerRq = new();
+                    CustomerRs customers = new(QB.ExecuteQbRequest(customerRq));
+                    CustomerRetDto customer = customers.Customers[rdm.Next(0, customers.Customers.Count)];
 
-            ccCreditRq.ItemLine = null;
-            ccCreditRq.ItemGroupLine = new() { ItemGroup = new() };
-            Assert.IsTrue(ccCreditRq.IsEntityValid());
+                    addRq.Account = new() { ListID = account.ListID };
+                    addRq.PayeeEntity = new() { ListID = vendor.ListID };
+                    addRq.TxnDate = DateTime.Now;
+                    addRq.RefNumber = addRqName;
+                    addRq.ItemLine = new();
+                    addRq.ItemLine.Add(new()
+                    {
+                        Item = new() { ListID = item.ListID },
+                        Amount = 123.45M
+                    });
+                    Assert.IsTrue(addRq.IsEntityValid());
 
-            var model = new AddRqModel<CreditCardCreditAddRq>("CreditCardCreditAdd");
-            model.SetRequest(ccCreditRq, "AddRq");
-            Assert.IsTrue(ccCreditRq.ToString().Contains("<CreditCardCreditAddRq>"));
-            Assert.IsTrue(model.ToString().Contains("<CreditCardCreditAddRq>"));
-        }
+                    result = QB.ExecuteQbRequest(addRq);
+                    addRs = new(result);
+                    Assert.IsTrue(addRs.StatusCode == "0");
+                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
+                }
+                #endregion
 
-        [TestMethod]
-        public void TestCreditCardCreditModRq()
-        {
-            CreditCardCreditModRq ccCreditRq = new();
-            Assert.IsFalse(ccCreditRq.IsEntityValid());
+                #region Mod Test
+                CreditCardCreditRetDto creditCardCredit = qryRs.TotalCreditCardCredits == 0 ? addRs.CreditCardCredits[0] : qryRs.CreditCardCredits[0];
+                modRq.TxnID = creditCardCredit.TxnID;
+                modRq.EditSequence = creditCardCredit.EditSequence;
+                modRq.Account = creditCardCredit.Account;
+                modRq.TxnDate = creditCardCredit.TxnDate;
+                modRq.PayeeEntity = creditCardCredit.PayeeEntity;
+                modRq.Memo = $"QbProcessor.{modRq.GetType().Name} on {DateTime.Now}";
+                Assert.IsTrue(modRq.IsEntityValid());
 
-            ccCreditRq.TxnID = "CreditCardCreditModRq.TxnID";
-            ccCreditRq.EditSequence = null;
-            ccCreditRq.TxnDate = DateTime.Now;
-            Assert.IsFalse(ccCreditRq.IsEntityValid());
-
-            ccCreditRq.TxnID = null;
-            ccCreditRq.EditSequence = "CreditCardCreditModRq.EditSequence";
-            Assert.IsFalse(ccCreditRq.IsEntityValid());
-
-            ccCreditRq.Account = new();
-            ccCreditRq.TxnID = "CreditCardCreditModRq.TxnID";
-            ccCreditRq.EditSequence = "CreditCardCreditModRq.EditSequence";
-            Assert.IsTrue(ccCreditRq.IsEntityValid());
-
-            var model = new ModRqModel<CreditCardCreditModRq>("CreditCardCreditMod");
-            model.SetRequest(ccCreditRq, "ModRq");
-            Assert.IsTrue(ccCreditRq.ToString().Contains("<CreditCardCreditModRq>"));
-            Assert.IsTrue(model.ToString().Contains("<CreditCardCreditModRq>"));
+                modRq.TxnDate = default;
+                result = QB.ExecuteQbRequest(modRq);
+                modRs = new(result);
+                Assert.IsTrue(modRs.StatusCode == "0");
+                Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
+                #endregion
+            }
+            Thread.Sleep(2000);
         }
     }
 
@@ -182,61 +204,67 @@ namespace QbModels.Tests
     public class BillPaymentCreditCardTests
     {
         [TestMethod]
-        public void TestBillPaymentCreditCardQueryRq()
+        public void TestBillPaymentCreditCardModels()
         {
-            BillPaymentCreditCardQueryRq ccBillPmtRq = new();
-            Assert.IsTrue(ccBillPmtRq.IsEntityValid());
+            using (QBProcessor.QbProcessor QB = new())
+            {
+                #region Properties
+                if (QB == null)
+                {
+                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
+                }
 
-            ccBillPmtRq.PaidStatus = PaidStatus.All;
-            Assert.IsTrue(ccBillPmtRq.IsEntityValid());
+                BillPaymentCreditCardRs qryRs, addRs;
+                BillPaymentCreditCardAddRq addRq = new();
+                string addRqName = $"QbProcessor";
+                #endregion
 
-            ccBillPmtRq.RefNumberFilter = new();
-            Assert.IsFalse(ccBillPmtRq.IsEntityValid());
+                #region Query Test
+                BillPaymentCreditCardQueryRq qryRq = new();
+                qryRq.RefNumberFilter = new() { RefNumber = addRqName, MatchCriterion = MatchCriterion.StartsWith };
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            ccBillPmtRq.RefNumberFilter.RefNumber = "RefNumberFilter.RefNumber";
-            Assert.IsFalse(ccBillPmtRq.IsEntityValid());
+                qryRs = new(QB.ExecuteQbRequest(qryRq));
+                Assert.IsTrue(qryRs.StatusSeverity == "Info");
+                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+                #endregion
 
-            ccBillPmtRq.RefNumberFilter.MatchCriterion = MatchCriterion.None;
-            Assert.IsFalse(ccBillPmtRq.IsEntityValid());
+                #region Add Test
+                if (qryRs.TotalBillPaymentCreditCards == 0)
+                {
+                    Random rdm = new();
 
-            ccBillPmtRq.RefNumberFilter.MatchCriterion = MatchCriterion.StartsWith;
-            Assert.IsTrue(ccBillPmtRq.IsEntityValid());
+                    AccountQueryRq accountsRq = new();
+                    AccountRs accounts = new(QB.ExecuteQbRequest(accountsRq));
+                    AccountRetDto account = accounts.Accounts.FirstOrDefault(a => a.AccountType == AccountType.AccountsPayable);
+                    AccountRetDto card = accounts.Accounts.FirstOrDefault(a => a.AccountType == AccountType.CreditCard);
 
-            var model = new QryRqModel<BillPaymentCreditCardQueryRq>();
-            model.SetRequest(ccBillPmtRq, "QryRq");
-            Assert.IsTrue(ccBillPmtRq.ToString().Contains("<BillPaymentCreditCardQueryRq>"));
-            Assert.IsTrue(model.ToString().Contains("<BillPaymentCreditCardQueryRq>"));
-        }
+                    BillQueryRq billsRq = new();
+                    BillRs bills = new(QB.ExecuteQbRequest(billsRq));
+                    BillRetDto bill = bills.Bills[rdm.Next(0, bills.Bills.Count)];
 
-        [TestMethod]
-        public void TestBillPaymentCreditCardAddRq()
-        {
-            BillPaymentCreditCardAddRq ccBillPmtRq = new();
-            Assert.IsFalse(ccBillPmtRq.IsEntityValid());
+                    VendorQueryRq vendorRq = new();
+                    VendorRs vendors = new(QB.ExecuteQbRequest(vendorRq));
+                    VendorRetDto vendor = vendors.Vendors[rdm.Next(0, vendors.Vendors.Count)];
 
-            ccBillPmtRq.PayeeEntity = new();
-            ccBillPmtRq.AppliedToTxnAdd = new();
-            ccBillPmtRq.AppliedToTxnAdd.Add(new() { TxnID = "AppliedToTxnAdd.TxnID" });
-            ccBillPmtRq.CreditCardAccount = new();
-            Assert.IsTrue(ccBillPmtRq.IsEntityValid());
+                    addRq.PayeeEntity = new() { ListID = vendor.ListID };
+                    addRq.APAccount = new() { ListID = account.ListID };
+                    addRq.CreditCardAccount = new() { ListID = card.ListID };
+                    addRq.TxnDate = DateTime.Now;
+                    addRq.RefNumber = addRqName;
+                    addRq.AppliedToTxnAdd = new();
+                    addRq.AppliedToTxnAdd.Add(new AppliedToTxnAddDto() { TxnID = bill.TxnID, PaymentAmount = 1M });
+                    Assert.IsTrue(addRq.IsEntityValid());
 
-            ccBillPmtRq.AppliedToTxnAdd = null;
-            Assert.IsFalse(ccBillPmtRq.IsEntityValid());
-
-            ccBillPmtRq.AppliedToTxnAdd = new();
-            Assert.IsFalse(ccBillPmtRq.IsEntityValid());
-
-            ccBillPmtRq.AppliedToTxnAdd.Add( new());
-            Assert.IsFalse(ccBillPmtRq.IsEntityValid());
-
-            ccBillPmtRq.AppliedToTxnAdd.Clear();
-            ccBillPmtRq.AppliedToTxnAdd.Add(new() { TxnID = "AppliedToTxnAdd.TxnID" });
-            Assert.IsTrue(ccBillPmtRq.IsEntityValid());
-
-            var model = new AddRqModel<BillPaymentCreditCardAddRq>("BillPaymentCreditCardAdd");
-            model.SetRequest(ccBillPmtRq, "AddRq");
-            Assert.IsTrue(ccBillPmtRq.ToString().Contains("<BillPaymentCreditCardAddRq>"));
-            Assert.IsTrue(model.ToString().Contains("<BillPaymentCreditCardAddRq>"));
+                    addRs = new(QB.ExecuteQbRequest(addRq));
+                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
+                    if (addRs.StatusCode == "3250") Assert.Inconclusive(addRs.StatusMessage);
+                    Regex responses = new(@"^0$|^3120$|^3250$");
+                    Assert.IsTrue(responses.IsMatch(addRs.StatusCode));
+                }
+                #endregion
+            }
+            Thread.Sleep(2000);
         }
     }
 
@@ -244,64 +272,76 @@ namespace QbModels.Tests
     public class ARRefundCreditCardTests
     {
         [TestMethod]
-        public void TestARRefundCreditCardQueryRq()
+        public void TestARRefundCreditCardModels()
         {
-            ARRefundCreditCardQueryRq ccARRefundRq = new();
-            Assert.IsTrue(ccARRefundRq.IsEntityValid());
+            using (QBProcessor.QbProcessor QB = new())
+            {
+                #region Properties
+                if (QB == null)
+                {
+                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
+                }
 
-            ccARRefundRq.PaidStatus = PaidStatus.All;
-            Assert.IsTrue(ccARRefundRq.IsEntityValid());
+                ARRefundCreditCardRs qryRs, addRs;
+                ARRefundCreditCardAddRq addRq = new();
+                string addRqName = $"QbProcessor";
+                #endregion
 
-            ccARRefundRq.RefNumberFilter = new();
-            Assert.IsFalse(ccARRefundRq.IsEntityValid());
+                #region Query Test
+                ARRefundCreditCardQueryRq qryRq = new();
+                qryRq.RefNumberFilter = new() { RefNumber = addRqName, MatchCriterion = MatchCriterion.StartsWith };
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            ccARRefundRq.RefNumberFilter.RefNumber = "RefNumberFilter.RefNumber";
-            Assert.IsFalse(ccARRefundRq.IsEntityValid());
+                qryRs = new(QB.ExecuteQbRequest(qryRq));
+                Assert.IsTrue(qryRs.StatusSeverity == "Info");
+                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+                #endregion
 
-            ccARRefundRq.RefNumberFilter.MatchCriterion = MatchCriterion.None;
-            Assert.IsFalse(ccARRefundRq.IsEntityValid());
+                #region Add Test
+                if (qryRs.TotalARRefundCreditCards == 0)
+                {
+                    Random rdm = new();
 
-            ccARRefundRq.RefNumberFilter.MatchCriterion = MatchCriterion.StartsWith;
-            Assert.IsTrue(ccARRefundRq.IsEntityValid());
+                    AccountQueryRq accountsRq = new();
+                    string acctQryRs = QB.ExecuteQbRequest(accountsRq);
+                    AccountRs accounts = new(acctQryRs);
+                    AccountRetDto account = accounts.Accounts.FirstOrDefault(a => a.AccountType == AccountType.AccountsReceivable);
+                    AccountRetDto bank = accounts.Accounts.FirstOrDefault(a => a.AccountType == AccountType.Bank);
 
-            var model = new QryRqModel<ARRefundCreditCardQueryRq>();
-            model.SetRequest(ccARRefundRq, "QryRq");
-            Assert.IsTrue(ccARRefundRq.ToString().Contains("<ARRefundCreditCardQueryRq>"));
-            Assert.IsTrue(model.ToString().Contains("<ARRefundCreditCardQueryRq>"));
-        }
+                    InvoiceQueryRq invoicesRq = new() { MaxReturned = 100, IncludeLinkedTxns = true };
+                    InvoiceRs invoicesRs = new(QB.ExecuteQbRequest(invoicesRq));
+                    List<InvoiceRetDto> invoices = invoicesRs.Invoices.Where(i => i.LinkedTxn.Count > 0).ToList();
+                    InvoiceRetDto invoice = invoices[rdm.Next(0, invoices.Count)];
 
-        [TestMethod]
-        public void TestARRefundCreditCardAddRq()
-        {
-            ARRefundCreditCardAddRq ccARRefundRq = new();
-            Assert.IsFalse(ccARRefundRq.IsEntityValid());
+                    ReceivePaymentQueryRq pmtRq = new() { MaxReturned = 50 };
+                    ReceivePaymentRs payments = new(QB.ExecuteQbRequest(pmtRq));
+                    ReceivePaymentRetDto pmt = payments.ReceivePayments?[rdm.Next(0, payments.ReceivePayments.Count)];
 
-            ccARRefundRq.Customer = new();
-            ccARRefundRq.RefundAppliedToTxnAdd = new();
-            ccARRefundRq.RefundAppliedToTxnAdd.Add(new() { TxnID = "AppliedToTxnAdd.TxnID", RefundAmount = 123.45M });
-            Assert.IsTrue(ccARRefundRq.IsEntityValid());
+                    CustomerQueryRq customerRq = new();
+                    customerRq.ListID = new() { pmt.Customer.ListID };
+                    string custRs = QB.ExecuteQbRequest(customerRq);
+                    CustomerRs customers = new(custRs);
+                    if (customers.Customers.Count == 0) Assert.Inconclusive("Customer not found.");
+                    CustomerRetDto customer = customers.Customers[rdm.Next(0, customers.Customers.Count)];
 
-            ccARRefundRq.Customer = null;
-            Assert.IsFalse(ccARRefundRq.IsEntityValid());
+                    addRq.Customer = new() { ListID = customer.ListID };
+                    addRq.ARAccount = new() { ListID = account.ListID };
+                    addRq.RefundFromAccount = new() { ListID = bank?.ListID };
+                    addRq.TxnDate = DateTime.Now;
+                    addRq.RefNumber = addRqName;
+                    addRq.RefundAppliedToTxnAdd = new();
+                    addRq.RefundAppliedToTxnAdd.Add(new() { TxnID = invoice.LinkedTxn[0].TxnID, RefundAmount = invoice.AppliedAmount });
+                    Assert.IsTrue(addRq.IsEntityValid());
 
-            ccARRefundRq.Customer = new();
-            ccARRefundRq.RefundAppliedToTxnAdd = new();
-            Assert.IsFalse(ccARRefundRq.IsEntityValid());
-
-            ccARRefundRq.RefundAppliedToTxnAdd.Add(new());
-            Assert.IsFalse(ccARRefundRq.IsEntityValid());
-
-            ccARRefundRq.RefundAppliedToTxnAdd.Clear();
-            ccARRefundRq.RefundAppliedToTxnAdd.Add(new() { TxnID = "AppliedToTxnAdd.TxnID" });
-            Assert.IsFalse(ccARRefundRq.IsEntityValid());
-
-            ccARRefundRq.RefundAppliedToTxnAdd[0].RefundAmount = 123.45M;
-            Assert.IsTrue(ccARRefundRq.IsEntityValid());
-
-            var model = new AddRqModel<ARRefundCreditCardAddRq>("ARRefundCreditCardAdd");
-            model.SetRequest(ccARRefundRq, "AddRq");
-            Assert.IsTrue(ccARRefundRq.ToString().Contains("<ARRefundCreditCardAddRq>"));
-            Assert.IsTrue(model.ToString().Contains("<ARRefundCreditCardAddRq>"));
+                    addRs = new(QB.ExecuteQbRequest(addRq));
+                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
+                    if (addRs.StatusCode == "3120") Assert.Inconclusive(addRs.StatusMessage);
+                    Regex responses = new(@"^0$|^3120$|^3250$");
+                    Assert.IsTrue(responses.IsMatch(addRs.StatusCode));
+                }
+                #endregion
+            }
+            Thread.Sleep(2000);
         }
     }
 }

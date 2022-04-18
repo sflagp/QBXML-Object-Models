@@ -1,126 +1,124 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels;
+using QbModels.ENUM;
 using System;
+using System.Threading;
 
-namespace QbModels.Tests
+namespace QbProcessor.TEST
 {
     [TestClass]
     public class InvoiceTests
     {
         [TestMethod]
-        public void TestInvoiceQueryRq()
+        public void TestInvoiceModels()
         {
-            InvoiceQueryRq invoiceRq = new();
-            Assert.IsTrue(invoiceRq.IsEntityValid());
+            using (QBProcessor.QbProcessor QB = new())
+            {
+                #region Properties
+                if (QB == null)
+                {
+                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
+                }
 
-            invoiceRq.TxnID = new() { "InventoryAdjustmentQueryRq.TxnID" };
-            Assert.IsTrue(invoiceRq.IsEntityValid());
+                InvoiceRs qryRs, addRs = new(""), modRs;
+                InvoiceAddRq addRq = new();
+                InvoiceModRq modRq = new();
+                string addRqName = $"QbProcessor";
+                string result;
+                #endregion
 
-            invoiceRq.TxnID = null;
-            invoiceRq.RefNumber = new() { "InventoryAdjustmentQueryRq.FullName" };
-            Assert.IsTrue(invoiceRq.IsEntityValid());
+                #region Query Test
+                InvoiceQueryRq qryRq = new();
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            invoiceRq.TxnDateRangeFilter = new();
-            invoiceRq.TxnDateRangeFilter.FromTxnDate = DateTime.Now.AddDays(-365);
-            invoiceRq.TxnDateRangeFilter.ToTxnDate = DateTime.Now;
-            Assert.IsTrue(invoiceRq.IsEntityValid());
+                qryRq.RefNumberFilter = new() { RefNumber = addRqName, MatchCriterion = MatchCriterion.StartsWith };
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            invoiceRq.ModifiedDateRangeFilter = new();
-            invoiceRq.ModifiedDateRangeFilter.FromModifiedDate = DateTime.Now.AddDays(-365);
-            invoiceRq.ModifiedDateRangeFilter.ToModifiedDate = DateTime.Now;
-            Assert.IsFalse(invoiceRq.IsEntityValid());
+                result = QB.ExecuteQbRequest(qryRq);
+                qryRs = new(result);
+                Assert.IsTrue(qryRs.StatusSeverity == "Info");
+                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+                #endregion
 
-            invoiceRq.TxnDateRangeFilter = null;
-            Assert.IsTrue(invoiceRq.IsEntityValid());
+                #region Add Test
+                if (qryRs.TotalInvoices == 0)
+                {
+                    Random rdm = new();
 
-            var model = new QryRqModel<InvoiceQueryRq>();
-            model.SetRequest(invoiceRq, "QryRq");
-            Assert.IsTrue(invoiceRq.ToString().Contains("<InvoiceQueryRq>"));
-            Assert.IsTrue(model.ToString().Contains("<InvoiceQueryRq>"));
-        }
+                    AccountQueryRq accountsRq = new();
+                    accountsRq.AccountType = AccountType.AccountsReceivable;
+                    AccountRs accounts = new(QB.ExecuteQbRequest(accountsRq));
+                    AccountRetDto account = accounts.Accounts[rdm.Next(0, accounts.Accounts.Count)];
 
-        [TestMethod]
-        public void TestInvoiceAddRq()
-        {
-            InvoiceAddRq invoiceRq = new();
-            Assert.IsFalse(invoiceRq.IsEntityValid());
+                    CustomerQueryRq customerRq = new();
+                    CustomerRs customers = new(QB.ExecuteQbRequest(customerRq));
+                    CustomerRetDto customer = customers.Customers[rdm.Next(0, customers.Customers.Count)];
 
-            invoiceRq.Customer = new() { FullName = "InvoiceAddRq.Customer.FullName" };
-            Assert.IsTrue(invoiceRq.IsEntityValid());
+                    ItemNonInventoryQueryRq itemsRq = new();
+                    ItemNonInventoryRs items = new(QB.ExecuteQbRequest(itemsRq));
 
-            invoiceRq.InvoiceLine = new();
-            invoiceRq.InvoiceGroupLine = new();
-            Assert.IsFalse(invoiceRq.IsEntityValid());
+                    ItemOtherChargeQueryRq chargeRq = new();
+                    ItemOtherChargeRs charges = new(QB.ExecuteQbRequest(chargeRq));
 
-            invoiceRq.InvoiceGroupLine = null;
-            Assert.IsTrue(invoiceRq.IsEntityValid());
+                    addRq.Customer = new() { ListID = customer.ListID };
+                    addRq.ARAccount = new() { ListID = account.ListID };
+                    addRq.TxnDate = DateTime.Now;
+                    addRq.RefNumber = addRqName;
+                    addRq.InvoiceLine = new();
+                    addRq.InvoiceLine.Add(new()
+                    {
+                        Item = new() { ListID = items.ItemsNonInventory[rdm.Next(0, items.ItemsNonInventory.Count)].ListID },
+                        Rate = 12.34M,
+                        Quantity = 5,
+                        Desc = $"#1 QbProcessor.{addRq.GetType().Name} on {DateTime.Now}"
+                    });
+                    addRq.InvoiceLine.Add(new()
+                    {
+                        Item = new() { ListID = items.ItemsNonInventory[rdm.Next(0, items.ItemsNonInventory.Count)].ListID },
+                        Rate = 20M,
+                        Quantity = 1,
+                        Desc = $"#2 QbProcessor.{addRq.GetType().Name} on {DateTime.Now}"
+                    });
+                    addRq.InvoiceLine.Add(new()
+                    {
+                        Item = new() { ListID = charges.ItemOtherCharges[rdm.Next(0, charges.ItemOtherCharges.Count)].ListID },
+                        Rate = 250,
+                        Amount = 123.45M,
+                        Desc = $"#4 QbProcessor.{addRq.GetType().Name} on {DateTime.Now}"
+                    });
+                    addRq.InvoiceLine.Add(new()
+                    {
+                        Item = new() { ListID = items.ItemsNonInventory[rdm.Next(0, items.ItemsNonInventory.Count)].ListID },
+                        Rate = 11M,
+                        Quantity = 30,
+                        Desc = $"#3 QbProcessor.{addRq.GetType().Name} on {DateTime.Now}"
+                    });
+                    Assert.IsTrue(addRq.IsEntityValid());
 
-            invoiceRq.SetCredit = new();
-            invoiceRq.SetCredit.Add(new());
-            Assert.IsFalse(invoiceRq.IsEntityValid());
+                    result = QB.ExecuteQbRequest(addRq);
+                    addRs = new(result);
+                    Assert.IsTrue(addRs.StatusCode == "0");
+                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
+                }
+                #endregion
 
-            invoiceRq.SetCredit[0].CreditTxnID = "InvoiceAddRq.SetCredit.CreditTxnID";
-            invoiceRq.SetCredit[0].AppliedAmount = 10m;
-            Assert.IsTrue(invoiceRq.IsEntityValid());
+                #region Mod Test
+                InvoiceRetDto Invoice = qryRs.TotalInvoices == 0 ? addRs.Invoices[0] : qryRs.Invoices[0];
+                modRq.TxnID = Invoice.TxnID;
+                modRq.EditSequence = Invoice.EditSequence;
+                modRq.TxnDate = Invoice.TxnDate;
+                modRq.Customer = Invoice.Customer;
+                modRq.Memo = $"QbProcessor.{modRq.GetType().Name} on {DateTime.Now}";
+                Assert.IsTrue(modRq.IsEntityValid());
 
-            invoiceRq.InvoiceLine = new();
-            invoiceRq.InvoiceGroupLine = new();
-            Assert.IsFalse(invoiceRq.IsEntityValid());
-
-            invoiceRq.InvoiceGroupLine = null;
-            Assert.IsTrue(invoiceRq.IsEntityValid());
-
-            var model = new AddRqModel<InvoiceAddRq>("InvoiceAdd");
-            model.SetRequest(invoiceRq, "AddRq");
-            Assert.IsTrue(invoiceRq.ToString().Contains("<InvoiceAddRq>"));
-            Assert.IsTrue(model.ToString().Contains("<InvoiceAddRq>"));
-        }
-
-        [TestMethod]
-        public void TestInvoiceModRq()
-        {
-            InvoiceModRq invoiceRq = new();
-            Assert.IsFalse(invoiceRq.IsEntityValid());
-
-            invoiceRq.TxnID = "InvoiceModRq.TxnID";
-            invoiceRq.EditSequence = "InvoiceModRq.EditSequence";
-            Assert.IsTrue(invoiceRq.IsEntityValid());
-
-            invoiceRq.TxnDate = DateTime.Now;
-            invoiceRq.Customer = new() { FullName = "InvoiceAddRq.Customer.FullName" };
-            Assert.IsTrue(invoiceRq.IsEntityValid());
-
-            invoiceRq.InvoiceLine = new();
-            invoiceRq.InvoiceGroupLine = new() { TxnLineID = "InvoiceGroupLine.TxnLineID" };
-            Assert.IsFalse(invoiceRq.IsEntityValid());
-
-            invoiceRq.InvoiceGroupLine = null;
-            Assert.IsTrue(invoiceRq.IsEntityValid());
-
-            invoiceRq.SetCredit = new();
-            invoiceRq.SetCredit.Add(new());
-            Assert.IsFalse(invoiceRq.IsEntityValid());
-
-            invoiceRq.SetCredit[0].CreditTxnID = "InvoiceAddRq.SetCredit.CreditTxnID";
-            invoiceRq.SetCredit[0].AppliedAmount = 10m;
-            Assert.IsTrue(invoiceRq.IsEntityValid());
-
-            invoiceRq.InvoiceLine = new();
-            invoiceRq.InvoiceGroupLine = new() { TxnLineID = "InvoiceGroupLine.TxnLineID" };
-            Assert.IsFalse(invoiceRq.IsEntityValid());
-
-            invoiceRq.InvoiceGroupLine = null;
-            Assert.IsTrue(invoiceRq.IsEntityValid());
-
-            invoiceRq.InvoiceLine.Add(new() { TxnLineID = "InvoiceModRq.InvoiceLine.TxnLineID", Rate = 10m, RatePercent = "5" });
-            Assert.IsFalse(invoiceRq.IsEntityValid());
-
-            invoiceRq.InvoiceLine[0].RatePercent = null;
-            Assert.IsTrue(invoiceRq.IsEntityValid());
-
-            var model = new ModRqModel<InvoiceModRq>("InvoiceMod");
-            model.SetRequest(invoiceRq, "ModRq");
-            Assert.IsTrue(invoiceRq.ToString().Contains("<InvoiceModRq>"));
-            Assert.IsTrue(model.ToString().Contains("<InvoiceModRq>"));
+                modRq.TxnDate = default;
+                result = QB.ExecuteQbRequest(modRq);
+                modRs = new(result);
+                Assert.IsTrue(modRs.StatusCode == "0");
+                Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
+                #endregion
+            }
+            Thread.Sleep(2000);
         }
     }
 }

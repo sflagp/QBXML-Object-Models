@@ -1,67 +1,63 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QbModels.ENUM;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels;
+using System;
+using System.Text.RegularExpressions;
+using System.Threading;
 
-namespace QbModels.Tests
+namespace QbProcessor.TEST
 {
     [TestClass]
     public class ShipMethodTests
     {
         [TestMethod]
-        public void TestShipMethodQueryRq()
+        public void TestShipMethodModel()
         {
-            ShipMethodQueryRq custTypeRq = new();
-            Assert.IsTrue(custTypeRq.IsEntityValid());
+            using (QBProcessor.QbProcessor QB = new())
+            {
+                #region Properties
+                if (QB == null)
+                {
+                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
+                }
 
-            custTypeRq.ListID = new() { "ShipMethodQueryRq.ListID" };
-            custTypeRq.MaxReturned = -1;
-            Assert.IsTrue(custTypeRq.IsEntityValid());
+                ShipMethodRs qryRs, addRs;
+                ShipMethodQueryRq qryRq;
+                ShipMethodAddRq addRq;
 
-            custTypeRq.ListID = null;
-            custTypeRq.FullName = new() { "ShipMethodQueryRq.FullName" };
-            Assert.IsTrue(custTypeRq.IsEntityValid());
+                string addRqName = "QbProcessor";
+                string result;
+                #endregion
 
-            custTypeRq.FullName = null;
-            custTypeRq.NameFilter = new();
-            custTypeRq.MaxReturned = 99999;
-            Assert.IsFalse(custTypeRq.IsEntityValid());
+                #region Query Test
+                qryRq = new();
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            custTypeRq.NameFilter.MatchCriterion = MatchCriterion.None;
-            custTypeRq.NameFilter.Name = "A";
-            Assert.IsFalse(custTypeRq.IsEntityValid());
+                result = QB.ExecuteQbRequest(qryRq);
+                qryRs = new(result);
+                Regex statusCodes =  new(@"^0$|^3250$");
+                Assert.IsTrue(statusCodes.IsMatch(qryRs.StatusCode));
+                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+                if (qryRs.StatusCode == "3250") Assert.Inconclusive(qryRs.StatusMessage);
+                #endregion
 
-            custTypeRq.NameFilter.MatchCriterion = MatchCriterion.Contains;
-            Assert.IsTrue(custTypeRq.IsEntityValid());
+                #region Add Test
+                if (qryRs.TotalShipMethods == 0)
+                {
+                    addRq = new()
+                    {
+                        Name = addRqName,
+                        IsActive = true
+                    };
+                    Assert.IsTrue(addRq.IsEntityValid());
 
-            custTypeRq.NameRangeFilter = new();
-            custTypeRq.NameRangeFilter.FromName = "A";
-            custTypeRq.NameRangeFilter.ToName = "ZZ";
-            Assert.IsFalse(custTypeRq.IsEntityValid());
-
-            custTypeRq.NameFilter = null;
-            Assert.IsTrue(custTypeRq.IsEntityValid());
-
-            var model = new QryRqModel<ShipMethodQueryRq>();
-            model.SetRequest(custTypeRq, "QryRq");
-            Assert.IsTrue(model.ToString().Contains("<ShipMethodQueryRq>"));
-            Assert.IsTrue(custTypeRq.ToString().Contains("<ShipMethodQueryRq>"));
-        }
-
-        [TestMethod]
-        public void TestShipMethodAddRq()
-        {
-            ShipMethodAddRq custTypeRq = new();
-            Assert.IsFalse(custTypeRq.IsEntityValid());
-
-            custTypeRq.Name = "ShipMethodAddRq.ShipMethod.Name";
-            Assert.IsFalse(custTypeRq.IsEntityValid());
-
-            custTypeRq.Name = "ShipMethodName";
-            Assert.IsTrue(custTypeRq.IsEntityValid());
-
-            var model = new AddRqModel<ShipMethodAddRq>("ShipMethodAdd");
-            model.SetRequest(custTypeRq, "AddRq");
-            Assert.IsTrue(custTypeRq.ToString().Contains("<ShipMethodAddRq>"));
-            Assert.IsTrue(model.ToString().Contains("<ShipMethodAddRq>"));
+                    addRs = new(QB.ExecuteQbRequest(addRq));
+                    Assert.IsTrue(addRs.StatusCode == "0");
+                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
+                    Assert.IsTrue(addRs.TotalShipMethods > 0);
+                }
+                #endregion
+            }
+            Thread.Sleep(2000);
         }
     }
 }

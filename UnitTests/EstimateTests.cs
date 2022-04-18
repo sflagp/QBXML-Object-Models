@@ -1,81 +1,101 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels;
 using QbModels.ENUM;
 using System;
+using System.Threading;
 
-namespace QbModels.Tests
+namespace QbProcessor.TEST
 {
     [TestClass]
     public class EstimateTests
     {
         [TestMethod]
-        public void TestEstimateQueryRq()
+        public void TestEstimateModels()
         {
-            EstimateQueryRq estimateRq = new();
-            Assert.IsTrue(estimateRq.IsEntityValid());
+            using (QBProcessor.QbProcessor QB = new())
+            {
+                #region Properties
+                if (QB == null)
+                {
+                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
+                }
 
-            estimateRq.PaidStatus = PaidStatus.All;
-            Assert.IsTrue(estimateRq.IsEntityValid());
+                EstimateRs qryRs, addRs = new(""), modRs;
+                EstimateAddRq addRq = new();
+                EstimateModRq modRq = new();
+                string addRqName = $"QbProcessor";
+                string result;
+                #endregion
 
-            var model = new QryRqModel<EstimateQueryRq>();
-            model.SetRequest(estimateRq, "QryRq");
-            Assert.IsTrue(estimateRq.ToString().Contains("<EstimateQueryRq>"));
-            Assert.IsTrue(model.ToString().Contains("<EstimateQueryRq>"));
-        }
+                #region Query Test
+                EstimateQueryRq qryRq = new();
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-        [TestMethod]
-        public void TestEstimateAddRq()
-        {
-            EstimateAddRq estimateRq = new();
-            Assert.IsFalse(estimateRq.IsEntityValid());
+                qryRq.RefNumberFilter = new() { RefNumber = addRqName, MatchCriterion = MatchCriterion.StartsWith };
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            estimateRq.Customer = new();
-            Assert.IsTrue(estimateRq.IsEntityValid());
+                result = QB.ExecuteQbRequest(qryRq);
+                qryRs = new(result);
+                Assert.IsTrue(qryRs.StatusSeverity == "Info");
+                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+                #endregion
 
-            estimateRq.EstimateLine = new();
-            estimateRq.EstimateLineGroup = new();
-            Assert.IsFalse(estimateRq.IsEntityValid());
+                #region Add Test
+                if (qryRs.TotalEstimates == 0)
+                {
+                    Random rdm = new();
 
-            estimateRq.EstimateLineGroup = null;
-            Assert.IsTrue(estimateRq.IsEntityValid());
+                    AccountQueryRq accountsRq = new();
+                    accountsRq.AccountType = AccountType.AccountsReceivable;
+                    AccountRs accounts = new(QB.ExecuteQbRequest(accountsRq));
+                    AccountRetDto account = accounts.Accounts[rdm.Next(0, accounts.Accounts.Count)];
 
-            var model = new AddRqModel<EstimateAddRq>("EstimateAdd");
-            model.SetRequest(estimateRq, "AddRq");
-            Assert.IsTrue(estimateRq.ToString().Contains("<EstimateAddRq>"));
-            Assert.IsTrue(model.ToString().Contains("<EstimateAddRq>"));
-        }
+                    CustomerQueryRq customerRq = new();
+                    CustomerRs customers = new(QB.ExecuteQbRequest(customerRq));
+                    CustomerRetDto customer = customers.Customers[rdm.Next(0, customers.Customers.Count)];
 
-        [TestMethod]
-        public void TestEstimateModRq()
-        {
-            EstimateModRq estimateRq = new();
-            Assert.IsFalse(estimateRq.IsEntityValid());
+                    ItemNonInventoryQueryRq itemsRq = new();
+                    ItemNonInventoryRs items = new(QB.ExecuteQbRequest(itemsRq));
+                    ItemNonInventoryRetDto item = items.ItemsNonInventory[rdm.Next(0, items.ItemsNonInventory.Count)];
 
-            estimateRq.TxnID = "EstimateModRq.TxnID";
-            estimateRq.EditSequence = null;
-            estimateRq.TxnDate = DateTime.Now;
-            Assert.IsFalse(estimateRq.IsEntityValid());
+                    addRq.Customer = new() { ListID = customer.ListID };
+                    addRq.TxnDate = DateTime.Now;
+                    addRq.DueDate = DateTime.Today.AddDays(30);
+                    addRq.RefNumber = addRqName;
+                    addRq.EstimateLine = new();
+                    addRq.EstimateLine.Add( new()
+                    { 
+                        Item = new() { ListID = item.ListID },
+                        Desc = $"QbProcessor.{addRq.GetType().Name} on {DateTime.Now}", 
+                        Amount = 123.45M 
+                    });
+                    Assert.IsTrue(addRq.IsEntityValid());
 
-            estimateRq.TxnID = null;
-            estimateRq.EditSequence = "EstimateModRq.EditSequence";
-            Assert.IsFalse(estimateRq.IsEntityValid());
+                    result = QB.ExecuteQbRequest(addRq);
+                    addRs = new(result);
+                    if (addRs.StatusCode == "3250") Assert.Inconclusive(addRs.StatusMessage);
+                    Assert.IsTrue(addRs.StatusCode == "0");
+                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
+                }
+                #endregion
 
-            estimateRq.Customer = new();
-            estimateRq.TxnID = "EstimateModRq.TxnID";
-            estimateRq.EditSequence = "EstimateModRq.EditSequence";
-            Assert.IsTrue(estimateRq.IsEntityValid());
+                #region Mod Test
+                EstimateRetDto estimate = qryRs.TotalEstimates == 0 ? addRs.Estimates[0] : qryRs.Estimates[0];
+                modRq.TxnID = estimate.TxnID;
+                modRq.EditSequence = estimate.EditSequence;
+                modRq.TxnDate = estimate.TxnDate;
+                modRq.Customer = estimate.Customer;
+                modRq.Memo = $"QbProcessor.{modRq.GetType().Name} on {DateTime.Now}";
+                Assert.IsTrue(modRq.IsEntityValid());
 
-            estimateRq.EstimateLine = new();
-            estimateRq.EstimateLine.Add( new() { TxnLineID = "EstimateLineGroup.TxnLineID" });
-            estimateRq.EstimateLineGroup = new() { TxnLineID = "EstimateLineGroup.TxnLineID" };
-            Assert.IsFalse(estimateRq.IsEntityValid());
-
-            estimateRq.EstimateLineGroup = null;
-            Assert.IsTrue(estimateRq.IsEntityValid());
-
-            var model = new ModRqModel<EstimateModRq>("EstimateMod");
-            model.SetRequest(estimateRq, "ModRq");
-            Assert.IsTrue(estimateRq.ToString().Contains("<EstimateModRq>"));
-            Assert.IsTrue(model.ToString().Contains("<EstimateModRq>"));
+                modRq.TxnDate = default;
+                result = QB.ExecuteQbRequest(modRq);
+                modRs = new(result);
+                Assert.IsTrue(modRs.StatusCode == "0");
+                Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
+                #endregion
+            }
+            Thread.Sleep(2000);
         }
     }
 }

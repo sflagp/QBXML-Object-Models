@@ -1,92 +1,93 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels;
+using QbModels.ENUM;
 using System;
+using System.Threading;
 
-namespace QbModels.Tests
+namespace QbProcessor.TEST
 {
     [TestClass]
     public class DepositTests
     {
         [TestMethod]
-        public void TestDepositQueryRq()
+        public void TestDepositModels()
         {
-            DepositQueryRq depositRq = new();
-            Assert.IsTrue(depositRq.IsEntityValid());
+            using (QBProcessor.QbProcessor QB = new())
+            {
+                #region Properties
+                if (QB == null)
+                {
+                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
+                }
 
-            depositRq.TxnID = new() { "DepositQueryRq.TxnID" };
-            Assert.IsTrue(depositRq.IsEntityValid());
+                DepositRs qryRs, addRs = new(""), modRs;
+                DepositAddRq addRq = new();
+                DepositModRq modRq = new();
+                string addRqName = $"QbProcessor";
+                string result;
+                #endregion
 
-            depositRq.TxnID = null;
-            depositRq.RefNumber = new() { "DepositQueryRq.FullName" };
-            Assert.IsTrue(depositRq.IsEntityValid());
+                #region Query Test
+                DepositQueryRq qryRq = new();
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            depositRq.TxnDateRangeFilter = new();
-            depositRq.TxnDateRangeFilter.FromTxnDate = DateTime.Now.AddDays(-365);
-            depositRq.TxnDateRangeFilter.ToTxnDate = DateTime.Now;
-            Assert.IsTrue(depositRq.IsEntityValid());
+                qryRq.ModifiedDateRangeFilter = new() { FromModifiedDate = DateTime.Today.AddDays(-90), ToModifiedDate = DateTime.Today };
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            depositRq.ModifiedDateRangeFilter = new();
-            depositRq.ModifiedDateRangeFilter.FromModifiedDate = DateTime.Now.AddDays(-365);
-            depositRq.ModifiedDateRangeFilter.ToModifiedDate = DateTime.Now;
-            Assert.IsFalse(depositRq.IsEntityValid());
+                result = QB.ExecuteQbRequest(qryRq);
+                qryRs = new(result);
+                Assert.IsTrue(qryRs.StatusSeverity == "Info");
+                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+                #endregion
 
-            depositRq.TxnDateRangeFilter = null;
-            Assert.IsTrue(depositRq.IsEntityValid());
+                #region Add Test
+                if (qryRs.TotalDeposits == 0)
+                {
+                    Random rdm = new();
 
-            var model = new QryRqModel<DepositQueryRq>();
-            model.SetRequest(depositRq, "QryRq");
-            Assert.IsTrue(depositRq.ToString().Contains("<DepositQueryRq>"));
-            Assert.IsTrue(model.ToString().Contains("<DepositQueryRq>"));
-        }
+                    AccountQueryRq bankRq = new() { AccountType = AccountType.Bank };
+                    AccountRs banks = new(QB.ExecuteQbRequest(bankRq));
+                    AccountRetDto bank = banks.Accounts[rdm.Next(0, banks.Accounts.Count)];
 
-        [TestMethod]
-        public void TestDepositAddRq()
-        {
-            DepositAddRq depositRq = new();
-            Assert.IsFalse(depositRq.IsEntityValid());
+                    AccountQueryRq acctRq = new() { AccountType = AccountType.AccountsReceivable };
+                    AccountRs accts = new(QB.ExecuteQbRequest(acctRq));
+                    AccountRetDto acct = accts.Accounts[rdm.Next(0, accts.Accounts.Count)];
 
-            depositRq.DepositToAccount = new();
-            Assert.IsTrue(depositRq.IsEntityValid());
+                    CustomerQueryRq custRq = new();
+                    CustomerRs customers = new(QB.ExecuteQbRequest(custRq));
+                    CustomerRetDto customer = customers.Customers[rdm.Next(0, customers.Customers.Count)];
 
-            depositRq.DepositLine = new();
-            depositRq.DepositLine.Add(new());
-            Assert.IsFalse(depositRq.IsEntityValid());
+                    addRq.DepositToAccount = new() { ListID = bank.ListID };
+                    addRq.TxnDate = DateTime.Now;
+                    addRq.DepositLine = new();
+                    addRq.DepositLine.Add(new());
+                    addRq.DepositLine[0].Entity = new() { ListID = customer.ListID };
+                    addRq.DepositLine[0].Account = new() { ListID = acct.ListID };
+                    addRq.DepositLine[0].Memo = $"{addRqName}.{addRq.GetType().Name} on {DateTime.Now}";
+                    addRq.DepositLine[0].Amount = 123.45M;
+                    Assert.IsTrue(addRq.IsEntityValid());
 
-            depositRq.DepositLine[0].PaymentTxnID = "DepositAddRq.DepositLine.PaymentTxnID";
-            depositRq.DepositLine[0].Account = new();
-            Assert.IsFalse(depositRq.IsEntityValid());
+                    result = QB.ExecuteQbRequest(addRq);
+                    addRs = new(result);
+                    Assert.IsTrue(addRs.StatusCode == "0");
+                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
+                }
+                #endregion
 
-            depositRq.DepositLine[0].PaymentTxnID = null;
-            var model = new AddRqModel<DepositAddRq>("DepositAdd");
-            model.SetRequest(depositRq, "AddRq");
-            Assert.IsTrue(depositRq.ToString().Contains("<DepositAddRq>"));
-            Assert.IsTrue(model.ToString().Contains("<DepositAddRq>"));
-        }
+                #region Mod Test
+                DepositRetDto Deposit = qryRs.TotalDeposits == 0 ? addRs.Deposits[0] : qryRs.Deposits[0];
+                modRq.TxnID = Deposit.TxnID;
+                modRq.EditSequence = Deposit.EditSequence;
+                modRq.TxnDate = DateTime.Now;
+                modRq.Memo = $"{addRqName}.{modRq.GetType().Name} on {DateTime.Now}";
+                Assert.IsTrue(modRq.IsEntityValid());
 
-        [TestMethod]
-        public void TestDepositModRq()
-        {
-            DepositModRq depositRq = new();
-            Assert.IsFalse(depositRq.IsEntityValid());
-
-            depositRq.TxnID = "DepositModRq.TxnID";
-            depositRq.EditSequence = "DepositModRq.EditSequence";
-            depositRq.TxnDate = DateTime.Now;
-            Assert.IsTrue(depositRq.IsEntityValid());
-
-            depositRq.DepositLine = new();
-            depositRq.DepositLine.Add(new());
-            Assert.IsFalse(depositRq.IsEntityValid());
-
-            depositRq.DepositLine[0].TxnLineID = "DepositModRq.DepositLine.TxnLineID";
-            depositRq.DepositLine[0].PaymentTxnID = "DepositModRq.DepositLine.PaymentTxnID";
-            depositRq.DepositLine[0].Entity = new();
-            Assert.IsFalse(depositRq.IsEntityValid());
-
-            depositRq.DepositLine[0].PaymentTxnID = null;
-            var model = new ModRqModel<DepositModRq>("DepositMod");
-            model.SetRequest(depositRq, "ModRq");
-            Assert.IsTrue(depositRq.ToString().Contains("<DepositModRq>"));
-            Assert.IsTrue(model.ToString().Contains("<DepositModRq>"));
+                modRs = new(QB.ExecuteQbRequest(modRq));
+                Assert.IsTrue(modRs.StatusCode == "0");
+                Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
+                #endregion
+            }
+            Thread.Sleep(2000);
         }
     }
 }

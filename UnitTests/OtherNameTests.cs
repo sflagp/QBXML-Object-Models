@@ -1,85 +1,82 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels;
 using QbModels.ENUM;
+using System;
+using System.Threading;
 
-namespace QbModels.Tests
+namespace QbProcessor.TEST
 {
     [TestClass]
     public class OtherNameTests
     {
         [TestMethod]
-        public void TestOtherNameQueryRq()
+        public void TestOtherNameModels()
         {
-            OtherNameQueryRq otherNameRq = new();
-            Assert.IsTrue(otherNameRq.IsEntityValid());
+            using (QBProcessor.QbProcessor QB = new())
+            {
+                #region Properties
+                if (QB == null)
+                {
+                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
+                }
 
-            otherNameRq.ListID = new() { "JobTypeQueryRq.ListID" };
-            otherNameRq.MaxReturned = -1;
-            Assert.IsTrue(otherNameRq.IsEntityValid());
+                OtherNameRs qryRs, addRs = new(""), modRs;
+                OtherNameAddRq addRq = new();
+                OtherNameModRq modRq = new();
+                string addRqName = $"QbProcessor {addRq.GetType().Name}";
+                #endregion
 
-            otherNameRq.ListID = null;
-            otherNameRq.FullName = new() { "JobTypeQueryRq.FullName" };
-            Assert.IsTrue(otherNameRq.IsEntityValid());
+                #region Query Test
+                OtherNameQueryRq qryRq = new();
+                qryRq.NameFilter = new() { Name = addRqName, MatchCriterion = MatchCriterion.StartsWith };
+                qryRq.ActiveStatus = "All";
+                Assert.IsTrue(qryRq.IsEntityValid());
 
-            otherNameRq.FullName = null;
-            otherNameRq.NameFilter = new();
-            otherNameRq.MaxReturned = 99999;
-            Assert.IsFalse(otherNameRq.IsEntityValid());
+                qryRs = new(QB.ExecuteQbRequest(qryRq));
+                Assert.IsTrue(qryRs.StatusSeverity == "Info");
+                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+                #endregion
 
-            otherNameRq.NameFilter.MatchCriterion = MatchCriterion.None;
-            otherNameRq.NameFilter.Name = "A";
-            Assert.IsFalse(otherNameRq.IsEntityValid());
+                #region Add Test
+                if (qryRs.TotalOtherNames == 0)
+                {
+                    addRq.Name = addRqName;
+                    addRq.IsActive = true;
+                    addRq.FirstName = "Greg";
+                    addRq.LastName = "Prieto";
+                    Assert.IsTrue(addRq.IsEntityValid());
 
-            otherNameRq.NameFilter.MatchCriterion = MatchCriterion.Contains;
-            Assert.IsTrue(otherNameRq.IsEntityValid());
+                    string result = QB.ExecuteQbRequest(addRq);
+                    addRs = new(result);
+                    Assert.IsTrue(addRs.StatusCode == "0");
+                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
+                }
+                #endregion
 
-            otherNameRq.NameRangeFilter = new();
-            otherNameRq.NameRangeFilter.FromName = "A";
-            otherNameRq.NameRangeFilter.ToName = "ZZ";
-            Assert.IsFalse(otherNameRq.IsEntityValid());
+                #region Mod Test
+                string Note = $"{addRqName} updated by {modRq.GetType().Name} on {DateTime.Now}";
+                OtherNameRetDto acct = qryRs.TotalOtherNames == 0 ? addRs.OtherNames[0] : qryRs.OtherNames[0];
+                modRq.ListID = acct.ListID;
+                modRq.EditSequence = acct.EditSequence;
+                modRq.Name = acct.Name;
+                modRq.Notes = Note;
+                Assert.IsTrue(modRq.IsEntityValid());
 
-            otherNameRq.NameFilter = null;
-            Assert.IsTrue(otherNameRq.IsEntityValid());
+                modRs = new(QB.ExecuteQbRequest(modRq));
+                Assert.IsTrue(modRs.StatusCode == "0");
+                Assert.IsTrue(modRs.OtherNames[0].Notes == Note);
 
-            var model = new QryRqModel<OtherNameQueryRq>();
-            model.SetRequest(otherNameRq, "QryRq");
-            Assert.IsTrue(otherNameRq.ToString().Contains("<OtherNameQueryRq>"));
-            Assert.IsTrue(model.ToString().Contains("<OtherNameQueryRq>"));
-        }
+                modRq.ListID = modRs.OtherNames[0].ListID;
+                modRq.EditSequence = modRs.OtherNames[0].EditSequence;
+                modRq.Email = "greg.prieto@ncsecu.org";
+                Assert.IsTrue(modRq.IsEntityValid());
 
-        [TestMethod]
-        public void TestOtherNameAddRq()
-        {
-            OtherNameAddRq otherNameRq = new();
-            Assert.IsFalse(otherNameRq.IsEntityValid());
-
-            otherNameRq.Name = "OtherNameAddRq.FullName";
-            otherNameRq.IsActive = true;
-            Assert.IsTrue(otherNameRq.IsEntityValid());
-
-            var model = new AddRqModel<OtherNameAddRq>("OtherNameAdd");
-            model.SetRequest(otherNameRq, "AddRq");
-            Assert.IsTrue(otherNameRq.ToString().Contains("<OtherNameAddRq>"));
-            Assert.IsTrue(model.ToString().Contains("<OtherNameAddRq>"));
-        }
-
-        [TestMethod]
-        public void TestOtherNameModRq()
-        {
-            OtherNameModRq otherNameRq = new();
-            Assert.IsFalse(otherNameRq.IsEntityValid());
-
-            otherNameRq.ListID = "OtherNameAddRq.ListID";
-            otherNameRq.EditSequence = "OtherNameAddRq.EditSequence";
-            Assert.IsFalse(otherNameRq.IsEntityValid());
-
-            otherNameRq.Name = "OtherNameAddRq.Name";
-            otherNameRq.IsActive = true;
-            Assert.IsTrue(otherNameRq.IsEntityValid());
-
-            var model = new ModRqModel<OtherNameModRq>("OtherNameMod");
-            model.SetRequest(otherNameRq, "ModRq");
-            Assert.IsTrue(otherNameRq.ToString().Contains("<OtherNameModRq>"));
-            Assert.IsTrue(model.ToString().Contains("<OtherNameModRq>"));
+                modRs = new(QB.ExecuteQbRequest(modRq));
+                Assert.IsTrue(modRs.StatusCode == "0");
+                Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
+                #endregion
+            }
+            Thread.Sleep(2000);
         }
     }
 }
