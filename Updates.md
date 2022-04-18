@@ -1,3 +1,17 @@
+<i>4/17/2022</i><br />
+Made major changes to the serialization process.  As such, am changing the version number to 1.2.x to synchronize between NuGet and GitHub.
+
+Completely rewrote the serialization process to use IXmlSerializable instead of relying solely on XmlSerializer.  This allows me to have greater control over the serialization process.  Because of this, have eliminated all the Overload and Specified properties that were required to make the XmlSerializer work properly resulting in fewer and cleaner properties.  Also used ENUM properties where appropriate.  This would have been done from the onset but the XmlSerializer was having issues with this.
+
+On another note, decided to deprecate all Qb{request type}View model views.  Decided instead to start naming the views {request type}Rs.  The Qb...View is still there but will be removed some time in the future.  This also makes for cleaner coding (IMO).  For example, for Invoice request types, the intellisense should list:
+```
+InvoiceAddRq
+InvoiceModRq
+InvoiceQueryRq
+InvoiceRetDto
+InvoiceRs
+```
+
 <i>4/11/2022</i><br />
 Added ListDel/ListDeleted/ListDisplayAdd/ListDisplayMod requests.
 In the process of adding ListDel request, found bugs with the following:
