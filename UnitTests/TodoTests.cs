@@ -1,88 +1,113 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QbModels;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels.ENUM;
 using System;
-using System.Threading;
 
-namespace QbProcessor.TEST
+namespace QbModels.Tests
 {
     [TestClass]
     public class TodoTests
     {
         [TestMethod]
-        public void TestTodoModels()
+        public void TestTodoQueryRq()
         {
-            using (QBProcessor.QbProcessor QB = new())
-            {
-                #region Properties
-                if (QB == null)
-                {
-                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
-                }
+            ToDoQueryRq todoRq = new();
+            Assert.IsTrue(todoRq.IsEntityValid());
 
-                QbToDosView qryRs, addRs = new(""), modRs;
-                ToDoAddRq addRq = new();
-                ToDoModRq modRq = new();
-                Random rdm = new();
-                string addRqName = $"QbProcessor";
-                string result;
-                #endregion
+            todoRq.ListID = new() { "TodoQueryRq.ListID" };
+            todoRq.DoneStatus = DoneStatus.NotDoneOnly;
+            Assert.IsTrue(todoRq.IsEntityValid());
 
-                #region Query Test
-                ToDoQueryRq qryRq = new();
-                Assert.IsTrue(qryRq.IsEntityValid());
+            todoRq.MaxReturned = 99999;
+            todoRq.NameFilter = new();
+            todoRq.NameFilter.MatchCriterion = MatchCriterion.None;
+            todoRq.NameFilter.Name = "A";
+            Assert.IsFalse(todoRq.IsEntityValid());
 
-                qryRq.DoneStatus = "NotDoneOnly";
-                Assert.IsTrue(qryRq.IsEntityValid());
+            todoRq.NameFilter.MatchCriterion = MatchCriterion.Contains;
+            Assert.IsTrue(todoRq.IsEntityValid());
 
-                result = QB.ExecuteQbRequest(qryRq);
-                qryRs = new(result);
-                if (qryRs.StatusCode == "3231") Assert.Inconclusive(qryRs.StatusMessage);
-                Assert.IsTrue(qryRs.StatusSeverity == "Info");
-                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
-                #endregion
+            todoRq.NameRangeFilter = new();
+            todoRq.NameRangeFilter.FromName = "A";
+            todoRq.NameRangeFilter.ToName = "ZZ";
+            Assert.IsFalse(todoRq.IsEntityValid());
 
-                #region Add Test
-                if (qryRs.TotalToDos == 0)
-                {
-                    CustomerQueryRq custRq = new();
-                    QbCustomersView customers = new(QB.ExecuteQbRequest(custRq));
-                    CustomerRetDto cust = customers.Customers[rdm.Next(0, customers.Customers.Count)];
+            todoRq.NameFilter = null;
+            Assert.IsTrue(todoRq.IsEntityValid());
 
-                    addRq.Notes = $"{addRqName}.{addRq.GetType().Name}";
-                    addRq.Customer = new() { ListID = cust.ListID };
-                    addRq.Notes = $"Requested by {addRqName} on {DateTime.Now}";
-                    addRq.IsActive = true;
-                    Assert.IsTrue(addRq.IsEntityValid());
+            var model = new QryRqModel<ToDoQueryRq>();
+            model.SetRequest(todoRq, "QryRq");
+            Assert.IsTrue(todoRq.ToString().Contains("<ToDoQueryRq>"));
+            Assert.IsTrue(model.ToString().Contains("<ToDoQueryRq>"));
+        }
 
-                    result = QB.ExecuteQbRequest(addRq);
-                    addRs = new(result);
-                    if (addRs.StatusCode == "3250") Assert.Inconclusive(addRs.StatusMessage);
-                    Assert.IsTrue(addRs.StatusCode == "0");
-                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
-                }
-                #endregion
+        [TestMethod]
+        public void TestTodoAddRq()
+        {
+            ToDoAddRq todoRq = new();
+            Assert.IsFalse(todoRq.IsEntityValid());
 
-                #region Mod Test
-                ToDoRetDto Todo = qryRs.TotalToDos == 0 ? addRs.ToDos[0] : qryRs.ToDos[0];
+            todoRq.Notes = "TodoAddRq.Notes";
+            Assert.IsTrue(todoRq.IsEntityValid());
 
-                EmployeeQueryRq empRq = new();
-                QbEmployeesView employees = new(QB.ExecuteQbRequest(empRq));
-                EmployeeRetDto emp = employees.Employees[rdm.Next(0, employees.Employees.Count)];
+            todoRq.ToDoType = ToDoType.None;
+            Assert.IsFalse(todoRq.IsEntityValid());
 
-                modRq.ListID = Todo.ListID;
-                modRq.EditSequence = Todo.EditSequence;
-                modRq.Employee = new() { ListID = emp.ListID };
-                modRq.Notes = $"Completed by {addRqName}.{modRq.GetType().Name} on {DateTime.Now}";
-                modRq.IsDone = true;
-                Assert.IsTrue(modRq.IsEntityValid());
+            todoRq.ToDoType = ToDoType.Call;
+            Assert.IsTrue(todoRq.IsEntityValid());
 
-                result = QB.ExecuteQbRequest(modRq);
-                modRs = new(result);
-                Assert.IsTrue(modRs.StatusCode == "0");
-                Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
-                #endregion
-            }
-            Thread.Sleep(2000);
+            todoRq.Priority = Priority.None;
+            Assert.IsFalse(todoRq.IsEntityValid());
+
+            todoRq.Priority = Priority.Medium;
+            Assert.IsTrue(todoRq.IsEntityValid());
+
+            todoRq.Customer = new();
+            todoRq.Vendor = new();
+            Assert.IsFalse(todoRq.IsEntityValid());
+
+            todoRq.Vendor = null;
+            Assert.IsTrue(todoRq.IsEntityValid());
+
+            var model = new AddRqModel<ToDoAddRq>("ToDoAdd");
+            model.SetRequest(todoRq, "AddRq");
+            Assert.IsTrue(todoRq.ToString().Contains("<ToDoAddRq>"));
+            Assert.IsTrue(model.ToString().Contains("<ToDoAddRq>"));
+        }
+
+        [TestMethod]
+        public void TestTodoModRq()
+        {
+            ToDoModRq todoRq = new();
+            Assert.IsFalse(todoRq.IsEntityValid());
+
+            todoRq.ListID = "TodoModRq.ListID";
+            todoRq.EditSequence = "TodoModRq.EditSequence";
+            todoRq.Notes = "TodoModRq.Notes";
+            Assert.IsTrue(todoRq.IsEntityValid());
+
+            todoRq.ToDoType = ToDoType.None;
+            Assert.IsFalse(todoRq.IsEntityValid());
+
+            todoRq.ToDoType = ToDoType.Call;
+            Assert.IsTrue(todoRq.IsEntityValid());
+
+            todoRq.Priority = Priority.None;
+            Assert.IsFalse(todoRq.IsEntityValid());
+
+            todoRq.Priority = Priority.Medium;
+            Assert.IsTrue(todoRq.IsEntityValid());
+
+            todoRq.Lead = new();
+            todoRq.Customer = new();
+            Assert.IsFalse(todoRq.IsEntityValid());
+
+            todoRq.Customer = null;
+            Assert.IsTrue(todoRq.IsEntityValid());
+
+            var model = new ModRqModel<ToDoModRq>("ToDoMod");
+            model.SetRequest(todoRq, "ModRq");
+            Assert.IsTrue(todoRq.ToString().Contains("<ToDoModRq>"));
+            Assert.IsTrue(model.ToString().Contains("<ToDoModRq>"));
         }
     }
 }

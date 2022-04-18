@@ -1,95 +1,81 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QbHelpers;
-using QbModels;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels.ENUM;
 using System;
-using System.Threading;
 
-namespace QbProcessor.TEST
+namespace QbModels.Tests
 {
     [TestClass]
     public class TimeTrackingTests
     {
         [TestMethod]
-        public void TestTimeTrackingModels()
+        public void TestTimeTrackingQueryRq()
         {
-            using (QBProcessor.QbProcessor QB = new())
-            {
-                #region Properties
-                if (QB == null)
-                {
-                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
-                }
+            TimeTrackingQueryRq timeTrackingRq = new();
+            Assert.IsTrue(timeTrackingRq.IsEntityValid());
 
-                QbTimeTrackingView qryRs, addRs = new(""), modRs;
-                TimeTrackingAddRq addRq = new();
-                TimeTrackingModRq modRq = new();
-                EmployeeRetDto emp;
-                string addRqName = $"QbProcessor";
-                Random rdm = new();
-                #endregion
+            timeTrackingRq.TxnID = new() { "TimeTrackingQueryRq.TxnID" };
+            Assert.IsTrue(timeTrackingRq.IsEntityValid());
 
-                #region Query Test
-                EmployeeQueryRq empRq = new();
-                QbEmployeesView emps = new(QB.ExecuteQbRequest(empRq));
-                emp = emps.Employees[rdm.Next(0, emps.Employees.Count)];
+            timeTrackingRq.TxnID = null;
+            Assert.IsTrue(timeTrackingRq.IsEntityValid());
 
-                TimeTrackingQueryRq qryRq = new();
-                qryRq.TimeTrackingEntityFilter = new() { ListID = emp.ListID };
-                qryRq.TxnDateRangeFilter = new() { FromTxnDate = DateTime.Today.AddDays(-2), ToTxnDate = DateTime.Today };
-                Assert.IsTrue(qryRq.IsEntityValid());
+            timeTrackingRq.TxnDateRangeFilter = new();
+            timeTrackingRq.TxnDateRangeFilter.FromTxnDate = DateTime.Now.AddDays(-365);
+            timeTrackingRq.TxnDateRangeFilter.ToTxnDate = DateTime.Now;
+            Assert.IsTrue(timeTrackingRq.IsEntityValid());
 
-                string strRs = QB.ExecuteQbRequest(qryRq);
-                qryRs = new(strRs);
-                Assert.IsTrue(qryRs.StatusSeverity == "Info");
-                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
-                #endregion
+            timeTrackingRq.ModifiedDateRangeFilter = new();
+            timeTrackingRq.ModifiedDateRangeFilter.FromModifiedDate = DateTime.Now.AddDays(-365);
+            timeTrackingRq.ModifiedDateRangeFilter.ToModifiedDate = DateTime.Now;
+            Assert.IsFalse(timeTrackingRq.IsEntityValid());
 
-                #region Add Test
-                if (qryRs.TotalTimeTracking == 0)
-                {
-                    CustomerQueryRq customerRq = new();
-                    QbCustomersView customers = new(QB.ExecuteQbRequest(customerRq));
-                    CustomerRetDto customer = customers.Customers[rdm.Next(0, customers.Customers.Count)];
+            timeTrackingRq.TxnDateRangeFilter = null;
+            Assert.IsTrue(timeTrackingRq.IsEntityValid());
 
-                    ItemNonInventoryQueryRq itemRq = new();
-                    QbItemNonInventoryView items = new(QB.ExecuteQbRequest(itemRq));
-                    ItemNonInventoryRetDto item = items.ItemsNonInventory[rdm.Next(0, items.ItemsNonInventory.Count)];
+            var model = new QryRqModel<TimeTrackingQueryRq>();
+            model.SetRequest(timeTrackingRq, "QryRq");
+            Assert.IsTrue(timeTrackingRq.ToString().Contains("<TimeTrackingQueryRq>"));
+            Assert.IsTrue(model.ToString().Contains("<TimeTrackingQueryRq>"));
+        }
 
-                    addRq.TxnDate = DateTime.Now;
-                    addRq.Entity = new() { ListID = emp.ListID };
-                    addRq.Customer = new() { ListID = customer.ListID };
-                    addRq.ItemService = new() { ListID = item.ListID };
-                    addRq.Duration = 1.11M;
-                    Assert.IsTrue(addRq.IsEntityValid());
+        [TestMethod]
+        public void TestTimeTrackingAddRq()
+        {
+            TimeTrackingAddRq timeTrackingRq = new();
+            Assert.IsFalse(timeTrackingRq.IsEntityValid());
 
-                    addRs = new(QB.ExecuteQbRequest(addRq));
-                    Assert.IsTrue(addRs.StatusCode == "0");
-                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
-                    Assert.IsTrue(addRs.TotalTimeTracking > 0);
-                }
-                #endregion
+            timeTrackingRq.TxnDate = DateTime.Now;
+            timeTrackingRq.Entity = new();
+            Assert.IsTrue(timeTrackingRq.IsEntityValid());
 
-                #region Mod Test
-                TimeTrackingRetDto timeTracking = qryRs.TotalTimeTracking > 0 ? qryRs.TimeTracking[0] : addRs.TimeTracking[0];
-                VendorQueryRq vendRq = new();
-                QbVendorsView vendors = new(QB.ExecuteQbRequest(vendRq));
-                VendorRetDto vendor = vendors.Vendors[rdm.Next(0, vendors.TotalVendors)];
+            timeTrackingRq.BillableStatus = BillStatus.Billable;
+            Assert.IsTrue(timeTrackingRq.IsEntityValid());
 
-                modRq.TxnID = timeTracking.TxnID;
-                modRq.EditSequence = timeTracking.EditSequence;
-                modRq.Entity = new() { ListID = vendor.ListID };
-                modRq.Duration = timeTracking.Duration.FromQbTime() + 0.05M;
-                modRq.TxnDate = DateTime.Now;
-                modRq.Notes = $"{addRqName} modified on {DateTime.Now} by {modRq.GetType().Name}";
-                modRq.BillableStatus = "Billable";
-                Assert.IsTrue(modRq.IsEntityValid());
+            var model = new AddRqModel<TimeTrackingAddRq>("TimeTrackingAdd");
+            model.SetRequest(timeTrackingRq, "AddRq");
+            Assert.IsTrue(timeTrackingRq.ToString().Contains("<TimeTrackingAddRq>"));
+            Assert.IsTrue(model.ToString().Contains("<TimeTrackingAddRq>"));
+        }
 
-                modRs = new(QB.ExecuteQbRequest(modRq));
-                Assert.IsTrue(modRs.StatusCode == "0");
-                Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
-                #endregion
-            }
-            Thread.Sleep(2000);
+        [TestMethod]
+        public void TestTimeTrackingModRq()
+        {
+            TimeTrackingModRq timeTrackingRq = new();
+            Assert.IsFalse(timeTrackingRq.IsEntityValid());
+
+            timeTrackingRq.TxnID = "TimeTrackingModRq.TxnID";
+            timeTrackingRq.EditSequence = "TimeTrackingModRq.EditSequence";
+            timeTrackingRq.TxnDate = DateTime.Now;
+            timeTrackingRq.Entity = new();
+            Assert.IsTrue(timeTrackingRq.IsEntityValid());
+
+            timeTrackingRq.BillableStatus = BillStatus.Billable;
+            Assert.IsTrue(timeTrackingRq.IsEntityValid());
+
+            var model = new ModRqModel<TimeTrackingModRq>("TimeTrackingMod");
+            model.SetRequest(timeTrackingRq, "ModRq");
+            Assert.IsTrue(timeTrackingRq.ToString().Contains("<TimeTrackingModRq>"));
+            Assert.IsTrue(model.ToString().Contains("<TimeTrackingModRq>"));
         }
     }
 }

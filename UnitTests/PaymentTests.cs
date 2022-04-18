@@ -1,140 +1,181 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QbModels;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels.ENUM;
 using System;
-using System.Text.RegularExpressions;
-using System.Threading;
+using System.Linq;
 
-namespace QbProcessor.TEST
+namespace QbModels.Tests
 {
     [TestClass]
     public class ReceivePaymentTests
     {
         [TestMethod]
-        public void TestReceivePaymentModels()
+        public void TestReceivePaymentQueryRq()
         {
-            using (QBProcessor.QbProcessor QB = new())
-            {
-                #region Properties
-                if (QB == null)
-                {
-                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
-                }
+            ReceivePaymentQueryRq receivePaymentRq = new();
+            Assert.IsTrue(receivePaymentRq.IsEntityValid());
 
-                QbReceivePaymentsView qryRs, addRs = new(""), modRs;
-                ReceivePaymentAddRq addRq = new();
-                ReceivePaymentModRq modRq = new();
-                string addRqName = $"QbProcessor";
-                #endregion
+            receivePaymentRq.TxnID = new() { "DepositQueryRq.TxnID" };
+            Assert.IsTrue(receivePaymentRq.IsEntityValid());
 
-                #region Query Test
-                ReceivePaymentQueryRq qryRq = new();
-                qryRq.RefNumberFilter = new() { RefNumber = addRqName, MatchCriterion = "StartsWith" };
-                Assert.IsTrue(qryRq.IsEntityValid());
+            receivePaymentRq.TxnID = null;
+            receivePaymentRq.RefNumber = new() { "DepositQueryRq.FullName" };
+            Assert.IsTrue(receivePaymentRq.IsEntityValid());
 
-                qryRs = new(QB.ExecuteQbRequest(qryRq));
-                Assert.IsTrue(qryRs.StatusSeverity == "Info");
-                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
-                #endregion
+            receivePaymentRq.TxnDateRangeFilter = new();
+            receivePaymentRq.TxnDateRangeFilter.FromTxnDate = DateTime.Now.AddDays(-365);
+            receivePaymentRq.TxnDateRangeFilter.ToTxnDate = DateTime.Now;
+            Assert.IsTrue(receivePaymentRq.IsEntityValid());
 
-                #region Add Test
-                if (qryRs.TotalReceivePayments == 0)
-                {
-                    Random rdm = new();
+            receivePaymentRq.ModifiedDateRangeFilter = new();
+            receivePaymentRq.ModifiedDateRangeFilter.FromModifiedDate = DateTime.Now.AddDays(-365);
+            receivePaymentRq.ModifiedDateRangeFilter.ToModifiedDate = DateTime.Now;
+            Assert.IsFalse(receivePaymentRq.IsEntityValid());
 
-                    AccountQueryRq bankRq = new() { AccountType = "Bank" };
-                    QbAccountsView banks = new(QB.ExecuteQbRequest(bankRq));
-                    AccountRetDto bank = banks.Accounts[rdm.Next(0, banks.Accounts.Count)];
+            receivePaymentRq.TxnDateRangeFilter = null;
+            Assert.IsTrue(receivePaymentRq.IsEntityValid());
 
-                    InvoiceQueryRq invoicesRq = new() { MaxReturned = 50, PaidStatus = "NotPaidOnly" };
-                    QbInvoicesView invoices = new(QB.ExecuteQbRequest(invoicesRq));
-                    InvoiceRetDto invoice = invoices.Invoices?[rdm.Next(0, invoices.Invoices.Count)];
+            receivePaymentRq.EntityFilter = new();
+            receivePaymentRq.EntityFilter.ListID = new();
+            receivePaymentRq.EntityFilter.FullName = new();
+            Assert.IsFalse(receivePaymentRq.IsEntityValid());
 
-                    addRq.RefNumber = addRqName;
-                    addRq.Customer = new() { ListID = invoice.Customer.ListID };
-                    addRq.DepositToAccount = new() { ListID = bank.ListID };
-                    addRq.TxnDate = DateTime.Now;
-                    addRq.TotalAmount = invoice.BalanceRemaining;
-                    addRq.AppliedToTxn = new();
-                    addRq.AppliedToTxn.Add(new()
-                    {
-                        TxnID = invoice.TxnID,
-                        PaymentAmount = invoice.BalanceRemaining
-                    });
-                    Assert.IsTrue(addRq.IsEntityValid());
+            receivePaymentRq.EntityFilter.ListID = null;
+            Assert.IsTrue(receivePaymentRq.IsEntityValid());
 
-                    addRs = new(QB.ExecuteQbRequest(addRq));
-                    Assert.IsTrue(addRs.StatusCode == "0");
-                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
-                }
-                #endregion
-
-                #region Mod Test
-                ReceivePaymentRetDto receivePayment = qryRs.TotalReceivePayments == 0 ? addRs.ReceivePayments[0] : qryRs.ReceivePayments[0];
-                modRq.TxnID = receivePayment.TxnID;
-                modRq.EditSequence = receivePayment.EditSequence;
-                modRq.Customer = new() { ListID = receivePayment.Customer.ListID };
-                modRq.TotalAmount = receivePayment.TotalAmount;
-                modRq.Memo = $"QbProcessor.{modRq.GetType().Name} on {DateTime.Now}";
-                Assert.IsTrue(modRq.IsEntityValid());
-
-                modRs = new(QB.ExecuteQbRequest(modRq));
-                Assert.IsTrue(modRs.StatusCode == "0");
-                Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
-                #endregion
-            }
-            Thread.Sleep(2000);
+            var model = new QryRqModel<ReceivePaymentQueryRq>();
+            model.SetRequest(receivePaymentRq, "QryRq");
+            Assert.IsTrue(receivePaymentRq.ToString().Contains("<ReceivePaymentQueryRq>"));
+            Assert.IsTrue(model.ToString().Contains("<ReceivePaymentQueryRq>"));
         }
 
         [TestMethod]
-        public void TestPaymentMethodModel()
+        public void TestReceivePaymentAddRq()
         {
-            using (QBProcessor.QbProcessor QB = new())
-            {
-                #region Properties
-                if (QB == null)
-                {
-                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
-                }
+            ReceivePaymentAddRq receivePaymentRq = new();
+            Assert.IsFalse(receivePaymentRq.IsEntityValid());
 
-                QbPaymentMethodsView qryRs, addRs;
-                PaymentMethodQueryRq qryRq;
-                PaymentMethodAddRq addRq;
+            receivePaymentRq.Customer = new();
+            Assert.IsTrue(receivePaymentRq.IsEntityValid());
 
-                string addRqName = "QbProcessor";
-                string result;
-                #endregion
+            receivePaymentRq.CreditCardTxnInfo = new();
+            receivePaymentRq.CreditCardTxnInfo.CreditCardTxnInputInfo = new();
+            receivePaymentRq.CreditCardTxnInfo.CreditCardTxnResultInfo = new();
+            Assert.IsFalse(receivePaymentRq.IsEntityValid());
+            Assert.IsTrue(receivePaymentRq.GetErrorsList().Any(e => e.Contains("CreditCardTransID", StringComparison.OrdinalIgnoreCase)));
 
-                #region Query Test
-                qryRq = new();
-                Assert.IsTrue(qryRq.IsEntityValid());
+            receivePaymentRq.CreditCardTxnInfo = null;
+            receivePaymentRq.AppliedToTxn = new();
+            receivePaymentRq.AppliedToTxn.Add(new());
+            Assert.IsFalse(receivePaymentRq.IsEntityValid());
 
-                result = QB.ExecuteQbRequest(qryRq);
-                qryRs = new(result);
-                Regex statusCodes =  new(@"^0$|^3250$");
-                Assert.IsTrue(statusCodes.IsMatch(qryRs.StatusCode));
-                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
-                if (qryRs.StatusCode == "3250") Assert.Inconclusive(qryRs.StatusMessage);
-                #endregion
+            receivePaymentRq.AppliedToTxn[0].TxnID = "AppliedToTxn.TxnID";
+            Assert.IsTrue(receivePaymentRq.IsEntityValid());
 
-                #region Add Test
-                if (qryRs.TotalPaymentMethods == 0)
-                {
-                    addRq = new()
-                    {
-                        Name = addRqName,
-                        IsActive = true,
-                        PaymentMethodType = "OtherCreditCard"
-                    };
-                    Assert.IsTrue(addRq.IsEntityValid());
+            receivePaymentRq.IsAutoApply = false;
+            Assert.IsFalse(receivePaymentRq.IsEntityValid());
 
-                    addRs = new(QB.ExecuteQbRequest(addRq));
-                    Assert.IsTrue(addRs.StatusCode == "0");
-                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
-                    Assert.IsTrue(addRs.TotalPaymentMethods > 0);
-                }
-                #endregion
-            }
-            Thread.Sleep(2000);
+            receivePaymentRq.IsAutoApply = null;
+            Assert.IsTrue(receivePaymentRq.IsEntityValid());
+
+            var model = new AddRqModel<ReceivePaymentAddRq>("ReceivePaymentAdd");
+            model.SetRequest(receivePaymentRq, "AddRq");
+            Assert.IsTrue(receivePaymentRq.ToString().Contains("<ReceivePaymentAddRq>"));
+            Assert.IsTrue(model.ToString().Contains("<ReceivePaymentAddRq>"));
+        }
+
+        [TestMethod]
+        public void TestReceivePaymentModRq()
+        {
+            ReceivePaymentModRq receivePaymentRq = new();
+            Assert.IsFalse(receivePaymentRq.IsEntityValid());
+
+            receivePaymentRq.TxnID = "ReceivePaymentModRq.TxnID";
+            receivePaymentRq.EditSequence = "ReceivePaymentModRq.EditSequence";
+            receivePaymentRq.TxnDate = DateTime.Now;
+            receivePaymentRq.Customer = new();
+            Assert.IsTrue(receivePaymentRq.IsEntityValid());
+
+            receivePaymentRq.CreditCardTxnInfo = new();
+            receivePaymentRq.CreditCardTxnInfo.CreditCardTxnInputInfo = new();
+            receivePaymentRq.CreditCardTxnInfo.CreditCardTxnResultInfo = new();
+            Assert.IsFalse(receivePaymentRq.IsEntityValid());
+            Assert.IsTrue(receivePaymentRq.GetErrorsList().Any(e => e.Contains("CreditCardTransID", StringComparison.OrdinalIgnoreCase)));
+
+            receivePaymentRq.CreditCardTxnInfo = null;
+            receivePaymentRq.AppliedToTxn = new();
+            receivePaymentRq.AppliedToTxn.Add(new());
+            Assert.IsFalse(receivePaymentRq.IsEntityValid());
+
+            receivePaymentRq.AppliedToTxn[0].TxnID = "AppliedToTxn.TxnID";
+            Assert.IsTrue(receivePaymentRq.IsEntityValid());
+
+            var model = new ModRqModel<ReceivePaymentModRq>("ReceivePaymentMod");
+            model.SetRequest(receivePaymentRq, "ModRq");
+            Assert.IsTrue(receivePaymentRq.ToString().Contains("<ReceivePaymentModRq>"));
+            Assert.IsTrue(model.ToString().Contains("<ReceivePaymentModRq>"));
+        }
+    }
+
+    [TestClass]
+    public class PaymentMethodTests
+    {
+        [TestMethod]
+        public void TestPaymentMethodQueryRq()
+        {
+            PaymentMethodQueryRq paymentMethodRq = new();
+            Assert.IsTrue(paymentMethodRq.IsEntityValid());
+
+            paymentMethodRq.ListID = new() { "EmployeeQueryRq.ListID" };
+            paymentMethodRq.MaxReturned = -1;
+            Assert.IsTrue(paymentMethodRq.IsEntityValid());
+
+            paymentMethodRq.ListID = null;
+            paymentMethodRq.FullName = new() { "EmployeeQueryRq.FullName" };
+            Assert.IsTrue(paymentMethodRq.IsEntityValid());
+
+            paymentMethodRq.FullName = null;
+            paymentMethodRq.NameFilter = new();
+            paymentMethodRq.MaxReturned = 99999;
+            Assert.IsFalse(paymentMethodRq.IsEntityValid());
+
+            paymentMethodRq.NameFilter.MatchCriterion = MatchCriterion.None;
+            paymentMethodRq.NameFilter.Name = "A";
+            Assert.IsFalse(paymentMethodRq.IsEntityValid());
+
+            paymentMethodRq.NameFilter.MatchCriterion = MatchCriterion.Contains;
+            Assert.IsTrue(paymentMethodRq.IsEntityValid());
+
+            paymentMethodRq.PaymentMethodType = PaymentMethodType.None;
+            Assert.IsFalse(paymentMethodRq.IsEntityValid());
+
+            paymentMethodRq.PaymentMethodType = PaymentMethodType.Cash;
+            Assert.IsTrue(paymentMethodRq.IsEntityValid());
+
+            var model = new QryRqModel<PaymentMethodQueryRq>();
+            model.SetRequest(paymentMethodRq, "QryRq");
+            Assert.IsTrue(paymentMethodRq.ToString().Contains("<PaymentMethodQueryRq>"));
+            Assert.IsTrue(model.ToString().Contains("<PaymentMethodQueryRq>"));
+        }
+
+        [TestMethod]
+        public void TestPaymentMethodAddRq()
+        {
+            PaymentMethodAddRq paymentMethodRq = new();
+            Assert.IsFalse(paymentMethodRq.IsEntityValid());
+
+            paymentMethodRq.Name = "PaymentMethodAddRq.Name";
+            Assert.IsTrue(paymentMethodRq.IsEntityValid());
+
+            paymentMethodRq.PaymentMethodType = PaymentMethodType.None;
+            Assert.IsFalse(paymentMethodRq.IsEntityValid());
+
+            paymentMethodRq.PaymentMethodType = PaymentMethodType.Cash;
+            Assert.IsTrue(paymentMethodRq.IsEntityValid());
+
+            var model = new AddRqModel<PaymentMethodAddRq>("PaymentMethodAdd");
+            model.SetRequest(paymentMethodRq, "AddRq");
+            Assert.IsTrue(paymentMethodRq.ToString().Contains("<PaymentMethodAddRq>"));
+            Assert.IsTrue(model.ToString().Contains("<PaymentMethodAddRq>"));
         }
     }
 }

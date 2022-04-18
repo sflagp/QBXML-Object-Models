@@ -1,66 +1,82 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QbModels;
-using System;
-using System.Threading;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels.ENUM;
 
-namespace QbProcessor.TEST
+namespace QbModels.Tests
 {
     [TestClass]
     public class ClassTests
     {
         [TestMethod]
-        public void TestClassModels()
+        public void TestClassQueryRq()
         {
-            using (QBProcessor.QbProcessor QB = new())
-            {
-                #region Properties
-                if (QB == null)
-                {
-                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
-                }
+            ClassQueryRq clsRq = new();
+            Assert.IsTrue(clsRq.IsEntityValid());
 
-                QbClassesView qryRs, addRs = new(""), modRs;
-                ClassAddRq addRq = new();
-                ClassModRq modRq = new();
-                string addRqName = $"QbProcessor Class";
-                #endregion
+            clsRq.ListID = new() { "ClassQueryRq.ListID" };
+            clsRq.MaxReturned = -1;
+            Assert.IsTrue(clsRq.IsEntityValid());
 
-                #region Query Test
-                ClassQueryRq qryRq = new();
-                qryRq.NameFilter = new() { Name = addRqName, MatchCriterion = "StartsWith" };
-                qryRq.ActiveStatus = "All";
-                Assert.IsTrue(qryRq.IsEntityValid());
+            clsRq.ListID = null;
+            clsRq.FullName = new() { "ClassQueryRq.FullName" };
+            Assert.IsTrue(clsRq.IsEntityValid());
 
-                qryRs = new(QB.ExecuteQbRequest(qryRq));
-                Assert.IsTrue(qryRs.StatusSeverity == "Info");
-                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
-                #endregion
+            clsRq.FullName = null;
+            clsRq.NameFilter = new();
+            clsRq.MaxReturned = 99999;
+            Assert.IsFalse(clsRq.IsEntityValid());
 
-                #region Add Test
-                if (qryRs.TotalClasses == 0)
-                {
-                    addRq.Name = addRqName;
-                    addRq.IsActive = true;
+            clsRq.NameFilter.MatchCriterion = MatchCriterion.None;
+            clsRq.NameFilter.Name = "A";
+            Assert.IsFalse(clsRq.IsEntityValid());
 
-                    addRs = new(QB.ExecuteQbRequest(addRq));
-                    Assert.IsTrue(addRs.StatusCode == "0");
-                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
-                }
-                #endregion
+            clsRq.NameFilter.MatchCriterion = MatchCriterion.Contains;
+            Assert.IsTrue(clsRq.IsEntityValid());
 
-                #region Mod Test
-                ClassRetDto acct = qryRs.TotalClasses == 0 ? addRs.Classes[0] : qryRs.Classes[0];
-                modRq.ListID = acct.ListID;
-                modRq.EditSequence = acct.EditSequence;
-                modRq.Name = acct.Name;
-                Assert.IsTrue(modRq.IsEntityValid());
+            var model = new QryRqModel<ClassQueryRq>();
+            model.SetRequest(clsRq, "QryRq");
+            Assert.IsTrue(model.ToString().Contains("<ClassQueryRq>"));
+            Assert.IsTrue(clsRq.ToString().Contains("<ClassQueryRq>"));
+        }
 
-                modRs = new(QB.ExecuteQbRequest(modRq));
-                Assert.IsTrue(modRs.StatusCode == "0");
-                Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
-                #endregion
-            }
-            Thread.Sleep(2000);
+        [TestMethod]
+        public void TestClassAddRq()
+        {
+            ClassAddRq clsRq = new();
+            Assert.IsFalse(clsRq.IsEntityValid());
+
+            clsRq.Name = "ClassAddRq";
+            Assert.IsTrue(clsRq.IsEntityValid());
+
+            clsRq.Parent = new() { FullName = "ClassAddRq.Parent.FullName" };
+            Assert.IsTrue(clsRq.IsEntityValid());
+
+            var model = new AddRqModel<ClassAddRq>("ClassAdd");
+            model.SetRequest(clsRq, "AddRq");
+            Assert.IsTrue(clsRq.ToString().Contains("<ClassAddRq>"));
+            Assert.IsTrue(model.ToString().Contains("<ClassAddRq>"));
+        }
+
+        [TestMethod]
+        public void TestClassModRq()
+        {
+            ClassModRq clsRq = new();
+            Assert.IsFalse(clsRq.IsEntityValid());
+
+            clsRq.ListID = "ClassModRq.ListID";
+            clsRq.EditSequence = "ClassModRq.EditSequence";
+            clsRq.Name = "ClassModRq";
+            Assert.IsTrue(clsRq.IsEntityValid());
+
+            clsRq.Name = null;
+            Assert.IsTrue(clsRq.IsEntityValid());
+
+            clsRq.Name = "ClassModRq";
+            Assert.IsTrue(clsRq.IsEntityValid());
+
+            var model = new ModRqModel<ClassModRq>("ClassMod");
+            model.SetRequest(clsRq, "ModRq");
+            Assert.IsTrue(clsRq.ToString().Contains("<ClassModRq>"));
+            Assert.IsTrue(model.ToString().Contains("<ClassModRq>"));
         }
     }
 }

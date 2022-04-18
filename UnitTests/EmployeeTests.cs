@@ -1,83 +1,83 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QbModels;
-using System;
-using System.Linq;
-using System.Threading;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels.ENUM;
 
-namespace QbProcessor.TEST
+namespace QbModels.Tests
 {
     [TestClass]
     public class EmployeeTests
     {
         [TestMethod]
-        public void TestEmployeeModels()
+        public void TestEmployeeQueryRq()
         {
-            using (QBProcessor.QbProcessor QB = new())
-            {
-                #region Properties
-                if (QB == null)
-                {
-                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
-                }
+            EmployeeQueryRq empRq = new();
+            Assert.IsTrue(empRq.IsEntityValid());
 
-                QbEmployeesView qryRs, addRs = new(""), modRs;
-                EmployeeAddRq addRq = new();
-                EmployeeModRq modRq = new();
-                string addRqName = $"QbProcessor";
-                #endregion
+            empRq.ListID = new() { "EmployeeQueryRq.ListID" };
+            empRq.MaxReturned = -1;
+            Assert.IsTrue(empRq.IsEntityValid());
 
-                #region Query Test
-                EmployeeQueryRq qryRq = new();
-                qryRq.NameRangeFilter = new() { FromName = "QbP", ToName = "QbR" };
-                qryRq.ActiveStatus = "All";
-                Assert.IsTrue(qryRq.IsEntityValid());
+            empRq.ListID = null;
+            empRq.FullName = new() { "EmployeeQueryRq.FullName" };
+            Assert.IsTrue(empRq.IsEntityValid());
 
-                qryRs = new(QB.ExecuteQbRequest(qryRq));
-                Assert.IsTrue(qryRs.StatusSeverity == "Info");
-                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
-                #endregion
+            empRq.FullName = null;
+            empRq.NameFilter = new();
+            empRq.MaxReturned = 99999;
+            Assert.IsFalse(empRq.IsEntityValid());
 
-                #region Add Test
-                if (qryRs.TotalEmployees == 0)
-                {
-                    addRq.FirstName = addRqName;
-                    addRq.LastName = addRq.GetType().Name;
-                    addRq.IsActive = true;
-                    addRq.EmployeeAddress = new()
-                    {
-                        Addr1 = "3648 Kapalua Way",
-                        City = "Raleigh",
-                        State = "NC",
-                        PostalCode = "27610"
-                    };
-                    addRq.Phone = "305-775-4754";
-                    addRq.Notes = addRq.GetType().Name;
-                    Assert.IsTrue(addRq.IsEntityValid());
+            empRq.NameFilter.MatchCriterion = MatchCriterion.None;
+            empRq.NameFilter.Name = "A";
+            Assert.IsFalse(empRq.IsEntityValid());
 
-                    addRs = new(QB.ExecuteQbRequest(addRq));
-                    Assert.IsTrue(addRs.StatusCode == "0");
-                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
-                }
-                #endregion
+            empRq.NameFilter.MatchCriterion = MatchCriterion.Contains;
+            Assert.IsTrue(empRq.IsEntityValid());
 
-                #region Mod Test
-                EmployeeRetDto acct = qryRs.TotalEmployees == 0 ? addRs.Employees[0] : qryRs.Employees[0];
-                modRq.ListID = acct.ListID;
-                modRq.EditSequence = acct.EditSequence;
-                modRq.Notes = $"{modRq.GetType().Name} on {DateTime.Now}";
-                modRq.IsActive = true;
-                modRq.Description = $"{addRqName}.{modRq.GetType().Name}";
-                Assert.IsTrue(modRq.IsEntityValid());
+            var model = new QryRqModel<EmployeeQueryRq>();
+            model.SetRequest(empRq, "QryRq");
+            Assert.IsTrue(model.ToString().Contains("<EmployeeQueryRq>"));
+            Assert.IsTrue(empRq.ToString().Contains("<EmployeeQueryRq>"));
+        }
 
-                modRs = new(QB.ExecuteQbRequest(modRq));
-                Assert.IsTrue(modRs.StatusCode == "0");
-                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+        [TestMethod]
+        public void TestEmployeeAddRq()
+        {
+            EmployeeAddRq empRq = new();
+            Assert.IsTrue(empRq.IsEntityValid());
 
-                EmployeeRetDto employee = modRs.Employees.FirstOrDefault();
-                Assert.AreEqual($"{addRqName}.{modRq.GetType().Name}", employee.Description);
-                #endregion
-            }
-            Thread.Sleep(2000);
+            empRq.FirstName = "EmployeeAddRq.FirstName";
+            empRq.FirstName = "EmployeeAddRq.LastName";
+            empRq.EmployeeType = EmployeeType.None;
+            Assert.IsFalse(empRq.IsEntityValid());
+
+            empRq.EmployeeType = EmployeeType.Regular;
+            Assert.IsTrue(empRq.IsEntityValid());
+
+            var model = new AddRqModel<EmployeeAddRq>("EmployeeAdd");
+            model.SetRequest(empRq, "AddRq");
+            Assert.IsTrue(empRq.ToString().Contains("<EmployeeAddRq>"));
+            Assert.IsTrue(model.ToString().Contains("<EmployeeAddRq>"));
+        }
+
+        [TestMethod]
+        public void TestEmployeeModRq()
+        {
+            EmployeeModRq empRq = new();
+            Assert.IsFalse(empRq.IsEntityValid());
+
+            empRq.ListID = "EmployeeModRq.ListID";
+            empRq.EditSequence = "EmployeeModRq.EditSequence";
+            Assert.IsTrue(empRq.IsEntityValid());
+
+            empRq.EmployeeType = EmployeeType.None;
+            Assert.IsFalse(empRq.IsEntityValid());
+
+            empRq.EmployeeType = EmployeeType.Officer;
+            Assert.IsTrue(empRq.IsEntityValid());
+
+            var model = new ModRqModel<EmployeeModRq>("EmployeeMod");
+            model.SetRequest(empRq, "ModRq");
+            Assert.IsTrue(empRq.ToString().Contains("<EmployeeModRq>"));
+            Assert.IsTrue(model.ToString().Contains("<EmployeeModRq>"));
         }
     }
 }

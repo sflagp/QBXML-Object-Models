@@ -1,79 +1,123 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QbModels;
-using System;
-using System.Threading;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels.ENUM;
 
-namespace QbProcessor.TEST
+namespace QbModels.Tests
 {
     [TestClass]
     public class PriceLevelTests
     {
         [TestMethod]
-        public void TestPriceLevelModels()
+        public void TestPriceLevelQueryRq()
         {
-            using (QBProcessor.QbProcessor QB = new())
-            {
-                #region Properties
-                if (QB == null)
-                {
-                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
-                }
+            PriceLevelQueryRq priceLevelRq = new();
+            Assert.IsTrue(priceLevelRq.IsEntityValid());
 
-                QbPriceLevelsView qryRs, addRs = new(""), modRs;
-                PriceLevelAddRq addRq = new();
-                PriceLevelModRq modRq = new();
-                string addRqName = $"QbProcessor {addRq.GetType().Name}";
-                string result;
-                #endregion
+            priceLevelRq.ToString();
 
-                #region Query Test
-                PriceLevelQueryRq qryRq = new();
-                qryRq.NameFilter = new() { Name = addRqName, MatchCriterion = "StartsWith" };
-                qryRq.ActiveStatus = "All";
-                Assert.IsTrue(qryRq.IsEntityValid());
+            priceLevelRq.ListID = new() { "PriceLevelQueryRq.ListID" };
+            priceLevelRq.MaxReturned = -1;
+            Assert.IsTrue(priceLevelRq.IsEntityValid());
 
-                result = QB.ExecuteQbRequest(qryRq);
-                qryRs = new(result);
-                Assert.IsTrue(qryRs.StatusSeverity == "Info");
-                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
-                #endregion
+            priceLevelRq.ListID = null;
+            priceLevelRq.FullName = new() { "PriceLevelQueryRq.FullName" };
+            Assert.IsTrue(priceLevelRq.IsEntityValid());
 
-                #region Add Test
-                if (qryRs.TotalPriceLevels == 0)
-                {
-                    addRq.Name = addRqName;
-                    addRq.IsActive = true;
-                    addRq.PriceLevelFixedPercentage = "10";
-                    Assert.IsTrue(addRq.IsEntityValid());
+            priceLevelRq.FullName = null;
+            priceLevelRq.NameFilter = new();
+            priceLevelRq.MaxReturned = 99999;
+            Assert.IsFalse(priceLevelRq.IsEntityValid());
 
-                    result = QB.ExecuteQbRequest(addRq);
-                    addRs = new(result);
-                    Assert.IsTrue(addRs.StatusCode == "0");
-                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
-                    Assert.IsTrue(addRs.TotalPriceLevels == 1);
-                    Assert.IsTrue(addRs.PriceLevels[0].PriceLevelFixedPercentage == "10.00");
+            priceLevelRq.NameFilter.MatchCriterion = MatchCriterion.None;
+            priceLevelRq.NameFilter.Name = "A";
+            Assert.IsFalse(priceLevelRq.IsEntityValid());
 
-                }
-                #endregion
+            priceLevelRq.NameFilter.MatchCriterion = MatchCriterion.Contains;
+            Assert.IsTrue(priceLevelRq.IsEntityValid());
 
-                #region Mod Test
-                PriceLevelRetDto acct = qryRs.TotalPriceLevels == 0 ? addRs.PriceLevels[0] : qryRs.PriceLevels[0];
-                modRq.ListID = acct.ListID;
-                modRq.EditSequence = acct.EditSequence;
-                modRq.Name = acct.Name;
-                modRq.PriceLevelFixedPercentage = "15";
-                Assert.IsTrue(modRq.IsEntityValid());
+            priceLevelRq.NameRangeFilter = new();
+            priceLevelRq.NameRangeFilter.FromName = "A";
+            priceLevelRq.NameRangeFilter.ToName = "ZZ";
+            Assert.IsFalse(priceLevelRq.IsEntityValid());
 
-                result = QB.ExecuteQbRequest(modRq);
-                modRs = new(result);
-                Assert.IsTrue(modRs.StatusCode == "0");
-                Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
-                Assert.IsTrue(modRs.TotalPriceLevels == 1);
-                Assert.IsTrue(modRs.PriceLevels[0].PriceLevelFixedPercentage == "15.00");
+            priceLevelRq.NameFilter = null;
+            Assert.IsTrue(priceLevelRq.IsEntityValid());
 
-                #endregion
-            }
-            Thread.Sleep(2000);
+            var model = new QryRqModel<PriceLevelQueryRq>();
+            model.SetRequest(priceLevelRq, "QryRq");
+            Assert.IsTrue(model.ToString().Contains("<PriceLevelQueryRq>"));
+            Assert.IsTrue(priceLevelRq.ToString().Contains("<PriceLevelQueryRq>"));
+        }
+
+        [TestMethod]
+        public void TestPriceLevelAddRq()
+        {
+            PriceLevelAddRq priceLevelRq = new();
+            Assert.IsFalse(priceLevelRq.IsEntityValid());
+
+            priceLevelRq.Name = "PriceLevelAddRq.Name";
+            Assert.IsTrue(priceLevelRq.IsEntityValid());
+
+            priceLevelRq.PriceLevelPerItem = new();
+            priceLevelRq.PriceLevelPerItem.Add(new());
+            priceLevelRq.PriceLevelPerItem[0].Item = new();
+            Assert.IsTrue(priceLevelRq.IsEntityValid());
+
+            priceLevelRq.PriceLevelPerItem[0].CustomPrice = 1.1M;
+            priceLevelRq.PriceLevelPerItem[0].AdjustPercentage = "10%";
+            Assert.IsFalse(priceLevelRq.IsEntityValid());
+
+            priceLevelRq.PriceLevelPerItem[0].CustomPrice = null;
+            priceLevelRq.PriceLevelPerItem[0].AdjustRelativeTo = AdjustRelativeTo.None;
+            Assert.IsFalse(priceLevelRq.IsEntityValid());
+
+            priceLevelRq.PriceLevelPerItem[0].AdjustRelativeTo = AdjustRelativeTo.Cost;
+            Assert.IsTrue(priceLevelRq.IsEntityValid());
+
+            var model = new AddRqModel<PriceLevelAddRq>("PriceLevelAdd");
+            model.SetRequest(priceLevelRq, "AddRq");
+            Assert.IsTrue(priceLevelRq.ToString().Contains("<PriceLevelAddRq>"));
+            Assert.IsTrue(model.ToString().Contains("<PriceLevelAddRq>"));
+        }
+
+        [TestMethod]
+        public void TestPriceLevelModRq()
+        {
+            PriceLevelModRq priceLevelRq = new();
+            Assert.IsFalse(priceLevelRq.IsEntityValid());
+
+            priceLevelRq.ListID = "PriceLevelModRq.ListID";
+            priceLevelRq.EditSequence = "PriceLevelModRq.EditSequence";
+            Assert.IsTrue(priceLevelRq.IsEntityValid());
+
+            priceLevelRq.Name = "PriceLevelModRq.Name";
+            Assert.IsTrue(priceLevelRq.IsEntityValid());
+
+            priceLevelRq.PriceLevelPerItem = new();
+            priceLevelRq.PriceLevelPerItem.Add(new());
+            priceLevelRq.PriceLevelPerItem[0].Item = new();
+            Assert.IsTrue(priceLevelRq.IsEntityValid());
+
+            priceLevelRq.PriceLevelPerItem[0].CustomPrice = 1.1M;
+            priceLevelRq.PriceLevelPerItem[0].AdjustPercentage = "10%";
+            Assert.IsFalse(priceLevelRq.IsEntityValid());
+
+            priceLevelRq.PriceLevelPerItem[0].CustomPrice = null;
+            priceLevelRq.PriceLevelPerItem[0].AdjustRelativeTo = AdjustRelativeTo.None;
+            Assert.IsFalse(priceLevelRq.IsEntityValid());
+
+            priceLevelRq.PriceLevelPerItem[0].AdjustRelativeTo = AdjustRelativeTo.Cost;
+            Assert.IsTrue(priceLevelRq.IsEntityValid());
+
+            priceLevelRq.PriceLevelFixedPercentage = "25.0";
+            Assert.IsFalse(priceLevelRq.IsEntityValid());
+
+            priceLevelRq.PriceLevelPerItem = null;
+            Assert.IsTrue(priceLevelRq.IsEntityValid());
+
+            var model = new ModRqModel<PriceLevelModRq>("PriceLevelMod");
+            model.SetRequest(priceLevelRq, "ModRq");
+            Assert.IsTrue(priceLevelRq.ToString().Contains("<PriceLevelModRq>"));
+            Assert.IsTrue(model.ToString().Contains("<PriceLevelModRq>"));
         }
     }
 }

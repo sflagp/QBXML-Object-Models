@@ -1,120 +1,95 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QbModels;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels.ENUM;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
-namespace QbProcessor.TEST
+namespace QbModels.Tests
 {
     [TestClass]
     public class JournalEntryTests
     {
         [TestMethod]
-        public void TestJournalEntryModels()
+        public void TestJournalEntryQueryRq()
         {
-            using (QBProcessor.QbProcessor QB = new())
-            {
-                #region Properties
-                if (QB == null)
-                {
-                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
-                }
+            JournalEntryQueryRq journalEntryRq = new();
+            Assert.IsTrue(journalEntryRq.IsEntityValid());
 
-                QbJournalEntriesView qryRs, addRs = new(""), modRs;
-                JournalEntryAddRq addRq = new();
-                JournalEntryModRq modRq = new();
-                string addRqName = $"QbProcessor";
-                #endregion
+            journalEntryRq.TxnID = new() { "JournalEntryQueryRq.TxnID" };
+            Assert.IsTrue(journalEntryRq.IsEntityValid());
 
-                #region Query Test
-                JournalEntryQueryRq qryRq = new() { IncludeLineItems = true };
-                qryRq.RefNumberFilter = new() { RefNumber = addRqName, MatchCriterion = "StartsWith" };
-                Assert.IsTrue(qryRq.IsEntityValid());
+            journalEntryRq.TxnID = null;
+            journalEntryRq.RefNumber = new() { "JournalEntryQueryRq.FullName" };
+            Assert.IsTrue(journalEntryRq.IsEntityValid());
 
-                string strRs = QB.ExecuteQbRequest(qryRq);
-                qryRs = new(strRs);
-                Assert.IsTrue(qryRs.StatusSeverity == "Info");
-                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
+            journalEntryRq.TxnDateRangeFilter = new();
+            journalEntryRq.TxnDateRangeFilter.FromTxnDate = DateTime.Now.AddDays(-365);
+            journalEntryRq.TxnDateRangeFilter.ToTxnDate = DateTime.Now;
+            Assert.IsTrue(journalEntryRq.IsEntityValid());
 
-                if (qryRs.TotalJournalEntries > 0) Assert.Inconclusive("Journal Entries already exist.  Cannot test.");
-                #endregion
+            journalEntryRq.ModifiedDateRangeFilter = new();
+            journalEntryRq.ModifiedDateRangeFilter.FromModifiedDate = DateTime.Now.AddDays(-365);
+            journalEntryRq.ModifiedDateRangeFilter.ToModifiedDate = DateTime.Now;
+            Assert.IsFalse(journalEntryRq.IsEntityValid());
 
-                #region Add Test
-                if (qryRs.TotalJournalEntries == 0)
-                {
-                    Random rdm = new();
+            journalEntryRq.TxnDateRangeFilter = null;
+            Assert.IsTrue(journalEntryRq.IsEntityValid());
 
-                    AccountQueryRq accountsRq = new();
-                    QbAccountsView accounts = new(QB.ExecuteQbRequest(accountsRq));
-                    List<AccountRetDto> expenses = 
-                        accounts.Accounts.Where(a => a.AccountType.Contains("Expense") && a.Balance > 0).ToList();
-                    List<AccountRetDto> assets = accounts.Accounts.Where(a => a.AccountType.Contains("Asset")).ToList();
-                    AccountRetDto expense = expenses[rdm.Next(0, expenses.Count)];
-                    AccountRetDto asset = assets[rdm.Next(0, assets.Count)];
+            var model = new QryRqModel<JournalEntryQueryRq>();
+            model.SetRequest(journalEntryRq, "QryRq");
+            Assert.IsTrue(journalEntryRq.ToString().Contains("<JournalEntryQueryRq>"));
+            Assert.IsTrue(model.ToString().Contains("<JournalEntryQueryRq>"));
+        }
 
-                    CustomerQueryRq customerRq = new();
-                    QbCustomersView customers = new(QB.ExecuteQbRequest(customerRq));
-                    CustomerRetDto customer = customers.Customers[rdm.Next(0, customers.Customers.Count)];
+        [TestMethod]
+        public void TestJournalEntryAddRq()
+        {
+            JournalEntryAddRq journalEntryRq = new();
+            Assert.IsTrue(journalEntryRq.IsEntityValid());
 
-                    VendorQueryRq vendorRq = new();
-                    QbVendorsView vendors = new(QB.ExecuteQbRequest(vendorRq));
-                    VendorRetDto vendor = vendors.Vendors[rdm.Next(0, vendors.Vendors.Count)];
+            journalEntryRq.TxnDate = DateTime.Now;
+            Assert.IsTrue(journalEntryRq.IsEntityValid());
 
-                    addRq.TxnDate = DateTime.Now;
-                    addRq.RefNumber = addRqName;
-                    addRq.DebitLine = new()
-                    {
-                        Account = new() { ListID = expense.ListID },
-                        Amount = 123.45M,
-                        Entity = new() { ListID = vendor.ListID }
-                    };
-                    addRq.CreditLine = new()
-                    {
-                        Account = new() { ListID = asset.ListID },
-                        Amount = 123.45M,
-                        Entity = new() { ListID = customer.ListID }
-                    };
-                    Assert.IsTrue(addRq.IsEntityValid());
+            journalEntryRq.IsHomeCurrencyAdjustment = true;
+            journalEntryRq.IsAmountsEnteredInHomeCurrency = true;
+            Assert.IsFalse(journalEntryRq.IsEntityValid());
 
-                    addRs = new(QB.ExecuteQbRequest(addRq));
-                    Assert.IsTrue(addRs.StatusCode == "0");
-                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
-                    Assert.IsTrue(addRs.TotalJournalEntries > 0);
-                }
-                #endregion
+            journalEntryRq.IsAmountsEnteredInHomeCurrency = null;
+            Assert.IsTrue(journalEntryRq.IsEntityValid());
 
-                #region Mod Test
-                JournalEntryRetDto journalEntry = addRs.JournalEntries[0];
-                modRq.TxnID = journalEntry.TxnID;
-                modRq.EditSequence = journalEntry.EditSequence;
-                modRq.JournalLineMod = new();
-                modRq.JournalLineMod.Add(new()
-                {
-                    TxnLineID = journalEntry.DebitLine.TxnLineID,
-                    JournalLineType = "Debit",
-                    Amount = journalEntry.DebitLine.Amount,
-                    Account = journalEntry.DebitLine.Account,
-                    Entity = journalEntry.DebitLine.Entity,
-                    Memo = $"Debit line QbProcessor.{modRq.GetType().Name} on {DateTime.Now}"
-                });
-                modRq.JournalLineMod.Add(new()
-                {
-                    TxnLineID = journalEntry.CreditLine.TxnLineID,
-                    JournalLineType = "Credit",
-                    Amount = journalEntry.CreditLine.Amount,
-                    Account = journalEntry.CreditLine.Account,
-                    Entity = journalEntry.CreditLine.Entity,
-                    Memo = $"Credit line QbProcessor.{modRq.GetType().Name} on {DateTime.Now}"
-                });
-                Assert.IsTrue(modRq.IsEntityValid());
+            journalEntryRq.CreditLine = new();
+            journalEntryRq.DebitLine = new();
+            Assert.IsTrue(journalEntryRq.IsEntityValid());
 
-                modRs = new(QB.ExecuteQbRequest(modRq));
-                Assert.IsTrue(modRs.StatusCode == "0");
-                Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
-                #endregion
-            }
-            Thread.Sleep(2000);
+            journalEntryRq.DebitLine = null;
+            Assert.IsTrue(journalEntryRq.IsEntityValid());
+
+            var model = new AddRqModel<JournalEntryAddRq>("JournalEntryAdd");
+            model.SetRequest(journalEntryRq, "AddRq");
+            Assert.IsTrue(journalEntryRq.ToString().Contains("<JournalEntryAddRq>"));
+            Assert.IsTrue(model.ToString().Contains("<JournalEntryAddRq>"));
+        }
+
+        [TestMethod]
+        public void TestJournalEntryModRq()
+        {
+            JournalEntryModRq journalEntryRq = new();
+            Assert.IsFalse(journalEntryRq.IsEntityValid());
+
+            journalEntryRq.TxnID = "JournalEntryModRq.TxnID";
+            journalEntryRq.EditSequence = "JournalEntryModRq.EditSequence";
+            journalEntryRq.TxnDate = DateTime.Now;
+            Assert.IsTrue(journalEntryRq.IsEntityValid());
+
+            journalEntryRq.JournalLineMod = new();
+            journalEntryRq.JournalLineMod.Add(new() { TxnLineID = "JournalEntryModRq.TxnLineID" });
+            Assert.IsTrue(journalEntryRq.IsEntityValid());
+
+            journalEntryRq.JournalLineMod[0].BillableStatus = BillStatus.Billable;
+            Assert.IsTrue(journalEntryRq.IsEntityValid());
+
+            var model = new ModRqModel<JournalEntryModRq>("JournalEntryMod");
+            model.SetRequest(journalEntryRq, "ModRq");
+            Assert.IsTrue(journalEntryRq.ToString().Contains("<JournalEntryModRq>"));
+            Assert.IsTrue(model.ToString().Contains("<JournalEntryModRq>"));
         }
     }
 }

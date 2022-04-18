@@ -1,83 +1,81 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QbModels;
-using System;
-using System.Threading;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using QbModels.ENUM;
 
-namespace QbProcessor.TEST
+namespace QbModels.Tests
 {
     [TestClass]
     public class AccountTests
     {
         [TestMethod]
-        public void TestAccountModels()
+        public void TestAccountQueryRq()
         {
-            using (QBProcessor.QbProcessor QB = new())
-            {
-                #region Properties
-                if (QB == null)
-                {
-                    throw new Exception("Quickbooks not loaded or error connecting to Quickbooks.");
-                }
+            AccountQueryRq acctRq = new();
+            Assert.IsTrue(acctRq.IsEntityValid());
 
-                QbAccountsView qryRs, addRs = new(""), modRs;
-                AccountAddRq addRq = new();
-                AccountModRq modRq = new();
-                string addRqName = $"QbProcessor {addRq.GetType().Name}";
-                string result;
-                #endregion
+            acctRq.ListID = new() { "AccountQueryRq.ListID" };
+            Assert.IsTrue(acctRq.IsEntityValid());
 
-                #region Query Test
-                AccountQueryRq qryRq = new();
-                qryRq.NameFilter = new() { Name = addRqName, MatchCriterion = "StartsWith" };
-                qryRq.ActiveStatus = "All";
-                Assert.IsTrue(qryRq.IsEntityValid());
+            acctRq.ListID = null;
+            acctRq.FullName = new() { "AccountQueryRq.FullName" };
+            Assert.IsTrue(acctRq.IsEntityValid());
 
-                result = QB.ExecuteQbRequest(qryRq);
-                qryRs = new(result);
-                Assert.IsTrue(qryRs.StatusSeverity == "Info");
-                Assert.IsTrue(string.IsNullOrEmpty(qryRs.ParseError));
-                #endregion
+            acctRq.NameFilter = new();
+            acctRq.NameFilter.MatchCriterion = MatchCriterion.None;
+            acctRq.NameFilter.Name = "A";
+            Assert.IsFalse(acctRq.IsEntityValid());
 
-                #region Add Test
-                if (qryRs.TotalAccounts == 0)
-                {
-                    addRq.Name = addRqName;
-                    addRq.IsActive = true;
-                    addRq.AccountType = "OtherExpense";
-                    addRq.Desc = addRq.GetType().Name;
-                    Assert.IsTrue(addRq.IsEntityValid());
+            acctRq.NameFilter.MatchCriterion = MatchCriterion.StartsWith;
+            Assert.IsTrue(acctRq.IsEntityValid());
 
-                    result = QB.ExecuteQbRequest(addRq);
-                    addRs = new(result);
-                    Assert.IsTrue(addRs.StatusCode == "0");
-                    Assert.IsTrue(string.IsNullOrEmpty(addRs.ParseError));
-                }
-                #endregion
+            acctRq.NameRangeFilter = new();
+            acctRq.NameRangeFilter.FromName = "A";
+            acctRq.NameRangeFilter.ToName = "ZZ";
+            Assert.IsFalse(acctRq.IsEntityValid());
 
-                #region Mod Test
-                AccountRetDto acct = qryRs.TotalAccounts == 0 ? addRs.Accounts[0] : qryRs.Accounts[0];
-                modRq.ListID = acct.ListID;
-                modRq.EditSequence = acct.EditSequence;
-                modRq.Name = acct.Name;
-                modRq.Desc = modRq.GetType().Name;
-                Assert.IsTrue(modRq.IsEntityValid());
+            acctRq.FullName = null;
+            acctRq.NameFilter = null;
+            acctRq.ToString();
+            Assert.IsTrue(acctRq.IsEntityValid());
 
-                result = QB.ExecuteQbRequest(modRq);
-                modRs = new(result);
-                Assert.IsTrue(modRs.StatusCode == "0");
-                Assert.IsTrue(modRs.Accounts[0].Desc == modRq.GetType().Name);
+            var model = new QryRqModel<AccountQueryRq>();
+            model.SetRequest(acctRq, "QryRq");
+            Assert.IsTrue(model.ToString().Contains("<AccountQueryRq>"));
+            Assert.IsTrue(acctRq.ToString().Contains("<AccountQueryRq>"));
+        }
 
-                modRq.ListID = modRs.Accounts[0].ListID;
-                modRq.EditSequence = modRs.Accounts[0].EditSequence;
-                modRq.Desc = $"Modified by {modRq.GetType().Name} on {DateTime.Now}";
-                Assert.IsTrue(modRq.IsEntityValid());
+        [TestMethod]
+        public void TestAccountAddRq()
+        {
+            AccountAddRq acctRq = new();
+            Assert.IsFalse(acctRq.IsEntityValid());
 
-                modRs = new(QB.ExecuteQbRequest(modRq));
-                Assert.IsTrue(modRs.StatusCode == "0");
-                Assert.IsTrue(string.IsNullOrEmpty(modRs.ParseError));
-                #endregion
-            }
-            Thread.Sleep(2000);
+            acctRq.Name = "AccountAddRq";
+            acctRq.AccountType = AccountType.Income;
+            Assert.IsTrue(acctRq.IsEntityValid());
+            
+            var model = new AddRqModel<AccountAddRq>("AccountAdd");
+            model.SetRequest(acctRq, "AddRq");
+            Assert.IsTrue(acctRq.ToString().Contains("<AccountAddRq>"));
+            Assert.IsTrue(model.ToString().Contains("<AccountAddRq>"));
+        }
+
+        [TestMethod]
+        public void TestAccountModRq()
+        {
+            AccountModRq acctRq = new();
+            Assert.IsFalse(acctRq.IsEntityValid());
+
+            acctRq.ListID = "AccountModRq.ListID";
+            acctRq.EditSequence = "AccountModRq.EditSequence";
+            Assert.IsTrue(acctRq.IsEntityValid());
+
+            acctRq.AccountType = AccountType.Bank;
+            Assert.IsTrue(acctRq.IsEntityValid());
+
+            var model = new ModRqModel<AccountModRq>("AccountMod");
+            model.SetRequest(acctRq, "ModRq");
+            Assert.IsTrue(acctRq.ToString().Contains("<AccountModRq>"));
+            Assert.IsTrue(model.ToString().Contains("<AccountModRq>"));
         }
     }
 }
