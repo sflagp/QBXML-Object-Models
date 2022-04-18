@@ -1,7 +1,7 @@
 # QBXML-Object-Models
-Quickbooks C# object models to generate QBXML without writing XML code
+Quickbooks C# strongly typed object models to generate QBXML without writing XML code and read QBXML responses back to strongly typed object models.
 
-This is part of a personal pet project I've been working on to help update and improve my C# coding skills and experience.  This dll allows me to generate the QBXML to call Quickbooks Desktop API without having to write XML code using the QbModels namespace.  This is done using 100% .netstandard2.1 calls.  There are no custom DLLs or other libraries used to generate the QBXML and/or process the results.
+This is part of a personal pet project I've been working on to help update and improve my C# coding skills and experience.  This dll allows me to generate the QBXML to call Quickbooks Desktop API without having to write XML code using the QbModels and QbModels.ENUM namespace.  This is done using 100% .netstandard2.1 calls.  There are no custom DLLs or other libraries used to generate the QBXML and/or process the results.  If you want to create QBXML and read responses using class objects instead of worrying about XML structures, I've created this tool to do so.
 <br /><br/>
 For example, the following C# code:
 ```csharp
@@ -26,7 +26,7 @@ Produces the following output:
 </QBXML>
 ```
 
-As of v1.1.10 (or 1.0.2 if you got this from NuGet), I've refactored all the views to convert the response QBXML into a C# class object through the constructor (no more need to call the ToView extension) with the added benefit of reducing the dll size.  The class object can then be accessed and manipulated with LINQ or standard C# code.  The dll includes over 55 object views (ie QbAccountsView, QbInvoicesView, QbCustomersView, QbVendorsView, etc) that will convert the QBXML response into a C# object that can be accessed via C#.
+As of v1.2.0, I've refactored all the views to convert the response QBXML into a C# class object through the constructor (no more need to call the ToView extension) with the added benefit of reducing the dll size.  The class object can then be accessed and manipulated with LINQ or standard C# code.  The dll includes over 55 object views (ie AccountRs, InvoiceRs, CustomerRs, VendorRs, etc) that will convert the QBXML response into a C# object that can be accessed via C#.
 
 ```csharp
 AccountQueryRq accountsRq = new();
