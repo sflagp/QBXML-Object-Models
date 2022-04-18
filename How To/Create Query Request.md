@@ -58,10 +58,11 @@ The RP will return a QBXML string that can then be passed into the appropriate {
 For example; if you assigned the QBXML response to qryRs, you would do the following:
 
 ```csharp
-var rsView = new QbCustomerRs(qryRs);
+var rsView = new CustomerRs(qryRs);
 ```
 
 From there, you will have access to the response via object properties.  Each view should contain the following common properties:
+```
 // QBXML response attributes
 StatusCode
 StatusSeverity
@@ -72,10 +73,13 @@ IteratorID
 //QBXML error response
 ParseError
 ParseErrorXml
+```
 
 Since this is a Customer request, the view will also have the properties:
+```
 Customers         // List of customers in the QBXML response
 TotalCustomers    // Count of customers in the QBXML response
+```
 
 With the above information, you can now process the results.  
 
