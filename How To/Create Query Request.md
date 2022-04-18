@@ -1,6 +1,6 @@
 The QbModels has the following paradigm.  For the most part, there should be one Rq for each QBXML request defined in the SDK. The request names 
 should match the requests defined in the SDK.  At last count, I believe I have defined well over 100 query/add/mod requests.  Once the request is 
-sent to the Quickbooks RP, the QBXML response can then be passed into the appropriate Qb__View.
+sent to the Quickbooks RP, the QBXML response can then be passed into the appropriate {request type}Rs.
 
 For example, if you wanted to query Quickbooks for a customer, the SDK defines a CustomerQueryRq.  The QbModels contains a CustomerQueryRq
 object that can be instantiated to build the QBXML.  The following will query Quickbooks for all customers whose name contains Smith.
@@ -52,14 +52,13 @@ For example, if you hover over the property MatchCriterion, intellisense should 
 ```
 
 Now that the request is created, you can pass that QBXML to the Quickbooks RP.  You can use the ToString() extension `qryRq.ToString()` to pass the QBXML.
-The RP will return a QBXML string that can then be passed into the appropriate Qb__View object.  There should be a Qb__View object for each request 
-defined by the SDK.  One view can handle the Query/Add/Mod requests for the request type.  So in this instance, the correct view to use is QbCustomerView
+The RP will return a QBXML string that can then be passed into the appropriate {request type}Rs object.  There should be a {request type}Rs object for each request defined by the SDK.  One view can handle the Query/Add/Mod results for the request type.  So in this instance, the correct view to use is CustomerRs
 (since it is a customer query request).  To read the result, just instantiate the view with the QBXML response. 
 
 For example; if you assigned the QBXML response to qryRs, you would do the following:
 
 ```csharp
-var rsView = new QbCustomersView(qryRs);
+var rsView = new QbCustomerRs(qryRs);
 ```
 
 From there, you will have access to the response via object properties.  Each view should contain the following common properties:
