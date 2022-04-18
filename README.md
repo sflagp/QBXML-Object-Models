@@ -31,7 +31,7 @@ As of v1.1.10 (or 1.0.2 if you got this from NuGet), I've refactored all the vie
 ```csharp
 AccountQueryRq accountsRq = new();
 string qbRs = QB.ExecuteQbRequest(accountsRq); // QB.ExecuteQbRequest is from my personal class library and returns the QBXML from the RP Processor
-QbAccountsView accounts = new(qbRs);
+AccountRs accounts = new(qbRs);
 if(accounts.StatusCode == "0" && accounts.Accounts.Count > 0)
 {
   AccountRetDto account = accounts.Accounts.FirstOrDefault(a => a.AccountType == "AccountsPayable");
