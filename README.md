@@ -7,6 +7,7 @@ For example, the following C# code:
 ```csharp
 using QbModels;
 
+QbHelpers.XmlHelper.SetSdkVersion("13.0");
 #region Create customer query request with a maximum of 50 responses
 CustomerQueryRq customerRq = new() { MaxReturned = 50, Iterator = "Start" };
 Console.WriteLine(customerRq.ToString());
