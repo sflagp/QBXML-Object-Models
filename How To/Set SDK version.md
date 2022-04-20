@@ -4,12 +4,12 @@ By default, the SDK version number is set to "15.0".  When working with older ve
 
 The below code will set the version number to "13.0".
 
-```
+```csharp
 QbHelpers.XmlHelper.SetSdkVersion("13.0");
 ```
 
 The resulting QBXML will look like:
-```
+```xml
 <?xml version="1.0" encoding="utf-16"?>
 <?qbxml version="13.0"?>
 <QBXML>
