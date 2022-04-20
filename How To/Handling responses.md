@@ -31,11 +31,12 @@ TotalCustomers    // Count of customers in the QBXML response
 
 With the above information, you can now process the results.  
 
-You can make sure the request ran correctly `rsView.StatusCode == "0"` or `rsView.StatusSeverity == "Info"`.  You can also check
-to see how many customers were returned `rsView.TotalCustomers > 0`.  You can also iterate through each returned customer like:
+You can make sure the request ran correctly `custRs.StatusCode == "0"` or `custRs.StatusSeverity == "Info"`.  You can also check
+to see how many customers were returned `custRs.TotalCustomers > 0`.  You can also iterate through each returned customer like:
 
-```
-foreach(CustomerRetDto c in rsView.Customers){
+```csharp
+foreach(CustomerRetDto c in custRs.Customers){
 {
   Console.WriteLine($"Customer name is {c.FullName}";
 }
+```
