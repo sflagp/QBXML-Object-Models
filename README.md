@@ -1,7 +1,7 @@
 # QBXML-Object-Models
 Quickbooks C# strongly typed object models to generate QBXML without writing XML code and read QBXML responses back to strongly typed object models.
 
-This is part of a personal pet project I've been working on to help update and improve my C# coding skills and experience.  This dll allows me to generate the QBXML to call Quickbooks Desktop API without having to write XML code using the QbModels and QbModels.ENUM namespace.  This is done using 100% .netstandard2.1 calls.  There are no custom DLLs or other libraries used to generate the QBXML and/or process the results.  If you want to create QBXML and read responses using class objects instead of worrying about XML structures, I've created this tool to do so.
+This is part of a personal pet project I've been working on to help update and improve my C# coding skills and experience.  This dll allows me to generate the QBXML to call Quickbooks Desktop API without having to write XML code using the QbModels and QbModels.ENUM namespace.  This is done using 100% .netstandard2.0 calls.  There are no custom DLLs or other libraries used to generate the QBXML and/or process the results.  If you want to create QBXML and read responses using class objects instead of worrying about XML structures, I've created this tool to do so.
 <br /><br/>
 For example, the following C# code:
 ```csharp
@@ -30,13 +30,17 @@ Produces the following output:
 As of v1.2.0, I've refactored all the views to convert the response QBXML into a C# class object through the constructor (no more need to call the ToView extension) with the added benefit of reducing the dll size.  The class object can then be accessed and manipulated with LINQ or standard C# code.  The dll includes over 55 object views (ie AccountRs, InvoiceRs, CustomerRs, VendorRs, etc) that will convert the QBXML response into a C# object that can be accessed via C#.
 
 ```csharp
+using QbModels;
+using QbModels.ENUM;
+
 AccountQueryRq accountsRq = new();
-string qbRs = QB.ExecuteQbRequest(accountsRq); // QB.ExecuteQbRequest is from my personal class library and returns the QBXML from the RP Processor
+// QB.ExecuteQbRequest is from my personal class library and returns the QBXML from the RP Processor.  It can be found under UnitTests.
+string qbRs = QB.ExecuteQbRequest(accountsRq); 
 AccountRs accounts = new(qbRs);
 if(accounts.StatusCode == "0" && accounts.Accounts.Count > 0)
 {
-  AccountRetDto account = accounts.Accounts.FirstOrDefault(a => a.AccountType == "AccountsPayable");
-  AccountRetDto bank = accounts.Accounts.FirstOrDefault(a => a.AccountType == "Bank");
+  AccountRetDto account = accounts.Accounts.FirstOrDefault(a => a.AccountType == AccountType.AccountsPayable);
+  AccountRetDto bank = accounts.Accounts.FirstOrDefault(a => a.AccountType == AccountType.Bank);
 }
 ```
 
@@ -56,8 +60,8 @@ else
 }
 ```
 
-I have objects for the majority of QBXML calls but have only used and tested a few since that's all I need.  Have completed the majority of the Unit Tests for generating the QBXML as well as sending the QBXML to the request processor.  The UnitTests folder contains the unit tests project I created to test the QbModel library project.  I also uploaded my personal request processor that I use to send/receive QBXML to/from the Quickbooks request processor.  This QbProcessor library is very limited but runs within a WPF/WinForm desktop application.  It will only work with a currently opened Quickbooks data file.
+I have objects for the majority of QBXML calls but have only used and tested a few since that's all I need.  Have re-designed the XML serialization and de-serialization process.  The result was running 125 internal unit tests in 1.2s to running 140 internal unit tests in 550ms.  See the Updates.md page for more updates.  The UnitTests folder contains the unit tests project I created to consume the QbModel library project and validate the results.  I also uploaded my personal request processor that I use to send/receive QBXML to/from the Quickbooks request processor.  This QbProcessor library is very limited but runs within a WPF/WinForm desktop application.  It is also a .netstandard2.0 dotnet library and will only work with a currently running Quickbooks Desktop application and opened Quickbooks desktop data file.
 
 I have covered the majority of QBXML requests in my unit testing but there are still bugs to be found.  If you do use this, please report these bugs so that I can look into why it's not working.  Look at the included unit test code I uploaded for testing the InvoiceQueryRq/InvoiceAddRq/InvoiceModRq QBXML calls to see how I use the dll to generate the QBXML and then convert the QBXML result string back into a C# object (in this case InvoiceRs).
 
-Another note, I changed the target framework to netstandard2.0. This should make it more compatible with any projects you incorporate this into that based on .Net Framework 4.6 and 4.7.  Theoretically; since this is straight dotNet code and objects, this should also be compatible with VB but I haven't programmed in VB in many years so I haven't tested.
+Theoretically; since this is straight dotNet code and objects, this should also be compatible with VB but I haven't programmed in VB in many years so I haven't tested.
