@@ -22340,6 +22340,13 @@
         <member name="F:QbModels.ENUM.YesNo.None">
             <summary>None is not valid here.  It is used as a default place holder.  Either set property to null or select either Yes or No.</summary>
         </member>
+        <member name="T:QbModels.IQbRq">
+            <summary>Interface to mark a QbModel request object for QbModels.QbProcessor</summary>
+        </member>
+        <member name="M:QbModels.IQbRq.ToString">
+            <summary>QbModels request models require ToString() to be overriden.</summary>
+            <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
+        </member>
         <member name="T:QbModels.AccountAddRq">
              <AccountAddRq>
 		<summary>
