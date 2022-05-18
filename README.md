@@ -1,5 +1,6 @@
 # QBXML-Object-Models
 Quickbooks C# strongly typed object models to generate QBXML without writing XML code and read QBXML responses back to strongly typed object models.
+
 NOTE:  Uploaded a QbModels.QBO for generating XML and/or JSON for Quickbooks Online edition.  Documentation will follow.
 
 This is part of a personal pet project I've been working on to help update and improve my C# coding skills and experience.  This dll allows me to generate the QBXML to call Quickbooks Desktop API without having to write XML code using the QbModels and QbModels.ENUM namespace.  This is done using 100% .netstandard2.0 calls.  There are no custom DLLs or other libraries used to generate the QBXML and/or process the results.  If you want to create QBXML and read responses using class objects instead of worrying about XML structures, I've created this tool to do so.
