@@ -1,3 +1,6 @@
+<i>5/18/2022</i><br />
+Went down another rabbit hole.  Took QbModels and created QbModels.QBO for generating/reading  XML and/or JSON for Quickbooks Online Edition.  Going on vacation so documentation will follow at a later date.  For now, look at the QbProcessor repository and review the Quickbooks Online Processor and Test projects to review.
+
 <i>4/17/2022</i><br />
 Made major changes to the serialization process.  As such, am changing the version number to 1.2.x to synchronize between NuGet and GitHub.
 
