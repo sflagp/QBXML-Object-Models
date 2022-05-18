@@ -1,4 +1,4 @@
-# QBXML-Object-Models
+# QBXML-Object-Models for Desktop and Online Editions
 Quickbooks C# strongly typed object models to generate QBXML without writing XML code and read QBXML responses back to strongly typed object models.
 
 NOTE:  Uploaded a QbModels.QBO for generating XML and/or JSON for Quickbooks Online edition.  See Updates.md for more info.
