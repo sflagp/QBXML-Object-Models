@@ -442,6 +442,24 @@
         <member name="T:QbModels.BarCodeRetDto">
             <!-- No matching elements were found for the following include tag --><include file="Documentation/DtoDoc.xml" path="QbModelDtoDoc/BarCodeRet[@name=&quot;BarCodeRetDto&quot;]" />
         </member>
+        <member name="M:QbModels.BarCodeRetDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.BarCodeRetDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.BarCodeRetDto.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.BarCodeRetDto" /> class.</summary>
+            <param name="listId">The list identifier.</param>
+        </member>
+        <member name="M:QbModels.BarCodeRetDto.#ctor(System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.BarCodeRetDto" /> class.</summary>
+            <param name="listId">The list identifier.</param>
+            <param name="fullName">The full name.</param>
+        </member>
+        <member name="M:QbModels.BarCodeRetDto.#ctor(System.String,System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.BarCodeRetDto" /> class.</summary>
+            <param name="listId">The list identifier.</param>
+            <param name="fullName">The full name.</param>
+            <param name="listType">Type of the list.</param>
+        </member>
         <member name="P:QbModels.BarCodeRetDto.ListType">
             <ListID name="ListType">
 		<summary>
@@ -1600,6 +1618,14 @@
 		</summary>
 	</TaxLine>
         </member>
+        <member name="M:QbModels.SalesTaxPaymentCheckLineAddDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.SalesTaxPaymentCheckLineAddDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.SalesTaxPaymentCheckLineAddDto.#ctor(QbModels.DefaultRefDto,System.Nullable{System.Decimal})">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.SalesTaxPaymentCheckLineAddDto" /> class.</summary>
+            <param name="itemSalesTax">The item sales tax.</param>
+            <param name="amount">The amount.</param>
+        </member>
         <member name="P:QbModels.SalesTaxPaymentCheckLineAddDto.ItemSalesTax">
             <DefaultRefDto name="ItemSalesTaxRef">
 		<summary>
@@ -1877,6 +1903,14 @@
 		</summary>
 	</AdditionalContact>
         </member>
+        <member name="M:QbModels.AdditionalContactDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.AdditionalContactDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.AdditionalContactDto.#ctor(System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.AdditionalContactDto" /> class.</summary>
+            <param name="contactName">Name of the contact.</param>
+            <param name="contactValue">The contact value.</param>
+        </member>
         <member name="P:QbModels.AdditionalContactDto.ContactName">
             <AdditionalContact name="ContactName">
 		<summary>
@@ -1906,6 +1940,13 @@
 		</summary>
 	</AdditionalNotes>
         </member>
+        <member name="M:QbModels.AdditionalNotesDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.AdditionalNotesDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.AdditionalNotesDto.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.AdditionalNotesDto" /> class.</summary>
+            <param name="note">The note.</param>
+        </member>
         <member name="P:QbModels.AdditionalNotesDto.Note">
             <AdditionalNotes name="Note">
 		<summary>Gets or sets Note property.</summary>
@@ -1923,6 +1964,14 @@
 			</example>
 		</summary>
 	</AdditionalNotes>
+        </member>
+        <member name="M:QbModels.AdditionalNotesModDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.AdditionalNotesModDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.AdditionalNotesModDto.#ctor(System.Nullable{System.Int32},System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.AdditionalNotesModDto" /> class.</summary>
+            <param name="noteId">The note identifier.</param>
+            <param name="note">The note.</param>
         </member>
         <member name="P:QbModels.AdditionalNotesModDto.NoteID">
             <AdditionalNotes name="NoteID">
@@ -1989,6 +2038,18 @@
 			</example>
 		</summary>
 	</Address>
+        </member>
+        <member name="M:QbModels.AddressDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.AddressDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.AddressDto.#ctor(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.AddressDto" /> class.</summary>
+            <param name="addr1">The addr1.</param>
+            <param name="city">The city.</param>
+            <param name="state">The state.</param>
+            <param name="postalCode">The postal code.</param>
+            <param name="country">The country.</param>
+            <param name="note">The address note.</param>
         </member>
         <member name="P:QbModels.AddressDto.Addr1">
             <Address name="Addr1">
@@ -2352,6 +2413,14 @@
 		</summary>
 	</AppliedTo>
         </member>
+        <member name="M:QbModels.ApplyCheckToTxnAddDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.ApplyCheckToTxnAddDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.ApplyCheckToTxnAddDto.#ctor(System.String,System.Nullable{System.Decimal})">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.ApplyCheckToTxnAddDto" /> class.</summary>
+            <param name="txnId">The TXN identifier.</param>
+            <param name="amount">The amount.</param>
+        </member>
         <member name="P:QbModels.ApplyCheckToTxnAddDto.TxnID">
             <TxnID name="TxnID">
 		<summary>
@@ -2385,6 +2454,14 @@
 		</summary>
 	</AppliedTo>
         </member>
+        <member name="M:QbModels.ApplyCheckToTxnModDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.ApplyCheckToTxnModDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.ApplyCheckToTxnModDto.#ctor(System.String,System.Nullable{System.Decimal})">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.ApplyCheckToTxnModDto" /> class.</summary>
+            <param name="txnId">The TXN identifier.</param>
+            <param name="amount">The amount.</param>
+        </member>
         <member name="P:QbModels.ApplyCheckToTxnModDto.TxnID">
             <TxnID name="TxnID">
 		<summary>
@@ -2410,6 +2487,15 @@
         <member name="T:QbModels.BarcodeDto">
             <summary>BarcodeDto Class</summary>
         </member>
+        <member name="M:QbModels.BarcodeDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.BarcodeDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.BarcodeDto.#ctor(System.String,System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.BarcodeDto" /> class.</summary>
+            <param name="barCodeValue">The bar code value.</param>
+            <param name="assignEvenIfUsed">The assign even if used.</param>
+            <param name="allowOverride">The allow override.</param>
+        </member>
         <member name="P:QbModels.BarcodeDto.BarCodeValue">
             <summary>Gets or sets the bar code value.</summary>
             <value>The bar code value.</value>
@@ -2424,6 +2510,15 @@
         </member>
         <member name="T:QbModels.BillingRateItemDto">
             <summary>Return object for BillingRateItem requests</summary>
+        </member>
+        <member name="M:QbModels.BillingRateItemDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.BillingRateItemDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.BillingRateItemDto.#ctor(QbModels.DefaultRefDto,System.Nullable{System.Decimal},System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.BillingRateItemDto" /> class.</summary>
+            <param name="item">The item.</param>
+            <param name="customRate">The custom rate.</param>
+            <param name="customRatePercent">The custom rate percent.</param>
         </member>
         <member name="P:QbModels.BillingRateItemDto.Item">
             <DefaultRefDto name="ItemRef">
@@ -2465,6 +2560,15 @@
 		</summary>
 	</CashBack>
         </member>
+        <member name="M:QbModels.CashBackInfoAddDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.CashBackInfoAddDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.CashBackInfoAddDto.#ctor(QbModels.DefaultRefDto,System.String,System.Nullable{System.Decimal})">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.CashBackInfoAddDto" /> class.</summary>
+            <param name="account">The account.</param>
+            <param name="memo">The memo.</param>
+            <param name="amount">The amount.</param>
+        </member>
         <member name="P:QbModels.CashBackInfoAddDto.Account">
             <!-- No matching elements were found for the following include tag --><include file="Documentation/DtoDoc.xml" path="QbModelDtoDoc/DefaultRefDto[@name=&quot;Account&quot;]" />
             <remarks><b>Note: </b>Account is required</remarks>
@@ -2497,6 +2601,15 @@
 			</example>
 		</summary>
 	</CashBack>
+        </member>
+        <member name="M:QbModels.CashBackInfoModDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.CashBackInfoModDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.CashBackInfoModDto.#ctor(QbModels.DefaultRefDto,System.String,System.Nullable{System.Decimal})">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.CashBackInfoModDto" /> class.</summary>
+            <param name="account">The account.</param>
+            <param name="memo">The memo.</param>
+            <param name="amount">The amount.</param>
         </member>
         <member name="P:QbModels.CashBackInfoModDto.Account">
             <!-- No matching elements were found for the following include tag --><include file="Documentation/DtoDoc.xml" path="QbModelDtoDoc/DefaultRefDto[@name=&quot;AccountRef&quot;]" />
@@ -2565,6 +2678,15 @@
 		</summary>
 	</Contact>
         </member>
+        <member name="M:QbModels.ContactDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.ContactDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.ContactDto.#ctor(System.String,System.String,System.Nullable{QbModels.ENUM.Relation})">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.ContactDto" /> class.</summary>
+            <param name="contactName">Name of the contact.</param>
+            <param name="contactValue">The contact value.</param>
+            <param name="relation">The relation.</param>
+        </member>
         <member name="P:QbModels.ContactDto.ContactName">
             <Contact name="ContactName">
 		<summary>
@@ -2626,6 +2748,14 @@
 			</example>
 		</summary>
 	</Contact>
+        </member>
+        <member name="M:QbModels.ContactsAddDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.ContactsAddDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.ContactsAddDto.#ctor(System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.ContactsModDto" /> class.</summary>
+            <param name="firstName">The first name.</param>
+            <param name="lastName">The last name.</param>
         </member>
         <member name="P:QbModels.ContactsAddDto.Salutation">
             <Salutation>
@@ -2747,6 +2877,21 @@
 			</example>
 		</summary>
 	</Contact>
+        </member>
+        <member name="M:QbModels.ContactsModDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.ContactsModDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.ContactsModDto.#ctor(System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.ContactsModDto" /> class.</summary>
+            <param name="listId">The list identifier.</param>
+            <param name="editSequence">The edit sequence.</param>
+        </member>
+        <member name="M:QbModels.ContactsModDto.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.ContactsModDto" /> class.</summary>
+            <param name="listId">The list identifier.</param>
+            <param name="editSequence">The edit sequence.</param>
+            <param name="firstName">The first name.</param>
+            <param name="lastName">The last name.</param>
         </member>
         <member name="P:QbModels.ContactsModDto.ListID">
             <ListID name="ListID">
@@ -3027,6 +3172,15 @@
         <member name="T:QbModels.CurrencyExchangeRateDto">
             <summary>Return object for CurrencyExchangeR requests</summary>
         </member>
+        <member name="M:QbModels.CurrencyExchangeRateDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.CurrencyExchangeRateDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.CurrencyExchangeRateDto.#ctor(QbModels.DefaultRefDto,System.String,System.Nullable{System.Boolean})">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.CurrencyExchangeRateDto" /> class.</summary>
+            <param name="currency">The currency.</param>
+            <param name="exchangeRate">The exchange rate.</param>
+            <param name="isAmountsEnteredInHomeCurrency">The is amounts entered in home currency.</param>
+        </member>
         <member name="P:QbModels.CurrencyExchangeRateDto.IsAmountsEnteredInHomeCurrency">
             <Bool name="IsAmountsEnteredInHomeCurrency">
 		<summary>
@@ -3101,6 +3255,18 @@
         </member>
         <member name="T:QbModels.DefaultRefDto">
             <summary>Default reference dto for ListID/FullName</summary>
+        </member>
+        <member name="M:QbModels.DefaultRefDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.DefaultRefDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.DefaultRefDto.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.DefaultRefDto" /> class.</summary>
+            <param name="listId">The list identifier.</param>
+        </member>
+        <member name="M:QbModels.DefaultRefDto.#ctor(System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.DefaultRefDto" /> class.</summary>
+            <param name="listId">The list identifier.</param>
+            <param name="fullName">The full name.</param>
         </member>
         <member name="P:QbModels.DefaultRefDto.ListID">
             <ListID name="ListID">
@@ -4450,6 +4616,14 @@
 		</summary>
 	</LinkedToTxn>
         </member>
+        <member name="M:QbModels.LinkToTxnDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.LinkToTxnDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.LinkToTxnDto.#ctor(System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.LinkToTxnDto" /> class.</summary>
+            <param name="txnId">The TXN identifier.</param>
+            <param name="txnLineId">The TXN line identifier.</param>
+        </member>
         <member name="P:QbModels.LinkToTxnDto.TxnID">
             <TxnID name="TxnID">
 		<summary>
@@ -4500,6 +4674,14 @@
         <member name="T:QbModels.RateEntryDto">
             <!-- No matching elements were found for the following include tag --><include file="Documentation/DtoDoc.xml" path="QbModelDtoDoc/RateEntry[@name=&quot;RateEntryrDto&quot;]" />
         </member>
+        <member name="M:QbModels.RateEntryDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.RateEntryDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.RateEntryDto.#ctor(System.String,System.Nullable{System.DateTime})">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.RateEntryDto" /> class.</summary>
+            <param name="rate">The rate.</param>
+            <param name="effectiveDate">The effective date.</param>
+        </member>
         <member name="P:QbModels.RateEntryDto.Rate">
             <Decimal name="RateString">
 		<summary>
@@ -4527,6 +4709,14 @@
 			</example>
 		</summary>
 	</AppliedTo>
+        </member>
+        <member name="M:QbModels.RefundAppliedToTxnAddDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.RefundAppliedToTxnAddDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.RefundAppliedToTxnAddDto.#ctor(System.String,System.Nullable{System.Decimal})">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.RefundAppliedToTxnAddDto" /> class.</summary>
+            <param name="txnId">The TXN identifier.</param>
+            <param name="refundAmount">The refund amount.</param>
         </member>
         <member name="P:QbModels.RefundAppliedToTxnAddDto.TxnID">
             <TxnID name="TxnID">
@@ -4679,6 +4869,14 @@
 		</summary>
 	</SerialNumber>
         </member>
+        <member name="M:QbModels.SerialNumberDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.SerialNumberDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.SerialNumberDto.#ctor(System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.SerialNumberDto" /> class.</summary>
+            <param name="serialNumber">The serial number.</param>
+            <param name="lotNumber">The lot number.</param>
+        </member>
         <member name="P:QbModels.SerialNumberDto.SerialNumber">
             <String name="SerialNumber">
 		<summary>
@@ -4716,6 +4914,15 @@
 		</summary>
 	</SetCredit>
         </member>
+        <member name="M:QbModels.SetCreditDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.SetCreditDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.SetCreditDto.#ctor(System.String,System.Nullable{System.Decimal},System.Nullable{System.Boolean})">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.SetCreditDto" /> class.</summary>
+            <param name="creditTxnId">The credit TXN identifier.</param>
+            <param name="appliedAmount">The applied amount.</param>
+            <param name="Override">The override.</param>
+        </member>
         <member name="P:QbModels.SetCreditDto.CreditTxnID">
             <TxnID name="CreditTxnID">
 		<summary>
@@ -4752,6 +4959,14 @@
 			</example>
 		</summary>
 	</TaxLine>
+        </member>
+        <member name="M:QbModels.TaxLineDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.TaxLineDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.TaxLineDto.#ctor(System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.TaxLineDto" /> class.</summary>
+            <param name="taxLineId">The tax line identifier.</param>
+            <param name="taxLineName">Name of the tax line.</param>
         </member>
         <member name="P:QbModels.TaxLineDto.TaxLineID">
             <TaxLine name="TaxLineID">
@@ -10139,6 +10354,14 @@
 		</summary>
 	</DeletedDateRangeFilter>
         </member>
+        <member name="M:QbModels.DeletedDateRangeFilterDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.DeletedDateRangeFilterDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.DeletedDateRangeFilterDto.#ctor(System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.DeletedDateRangeFilterDto" /> class.</summary>
+            <param name="fromDeletedDate">From deleted date.</param>
+            <param name="toDeletedDate">To deleted date.</param>
+        </member>
         <member name="P:QbModels.DeletedDateRangeFilterDto.FromDeletedDate">
             <DeletedDateRangeFilter name="FromDeletedDate">
 		<summary>Gets or sets FromDeletedDate to set transaction start date to search from.</summary>
@@ -10161,6 +10384,9 @@
 			</example>
 		</summary>
 	</EntityFilter>
+        </member>
+        <member name="M:QbModels.EntityFilterDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.EntityFilterDto" /> class.</summary>
         </member>
         <member name="P:QbModels.EntityFilterDto.ListID">
             <EntityFilter name="ListID">
@@ -10229,6 +10455,16 @@
 		</summary>
 	</ModifiedDateRangeFilter>
         </member>
+        <member name="M:QbModels.ModifiedDateRangeFilterDto.#ctor">
+            <summary>
+              <br />
+            </summary>
+        </member>
+        <member name="M:QbModels.ModifiedDateRangeFilterDto.#ctor(System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.ModifiedDateRangeFilterDto" /> class.</summary>
+            <param name="fromModifiedDate">From modified date.</param>
+            <param name="toModifiedDate">To modified date.</param>
+        </member>
         <member name="P:QbModels.ModifiedDateRangeFilterDto.FromModifiedDate">
             <ModifiedDateRangeFilter name="FromModifiedDate">
 		<summary>Gets or sets FromModifiedDate to set starting modified date to search from.</summary>
@@ -10243,6 +10479,14 @@
         </member>
         <member name="T:QbModels.NameFilterDto">
             <!-- No matching elements were found for the following include tag --><include file="Documentation/DtoDoc.xml" path="QbModelDtoDoc/NameRangeFilter[@name=&quot;NameFilterDto&quot;]" />
+        </member>
+        <member name="M:QbModels.NameFilterDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.NameFilterDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.NameFilterDto.#ctor(QbModels.ENUM.MatchCriterion,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.NameFilterDto" /> class.</summary>
+            <param name="matchCriterion">The match criterion.</param>
+            <param name="name">The name.</param>
         </member>
         <member name="P:QbModels.NameFilterDto.MatchCriterion">
             <RegEx name="MatchCriterion">
@@ -10279,6 +10523,14 @@
 		</summary>
 	</NameRangeFilter>
         </member>
+        <member name="M:QbModels.NameRangeFilterDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.NameRangeFilterDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.NameRangeFilterDto.#ctor(System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.NameRangeFilterDto" /> class.</summary>
+            <param name="fromName">From name.</param>
+            <param name="toName">To name.</param>
+        </member>
         <member name="P:QbModels.NameRangeFilterDto.FromName">
             <NameRangeFilter name="FromName">
 		<summary>Gets or sets FromName to set list starting name to search from.</summary>
@@ -10301,6 +10553,14 @@
 			</example>
 		</summary>
 	</RefNumberFilter>
+        </member>
+        <member name="M:QbModels.RefNumberFilterDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.RefNumberFilterDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.RefNumberFilterDto.#ctor(QbModels.ENUM.MatchCriterion,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.RefNumberFilterDto" /> class.</summary>
+            <param name="matchCriterion">The match criterion.</param>
+            <param name="refNumber">The reference number.</param>
         </member>
         <member name="P:QbModels.RefNumberFilterDto.MatchCriterion">
             <RegEx name="MatchCriterion">
@@ -10339,6 +10599,14 @@
 		</summary>
 	</RefNumberRangeFilter>
         </member>
+        <member name="M:QbModels.RefNumberRangeFilterDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.RefNumberRangeFilterDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.RefNumberRangeFilterDto.#ctor(System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.RefNumberRangeFilterDto" /> class.</summary>
+            <param name="fromRefNumber">From reference number.</param>
+            <param name="toRefNumber">To reference number.</param>
+        </member>
         <member name="P:QbModels.RefNumberRangeFilterDto.FromRefNumber">
             <String name="FromRefNumber">
 		<summary>
@@ -10366,6 +10634,14 @@
 		</summary>
 	</TimeTrackingEntityFilter>
         </member>
+        <member name="M:QbModels.TimeTrackingEntityFilterDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.TimeTrackingEntityFilterDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.TimeTrackingEntityFilterDto.#ctor(System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.TimeTrackingEntityFilterDto" /> class.</summary>
+            <param name="listId">The list identifier.</param>
+            <param name="fullName">The full name.</param>
+        </member>
         <member name="P:QbModels.TimeTrackingEntityFilterDto.ListID">
             <ListID name="ListID">
 		<summary>
@@ -10388,6 +10664,9 @@
 	</FullName>
         </member>
         <member name="T:QbModels.TotalBalanceFilterDto">
+            <summary>
+              <br />
+            </summary>
             <Balance name="TotalBalanceFilterDto">
 		<summary>
 			<para>Total balance filter.</para>
@@ -10397,6 +10676,14 @@
 			</example>
 		</summary>
 	</Balance>
+        </member>
+        <member name="M:QbModels.TotalBalanceFilterDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.TotalBalanceFilterDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.TotalBalanceFilterDto.#ctor(System.String,System.Nullable{System.Decimal})">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.TotalBalanceFilterDto" /> class.</summary>
+            <param name="operater">The operater.</param>
+            <param name="amount">The amount.</param>
         </member>
         <member name="P:QbModels.TotalBalanceFilterDto.Operator">
             <Balance name="Operator">
@@ -10433,6 +10720,13 @@
 			</example>
 		</summary>
 	</TransactionFilter>
+        </member>
+        <member name="M:QbModels.TransactionAccountFilterDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.TransactionAccountFilterDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.TransactionAccountFilterDto.#ctor(QbModels.ENUM.AccountType)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.TransactionAccountFilterDto" /> class.</summary>
+            <param name="accountTypeFilter">The account type filter.</param>
         </member>
         <member name="P:QbModels.TransactionAccountFilterDto.AccountTypeFilter">
             <RegEx name="AccountType">
@@ -10474,6 +10768,13 @@
 		</summary>
 	</TransactionFilter>
         </member>
+        <member name="M:QbModels.TransactionEntityFilterDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.TransactionEntityFilterDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.TransactionEntityFilterDto.#ctor(QbModels.ENUM.EntityType)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.TransactionEntityFilterDto" /> class.</summary>
+            <param name="entityTypeFilter">The entity type filter.</param>
+        </member>
         <member name="P:QbModels.TransactionEntityFilterDto.EntityTypeFilter">
             <RegEx name="EntityType">
 		<summary>
@@ -10501,6 +10802,13 @@
 			</example>
 		</summary>
 	</TransactionFilter>
+        </member>
+        <member name="M:QbModels.TransactionItemFilterDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.TransactionItemFilterDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.TransactionItemFilterDto.#ctor(QbModels.ENUM.ItemType)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.TransactionItemFilterDto" /> class.</summary>
+            <param name="itemTypeTypeFilter">The item type type filter.</param>
         </member>
         <member name="P:QbModels.TransactionItemFilterDto.ItemTypeTypeFilter">
             <RegEx name="ItemType">
@@ -10535,6 +10843,13 @@
 			</example>
 		</summary>
 	</TransactionFilter>
+        </member>
+        <member name="M:QbModels.TransactionTypeFilterDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.TransactionTypeFilterDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.TransactionTypeFilterDto.#ctor(System.Nullable{QbModels.ENUM.TxnType})">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.TransactionTypeFilterDto" /> class.</summary>
+            <param name="txnTypeFilter">The TXN type filter.</param>
         </member>
         <member name="P:QbModels.TransactionTypeFilterDto.TxnTypeFilter">
             <RegEx name="TxnType">
@@ -10587,6 +10902,14 @@
 			</example>
 		</summary>
 	</TxnDateRangeFilter>
+        </member>
+        <member name="M:QbModels.TxnDateRangeFilterDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.TxnDateRangeFilterDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.TxnDateRangeFilterDto.#ctor(System.Nullable{System.DateTime},System.Nullable{System.DateTime})">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.TxnDateRangeFilterDto" /> class.</summary>
+            <param name="fromTxnDate">From TXN date.</param>
+            <param name="toTxnDate">To TXN date.</param>
         </member>
         <member name="P:QbModels.TxnDateRangeFilterDto.FromTxnDate">
             <TxnDateRangeFilter name="FromTxnDate">
@@ -15556,6 +15879,14 @@
 			</example>
 		</summary>
 	</Locations>
+        </member>
+        <member name="M:QbModels.LocationsDto.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.LocationsDto" /> class.</summary>
+        </member>
+        <member name="M:QbModels.LocationsDto.#ctor(System.String,QbModels.AddressDto)">
+            <summary>Initializes a new instance of the <see cref="T:QbModels.LocationsDto" /> class.</summary>
+            <param name="location">The location.</param>
+            <param name="leadAddress">The lead address.</param>
         </member>
         <member name="P:QbModels.LocationsDto.Location">
             <Locations name="Location">
